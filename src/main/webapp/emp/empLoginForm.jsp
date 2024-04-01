@@ -3,7 +3,7 @@
 <%
 	//인증 분기 
 	if(session.getAttribute("loginEmp")!= null){
-		response.sendRedirect("/shop/emp/empLoginForm.jsp");
+		response.sendRedirect("/shop/emp/empList.jsp");
 		return;
 	}
 	

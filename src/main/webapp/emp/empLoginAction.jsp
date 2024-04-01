@@ -6,8 +6,8 @@
 
 <%
 	//인증 분기  
-	if(session.getAttribute("loginEmp")== null){
-		response.sendRedirect("/shop/emp/empLoginForm.jsp");
+	if(session.getAttribute("loginEmp")!= null){
+		response.sendRedirect("/shop/emp/empList.jsp");
 		return;
 	}
 
@@ -32,7 +32,7 @@
 	if(rs.next()){
 		//로그인 성공시
 		session.setAttribute("loginEmp", rs.getString("empId"));
-		System.out.println(session.getAttribute("loginEmp"));
+		//System.out.println(session.getAttribute("loginEmp"));
 		response.sendRedirect("/shop/emp/empList.jsp");
 	}else{
 		//로그인 실패시 
