@@ -36,7 +36,7 @@
 	
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
 	int startRow = (currentPage-1)* rowPerPage;
-	System.out.println(startRow);
+	
 	
 	//전체 회원의 수 구하기
 	String sql3 = "SELECT count(*) cnt FROM emp WHERE emp_id LIKE '%%'";
@@ -110,13 +110,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+	
+	<meta charset="EUC-KR">
+	<style>
+		body{
+			width:100%;
+			height:100%;
+		 	font-family: "Dongle", sans-serif;
+  			font-size: 25px;
+  			font-style: normal;
+		}
+		a{
+			text-decoration: none;
+			font-size: 30px;
+			color: black;
+		}
+		h1{
+			font-size: 70px;
+		}
+		#currentNum{
+			font-size: 30px;
+			color: black;
+		}
+		.aTags{
+			padding-left: 200px;
+			padding-right: 200px;
+		}
+	</style>
+	<title>empList page</title>
+	
 </head>
 <body>
-
+	<div class="m-4 d-flex justify-content-between">
+		<div>&nbsp;</div>
+		<h1>직원 리스트</h1>
+		<a href="/shop/emp/empLogoutAction.jsp" class="mt-4">로그아웃</a>
+	</div>
 	<div>
-		<table border="1">
+		<table border="1"  class="table table-hover">
 			<tr>
 				<th>empId</th>
 				<th>empName</th>
@@ -142,38 +178,34 @@
 				}
 			%>
 		</table>
-		<div>
-			<button type="button" class="btn btn-secondary btnGroup"  >
+		<div class="d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-light"  >
 				<%
 					if(currentPage > 1){
 				%>
-					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1%>">이전</a>
+					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1%>" class="aTags">이전</a>
 				<%
 					}else{
 				%>
-					<a style="color: grey; cursor: not-allowed; ">이전</a>
+					<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
 				<%
 					}
 				%>
 			</button>
-			<button type="button" class="btn btn-secondary btnGroup"><%=currentPage%></button>
-			<button type="button" class="btn btn-secondary btnGroup">
+			<button type="button" class="btn btn-light" id="currentNum"><%=currentPage%></button>
+			<button type="button" class="btn btn-light">
 				<%if(currentPage < lastPage ){
 				%>
-					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1%>">다음</a>		
+					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
 				<%
 				}else{
 				%>
-					<a style="color: grey; cursor: not-allowed;  ">다음</a>
+					<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
 				<%
 				}
 				%>
 			</button>
 		</div>
-	</div>
-	
-	<div>
-		<a href="/shop/emp/empLogoutAction.jsp">로그아웃</a>
 	</div>
 </body>
 </html>
