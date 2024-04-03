@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
 
 <!-- Controller layer -->
 <%
-	// ÀÎÁõ ºĞ±â  
+	// ì¸ì¦ ë¶„ê¸°  
 	if(session.getAttribute("loginEmp")== null){
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
@@ -25,55 +24,55 @@
 %>    
 
 <%
-	//ÇöÀç ÆäÀÌÁö °ª 
+	//í˜„ì¬ í˜ì´ì§€ ê°’ 
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	// ÇÑ ÆäÀÌÁö¿¡ º¸ÀÌ´Â ÀÎ¿ø¼ö
+	// í•œ í˜ì´ì§€ì— ë³´ì´ëŠ” ì¸ì›ìˆ˜
 	int rowPerPage = 10;
 	
-	// DB¿¡¼­ ½ÃÀÛ ÆäÀÌÁö °ª ¼³Á¤ = (ÇöÀç ÆäÀÌÁö-1) *   ÇÑ ÆäÀÌÁö¿¡ º¸ÀÌ´Â ÀÎ¿ø¼ö
+	// DBì—ì„œ ì‹œì‘ í˜ì´ì§€ ê°’ ì„¤ì • = (í˜„ì¬ í˜ì´ì§€-1) *   í•œ í˜ì´ì§€ì— ë³´ì´ëŠ” ì¸ì›ìˆ˜
 	int startRow = (currentPage-1)* rowPerPage;
 	
 	
-	//ÀüÃ¼ È¸¿øÀÇ ¼ö ±¸ÇÏ±â
+	//ì „ì²´ íšŒì›ì˜ ìˆ˜ êµ¬í•˜ê¸°
 	String sql3 = "SELECT count(*) cnt FROM emp WHERE emp_id LIKE '%%'";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null; 
 	stmt3 = conn.prepareStatement(sql3);
 	rs3 = stmt3.executeQuery();
 	
-	// ÀüÃ¼ È¸¿ø¼ö 
+	// ì „ì²´ íšŒì›ìˆ˜ 
 	int totalRow = 0;
 	
 	if(rs3.next()){
 		totalRow = rs3.getInt("cnt");
 	}
 	
-	// ¸¶Áö¸· ÆäÀÌÁö °è»êÇÏ±â = ÀüÃ¼ È¸¿ø¼ö / ÇÑ ÆäÀÌÁö¿¡¼­ º¸ÀÌ´Â ÀÎ¿ø¼ö
+	// ë§ˆì§€ë§‰ í˜ì´ì§€ ê³„ì‚°í•˜ê¸° = ì „ì²´ íšŒì›ìˆ˜ / í•œ í˜ì´ì§€ì—ì„œ ë³´ì´ëŠ” ì¸ì›ìˆ˜
 	int lastPage = totalRow / rowPerPage;
 	
-	//ÀÎ¿ø¼ö°¡ ³²À» ¶§ ¸¶Áö¸· ÆäÀÌÁö´Â +1 ÇØÁØ´Ù. 
-	//¿¹) È¸¿ø¼ö°¡ 11¸íÀÌ¶ó¸é ÇÑ ÆäÀÌÁö´ç 10¸í¾¿ 1ÆäÀÌÁö°¡ ³ª¿Í¾ßÇÏ´Âµ¥ 1¸íÀÌ ´õ ÀÖ±â ¶§¹®¿¡ ÃÑ ÆäÀÌÁö´Â 2ÆäÀÌÁö°¡ µÈ´Ù.
+	//ì¸ì›ìˆ˜ê°€ ë‚¨ì„ ë•Œ ë§ˆì§€ë§‰ í˜ì´ì§€ëŠ” +1 í•´ì¤€ë‹¤. 
+	//ì˜ˆ) íšŒì›ìˆ˜ê°€ 11ëª…ì´ë¼ë©´ í•œ í˜ì´ì§€ë‹¹ 10ëª…ì”© 1í˜ì´ì§€ê°€ ë‚˜ì™€ì•¼í•˜ëŠ”ë° 1ëª…ì´ ë” ìˆê¸° ë•Œë¬¸ì— ì´ í˜ì´ì§€ëŠ” 2í˜ì´ì§€ê°€ ëœë‹¤.
 	if(totalRow % rowPerPage != 0){
 		lastPage = lastPage +1 ;
 	}
 	
-	
-	//System.out.println(lastPage + " lastPage È¸¿øº¸±â ÆäÀÌÁö");
-	//System.out.println(totalRow + "<----totalRow ÀüÃ¼ È¸¿ø¼ö ");
-	//System.out.println(rowPerPage + "<----rowPerPage ÇÑ ÆäÀÌÁö´ç º¸°í½ÍÀº ÀÎ¿ø¼ö");
+	//ë””ë²„ê¹…
+	//System.out.println(lastPage + " lastPage íšŒì›ë³´ê¸° í˜ì´ì§€");
+	//System.out.println(totalRow + "<----totalRow ì „ì²´ íšŒì›ìˆ˜ ");
+	//System.out.println(rowPerPage + "<----rowPerPage í•œ í˜ì´ì§€ë‹¹ ë³´ê³ ì‹¶ì€ ì¸ì›ìˆ˜");
 	//System.out.println(startRow);
 	//System.out.println(rowPerPage);
 %>
 
 <!-- model layer -->
 <%
-	//Æ¯¼öÇÑ ÇüÅÂÀÇ ÀÚ·á±¸Á¶ RDBMS : maradb 
-	//-> API»ç¿ë(JDBC API)ÇÏ¿© ÀÚ·á±¸Á¶(ResultSet) Ãëµæ 
-	//-> ÀÏ¹İÈ­µÈ ÀÚ·á±¸Á¶ (ArrayList<HashMap>) ·Î º¯°æ -> ¸ğµ¨ Ãëµæ
+	//íŠ¹ìˆ˜í•œ í˜•íƒœì˜ ìë£Œêµ¬ì¡° RDBMS : maradb 
+	//-> APIì‚¬ìš©(JDBC API)í•˜ì—¬ ìë£Œêµ¬ì¡°(ResultSet) ì·¨ë“ 
+	//-> ì¼ë°˜í™”ëœ ìë£Œêµ¬ì¡° (ArrayList<HashMap>) ë¡œ ë³€ê²½ -> ëª¨ë¸ ì·¨ë“
 	
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
@@ -84,11 +83,11 @@
 	stmt2 = conn.prepareStatement(sql2);
 	stmt2.setInt(1, startRow);
 	stmt2.setInt(2, rowPerPage);
-	rs2 = stmt2.executeQuery(); // JDBC API Á¾¼ÓµÈ ÀÚ·á±¸Á¶ ¸ğµ¨ ResultSet -> ±âº» API ÀÚ·á±¸Á¶(ArrayList)·Î º¯°æ
+	rs2 = stmt2.executeQuery(); // JDBC API ì¢…ì†ëœ ìë£Œêµ¬ì¡° ëª¨ë¸ ResultSet -> ê¸°ë³¸ API ìë£Œêµ¬ì¡°(ArrayList)ë¡œ ë³€ê²½
 	
-	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();   // ¸ğµç Å¸ÀÔÀÇ ºÎ¸ğ´Â object 
+	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();   // ëª¨ë“  íƒ€ì…ì˜ ë¶€ëª¨ëŠ” object 
 	
-	// Result -> ArrayList<HashMap<String, Object>> ÀÌµ¿
+	// Result -> ArrayList<HashMap<String, Object>> ì´ë™
 	
 	while(rs2.next()){
 		HashMap<String, Object> m = new HashMap<String, Object>();
@@ -101,12 +100,12 @@
 	}
 	
 	
-	// JDBC API »ç¿ëÀÌ ³¡³µ´Ù¸é DBÀÚ¿øµéÀ» ¹İ³³
+	// JDBC API ì‚¬ìš©ì´ ëë‚¬ë‹¤ë©´ DBìì›ë“¤ì„ ë°˜ë‚©
 %>    
 
 
 
-<!-- View layer : ¸ğµ¨ ArrayList<HashMap<String, Object>> Ãâ·Â -->
+<!-- View layer : ëª¨ë¸ ArrayList<HashMap<String, Object>> ì¶œë ¥ -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,7 +115,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 	
-	<meta charset="EUC-KR">
+	<meta charset="UTF-8">
 	<style>
 		body{
 			width:100%;
@@ -132,10 +131,30 @@
 		}
 		h1{
 			font-size: 70px;
+			margin-right: 350px;
 		}
+		button{
+			height: 50px;
+		}
+		input{
+			width: 500px;
+			height: 40px;
+		}
+		
 		#currentNum{
 			font-size: 30px;
 			color: black;
+		}
+		#logoutAtag{
+			height: 40px;
+			border: 1px solid black;
+			border-radius: 10px;
+			padding-right: 20px;
+			padding-left: 20px;
+		}
+		#searchBtn{
+			width: 60px;
+			height: 40px;
 		}
 		.aTags{
 			padding-left: 200px;
@@ -146,12 +165,16 @@
 	
 </head>
 <body>
-	<div class="m-4 d-flex justify-content-between">
-		<div>&nbsp;</div>
-		<h1>Á÷¿ø ¸®½ºÆ®</h1>
-		<a href="/shop/emp/empLogoutAction.jsp" class="mt-4">·Î±×¾Æ¿ô</a>
-	</div>
-	<div>
+	<header class="m-2 d-flex justify-content-between">
+		<div>
+			<!-- empMenu.jsp include : ì£¼ì²´(ì„œë²„) vs redirect ì£¼ì²´(í´ë¼ì–¸íŠ¸) -->
+			<!-- ì£¼ì²´ê°€ ì„œë²„ì´ê¸° ë•Œë¬¸ì— includeí• ë•ŒëŠ” ì ˆëŒ€ ì£¼ì†Œê°€ /shop/...ì‹œì‘í•˜ì§€ ì•ŠëŠ”ë‹¤. -->
+			<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+		</div>
+		<h1>ì§ì› ë¦¬ìŠ¤íŠ¸</h1>
+		<a href="/shop/emp/empLogoutAction.jsp" class="mt-4" id="logoutAtag">ë¡œê·¸ì•„ì›ƒ</a>
+	</header>
+	<main>
 		<table border="1"  class="table table-hover">
 			<tr>
 				<th>empId</th>
@@ -164,6 +187,10 @@
 				for(HashMap<String, Object> m : list){
 			%>
 				<tr>
+					<%
+						HashMap<String, Object> sm = (HashMap<String, Object>)session.getAttribute("loginEmp"); 
+						if((Integer)sm.get("grade") > 0){
+					%>
 					<td><%=(String)(m.get("empId"))%></td>
 					<td><%=(String)(m.get("empName"))%></td>
 					<td><%=(String)(m.get("empJob"))%></td>
@@ -173,39 +200,52 @@
 							<%=(String)(m.get("active"))%>
 						</a>
 					</td>
+					
+					<%	
+						}
+					%>
 				</tr>
 			<%
 				}
 			%>
 		</table>
 		<div class="d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-light"  >
+			<button type="button" class="btn btn-light border border-secondary"  >
 				<%
 					if(currentPage > 1){
 				%>
-					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1%>" class="aTags">ÀÌÀü</a>
+					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1%>" class="aTags">ì´ì „</a>
 				<%
 					}else{
 				%>
-					<a style="color: grey; cursor: not-allowed;" class="aTags" >ÀÌÀü</a>
+					<a style="color: grey; cursor: not-allowed;" class="aTags" >ì´ì „</a>
 				<%
 					}
 				%>
 			</button>
-			<button type="button" class="btn btn-light" id="currentNum"><%=currentPage%></button>
-			<button type="button" class="btn btn-light">
+			<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
+			<button type="button" class="btn btn-light border border-secondary">
 				<%if(currentPage < lastPage ){
 				%>
-					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1%>" class="aTags">´ÙÀ½</a>		
+					<a href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1%>" class="aTags">ë‹¤ìŒ</a>		
 				<%
 				}else{
 				%>
-					<a style="color: grey; cursor: not-allowed;" class="aTags">´ÙÀ½</a>
+					<a style="color: grey; cursor: not-allowed;" class="aTags">ë‹¤ìŒ</a>
 				<%
 				}
 				%>
 			</button>
 		</div>
-	</div>
+	</main>
+	<footer>
+		<div  class="m-4 d-flex justify-content-center">
+			<form action="/shop/emp/empList.jsp">
+				ê²€ìƒ‰ : 
+				<input type="text" name="searchWord">
+				<button type="submit" id="searchBtn">í™•ì¸</button>			
+			</form>
+		</div>
+	</footer>
 </body>
 </html>

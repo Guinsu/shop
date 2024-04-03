@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%
-session.invalidate(); // ±âÁ¸ ¼¼¼Ç°ø°£À» ÃÊ±âÈ­(Æ÷¸ä)
-//System.out.println(session.getId() + "<---- session.invalidate() È£Ãâ ÈÄ È®ÀÎÇÏ±â ");
+session.invalidate(); // ê¸°ì¡´ ì„¸ì…˜ê³µê°„ì„ ì´ˆê¸°í™”(í¬ë©§)
+//System.out.println(session.getId() + "<---- session.invalidate() í˜¸ì¶œ í›„ í™•ì¸í•˜ê¸° ");
 response.sendRedirect("/shop/emp/empLoginForm.jsp");
 
-%>
+%>`	

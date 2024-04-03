@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
     
 <%
-	//ÀÎÁõ ºÐ±â 
+	//ì¸ì¦ ë¶„ê¸° 
 	if(session.getAttribute("loginEmp")!= null){
 		response.sendRedirect("/shop/emp/empList.jsp");
 		return;
@@ -62,22 +62,22 @@
 <body >
 	<main>
 		<div class="d-flex justify-content-center">
-			<h1>·Î±×ÀÎ ÆäÀÌÁö</h1>
+			<h1>ë¡œê·¸ì¸ íŽ˜ì´ì§€</h1>
 		</div>
 		<div  class="d-flex justify-content-center" id="formDiv">
 			<form action="empLoginAction.jsp" method="post">
 				<div>
 					<div class="d-flex justify-content-between loginDiv">
-						<label>¾ÆÀÌµð</label>
+						<label>ì•„ì´ë””</label>
 						<input type="text" name="empId">
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDiv">
-						<label>ºñ¹Ð¹øÈ£</label>
+						<label>ë¹„ë°€ë²ˆí˜¸</label>
 						<input type="password" name="empPw">
 					</div>
 				</div>
 				<div class="d-flex justify-content-center" id="loginBtnDiv">				
-					<button type="submit">·Î±×ÀÎ</button>
+					<button type="submit">ë¡œê·¸ì¸</button>
 				</div>
 			</form>
 		</div>
