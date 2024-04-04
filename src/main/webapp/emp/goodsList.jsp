@@ -125,7 +125,7 @@
 	}
 	
 	//goodsList의 전체 합계 가져오기
-	String sql4 = "SELECT COUNT(*) AS cnt FROM goods";
+	String sql4 = "SELECT COUNT(*) cnt FROM goods";
 	PreparedStatement stmt4 = null;
 	ResultSet rs4 = null; 
 	stmt4 = conn.prepareStatement(sql4);	
