@@ -56,6 +56,7 @@
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
+	// goodsList 카테고리와 카테고리 내용들의 합계 가져오기
 	String sql1 = "SELECT category, COUNT(*) cnt FROM goods GROUP BY category ORDER BY category ASC;";
 	PreparedStatement stmt = null;
 	ResultSet rs = null; 
@@ -75,7 +76,7 @@
 	//System.out.println(categoryList);
 	//System.out.println(totalRow);
 	
-	
+	// goodsList 종류별 리스트 내용들 가져오기 예) 원피스 카테고리에 등록된 모든 내용들
 	String sql2 = "SELECT goods_no no, category, goods_title title, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate  FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null; 
@@ -99,10 +100,13 @@
 		categoryList2.add(m2);
 	}
 	
-	String sql3 = "SELECT goods_no no, category, goods_title title, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC;";
+	//전체 goodsList 종류별 리스트 내용들 가져오기
+	String sql3 = "SELECT goods_no no, category, goods_title title, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null; 
 	stmt3 = conn.prepareStatement(sql3);
+	stmt3.setInt(1, startRow);
+	stmt3.setInt(2, rowPerPage);
 	rs3 = stmt3.executeQuery();
 	
 	ArrayList<HashMap<String, Object>> categoryList3 =  new ArrayList<HashMap<String, Object>>();
@@ -120,6 +124,21 @@
 		categoryList3.add(m3);
 	}
 	
+	//goodsList의 전체 합계 가져오기
+	String sql4 = "SELECT COUNT(*) AS cnt FROM goods";
+	PreparedStatement stmt4 = null;
+	ResultSet rs4 = null; 
+	stmt4 = conn.prepareStatement(sql4);	
+	rs4 = stmt4.executeQuery();
+
+	int goodsTotalCnt = 0;
+	
+	if(rs4.next()){
+		goodsTotalCnt = rs4.getInt("cnt");
+	}
+	
+	//디버깅
+	//System.out.println(goodsTotalCnt);
 %>
 
 <!-- view Layer -->
@@ -207,7 +226,7 @@
 	<div class="m-4 d-flex justify-content-between">
 		<div class="ms-4 d-flex align-items-center">
 			
-			<a href="/shop/emp/goodsList.jsp" class="listAtags">전체</a>
+			<a href="/shop/emp/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체</a>
 			
 			<%
 				for(HashMap m : categoryList){
@@ -224,9 +243,15 @@
 			<button type="button" class="btn btn-light border border-secondary"  >
 				<%
 					if(currentPage > 1){
+						if(category == null || category.equals("null")){
+				%>
+					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+				<% 
+						}else{
 				%>
 					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
-				<% 
+				<%
+						}
 					}else{
 				%>
 					<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
@@ -237,10 +262,17 @@
 			<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
 			<button type="button" class="btn btn-light border border-secondary">
 				<%if(currentPage < lastPage ){
+					if(category == null || category.equals("null")){
+				%>
+					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
+				<%
+					}else{
 				%>
 					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
+				
 				<%
-				}else{
+						}
+					}else{
 				%>
 					<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
 				<%
@@ -249,7 +281,7 @@
 			</button>
 		</div>
 		<div class="d-flex align-items-center">
-			<a href="/shop/emp/addGoods.jsp" class="listAtags">상품등록</a>
+			<a href="/shop/emp/empGoodsForm.jsp" class="listAtags">상품등록</a>
 		</div>
 	</div>
 	<div class="ms-5 d-flex justify-content-center" >
