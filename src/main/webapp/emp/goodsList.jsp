@@ -72,12 +72,13 @@
 		categoryList.add(m);
 	}
 	
+	
 	//디버깅
 	//System.out.println(categoryList);
 	//System.out.println(totalRow);
 	
 	// goodsList 종류별 리스트 내용들 가져오기 예) 원피스 카테고리에 등록된 모든 내용들
-	String sql2 = "SELECT goods_no no, category, goods_title title, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate  FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
+	String sql2 = "SELECT goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate  FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null; 
 	stmt2 = conn.prepareStatement(sql2);
@@ -93,6 +94,7 @@
 		m2.put("no", rs2.getInt("no"));
 		m2.put("category", rs2.getString("category"));
 		m2.put("title", rs2.getString("title"));
+		m2.put("filename", rs2.getString("filename"));
 		m2.put("content", rs2.getString("content"));
 		m2.put("price", rs2.getInt("price"));
 		m2.put("amount", rs2.getInt("amount"));
@@ -101,7 +103,7 @@
 	}
 	
 	//전체 goodsList 종류별 리스트 내용들 가져오기
-	String sql3 = "SELECT goods_no no, category, goods_title title, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
+	String sql3 = "SELECT goods_no no, category, goods_title title,filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null; 
 	stmt3 = conn.prepareStatement(sql3);
@@ -116,6 +118,7 @@
 		m3.put("no", rs3.getInt("no"));
 		m3.put("category", rs3.getString("category"));
 		m3.put("title", rs3.getString("title"));
+		m3.put("filename", rs3.getString("filename"));
 		m3.put("content", rs3.getString("content"));
 		m3.put("price", rs3.getInt("price"));
 		m3.put("amount", rs3.getInt("amount"));
@@ -169,10 +172,7 @@
 		a{
 			text-decoration: none;
 		}
-		div{
-			margin-right: 10px;
-			margin-left: 10px;
-		}
+		
 		button{
 			width: 200px;
 		}
@@ -194,9 +194,20 @@
 			padding-left: 60px;
 			padding-right: 60px;
 		}
+		.listATag{
+			text-decoration: none;
+			color: black;
+			font-size: 30px;
+			border: 1px solid black;
+			border-radius: 10px;
+			padding: 3px;
+			margin-right: 10px;
+		}
 		#contents{
 			border: 1px solid #c4c8cb;
 			border-radius: 10px;
+			margin-right: 10px;
+			margin-left: 10px;
 		}
 		#imgDiv{
 			width: 100%;
@@ -206,7 +217,6 @@
 			width: 400px;
 			height: 500px;
 			max-height: 600px;
-			
 		}
 		#btnDiv{
 			padding-right: 100px;
@@ -214,13 +224,30 @@
 		#currentNum{
 			font-size: 30px;
 		}
+		#logoutAtag{
+			height: 40px;
+			border: 1px solid black;
+			border-radius: 10px;
+			padding-right: 20px;
+			padding-left: 20px;
+			font-size: 30px;
+			color: black;
+		}
+		#empMenu{
+			margin-left: 0px;
+		}
+		
 	</style>
 </head>
 <body>
 	<!-- 메인메뉴 -->
-	<div>
-		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
-	</div>
+	<header class="m-2 d-flex justify-content-between">
+		<div id="empMenu">
+			<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+		</div>
+		<div></div>
+		<a href="/shop/emp/empLogoutAction.jsp" class="mt-4" id="logoutAtag">로그아웃</a>
+	</header>
 	
 	<!-- 서브메뉴 / 카테고리별 상품 리스트-->
 	<div class="m-4 d-flex justify-content-between">
@@ -285,14 +312,14 @@
 		</div>
 	</div>
 	<div class="ms-5 d-flex justify-content-center" >
-		<div class="d-flex align-content-start flex-wrap" >
+		<div class="ms-5 d-flex align-content-start flex-wrap" >
 			<%
 				if(category == null){
 					for(HashMap m3: categoryList3){
 			%>
 				<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
 					<div id="imgDiv" class="d-flex justify-content-center">
-						<img alt="이미지" src="/shop/emp/img.jpg">
+						<img alt="이미지" src="/shop/upload/<%=(String)(m3.get("filename"))%>">
 					</div>
 					<div id="contentDiv">
 						<div class="borderDiv">번호 : <%=(Integer)(m3.get("no"))%></div>
@@ -302,6 +329,10 @@
 						<div class="borderDiv">가격 : <%=(Integer)(m3.get("price"))%></div>
 						<div class="borderDiv">수량 : <%=(Integer)(m3.get("amount"))%></div>
 						<div>생성 날짜 : <%=(String)(m3.get("createDate"))%></div>
+					</div>
+					<div class="mb-2">
+						<a href="" class="listATag">수정</a>
+						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
 					</div>
 				</div>
 			
@@ -314,7 +345,7 @@
 			%>
 				<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
 					<div id="imgDiv" class="d-flex justify-content-center">
-						<img alt="이미지" src="/shop/emp/img.jpg">
+						<img alt="이미지" src="/shop/upload/<%=(String)(m2.get("filename"))%>">
 					</div>
 					<div id="contentDiv">
 						<div class="borderDiv">번호 : <%=(Integer)(m2.get("no"))%></div>
@@ -324,6 +355,10 @@
 						<div class="borderDiv">가격 : <%=(Integer)(m2.get("price"))%></div>
 						<div class="borderDiv">수량 : <%=(Integer)(m2.get("amount"))%></div>
 						<div>생성 날짜 : <%=(String)(m2.get("createDate"))%></div>
+					</div>
+					<div class="mb-2">
+						<a href="" class="listATag">수정</a>
+						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
 					</div>
 				</div>
 			<%

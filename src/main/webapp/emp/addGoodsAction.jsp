@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
-<%@ page import="java.util.*" %>    
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.nio.file.*" %>
+    
 <!-- Controller layer -->
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -11,11 +14,23 @@
 		return;
 	}
 	
+	Part part = request.getPart("goodsImg");
 	String category = request.getParameter("category");
 	String goodsTitle = request.getParameter("goodsTitle");
 	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
 	String goodsContent = request.getParameter("goodsContent");
+	
+	String originalName = part.getSubmittedFileName();
+	// 원본 이름에서 확장자만 분리
+	int dotIdx = originalName.lastIndexOf(".");
+	String ext = originalName.substring(dotIdx);
+	
+	UUID uuid = UUID.randomUUID();
+	String filename = (uuid.toString()).replace("-", "");
+	filename = filename + ext;
+	//System.out.println(filename);
+	
 %>  
 
 <!-- Session 설정값 : 입력시 로그인 emp의 emp_id 값이 필요해서 -->
@@ -35,26 +50,38 @@
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
-	String sql1 = "INSERT INTO goods (category, emp_id, goods_title, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,NOW(),NOW());";
+	String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
 	PreparedStatement stmt = null;
 	stmt = conn.prepareStatement(sql1);	
 	stmt.setString(1,category);
 	stmt.setString(2,(String)loginMember.get("empName"));
 	stmt.setString(3,goodsTitle);
-	stmt.setString(4,goodsContent);
-	stmt.setInt(5,goodsPrice);
-	stmt.setInt(6,goodsAmount);
+	stmt.setString(4,filename);
+	stmt.setString(5,goodsContent);
+	stmt.setInt(6,goodsPrice);
+	stmt.setInt(7,goodsAmount);
 	int row = stmt.executeUpdate();
 
-	
-%>
-
-<!-- Controller layer -->
-<%
-	if(row > 0){
-	//성공시
+	if(row > 0){ // insert 성공 -> 파일도 업로드 시키자 
+		// part -> inputStream -> outputStream -> 빈파일
+		String uploadPath = request.getServletContext().getRealPath("upload"); // 저장될 위치
+		File file = new File(uploadPath, filename);
+		
+		InputStream inputStream = part.getInputStream(); // part객체안에 파일(바이너리)을 메모로리 불러 옴
+		OutputStream outputStream = Files.newOutputStream(file.toPath()); // 메모리로 불러온 파일(바이너리)을 빈파일에 저장
+		inputStream.transferTo(outputStream);
+		
+		
+		/*
+		삭제하는 방법
+		File df = new File(filePath, rs.getString("filename"));
+		df.delete();
+		*/
+		
+		inputStream.close();
+		outputStream.close();
+		
 		response.sendRedirect("/shop/emp/goodsList.jsp");	
 	}
-
-	//실패시
+	
 %>

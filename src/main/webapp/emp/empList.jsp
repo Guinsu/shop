@@ -10,42 +10,45 @@
 		return;
 	}
 	
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String sql = "SELECT emp_name empName, emp_job empJob, create_date createDate FROM emp WHERE active='OFF'";
-	PreparedStatement stmt = null;
-	ResultSet rs = null; 
-	stmt = conn.prepareStatement(sql);	
-	rs = stmt.executeQuery();
-
-	
-%>    
-
-<%
 	//현재 페이지 값 
 	int currentPage = 1;
+	
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
+	// 전체 회원수 
+	int totalRow = 0;
+	
 	// 한 페이지에 보이는 인원수
 	int rowPerPage = 10;
+
 	
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
 	int startRow = (currentPage-1)* rowPerPage;
 	
+	String searchWord = "";
+	
+	if(request.getParameter("searchWord") != null ){
+		searchWord = request.getParameter("searchWord");
+	}
+	
+%>    
+
+<%
+	
+	Connection conn = null;
+	Class.forName("org.mariadb.jdbc.Driver");
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
 	//전체 회원의 수 구하기
-	String sql3 = "SELECT count(*) cnt FROM emp WHERE emp_id LIKE '%%'";
+	String sql3 = "SELECT count(*) cnt FROM emp WHERE emp_id LIKE ?";
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null; 
 	stmt3 = conn.prepareStatement(sql3);
+	stmt3.setString(1, "%"+searchWord+"%");
 	rs3 = stmt3.executeQuery();
 	
-	// 전체 회원수 
-	int totalRow = 0;
 	
 	if(rs3.next()){
 		totalRow = rs3.getInt("cnt");
@@ -77,12 +80,13 @@
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 
-	String sql2 = "SELECT emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active FROM emp ORDER BY hire_date DESC limit ?,?";
+	String sql2 = "SELECT emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active FROM emp WHERE emp_name LIKE ? ORDER BY hire_date DESC limit ?,?";
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null; 
 	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setInt(1, startRow);
-	stmt2.setInt(2, rowPerPage);
+	stmt2.setString(1, "%"+searchWord+"%");
+	stmt2.setInt(2, startRow);
+	stmt2.setInt(3, rowPerPage);
 	rs2 = stmt2.executeQuery(); // JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArrayList)로 변경
 	
 	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();   // 모든 타입의 부모는 object 
@@ -100,7 +104,7 @@
 	}
 	
 	
-	// JDBC API 사용이 끝났다면 DB자원들을 반납
+	
 %>    
 
 
@@ -241,7 +245,9 @@
 	<footer>
 		<div  class="m-4 d-flex justify-content-center">
 			<form action="/shop/emp/empList.jsp">
-				검색 : 
+				<label>
+					이름으로 검색 : 
+				</label>
 				<input type="text" name="searchWord">
 				<button type="submit" id="searchBtn">확인</button>			
 			</form>

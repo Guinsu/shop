@@ -69,6 +69,15 @@
 		#categoryDiv{
 			width: 600px;
 		}
+		#logoutAtag{
+			text-decoration: none;
+			color: black;
+			height: 40px;
+			border: 1px solid black;
+			border-radius: 10px;
+			padding-right: 20px;
+			padding-left: 20px;
+		}
 		.categoryATag{
 			text-decoration: none;
 			color: black;
@@ -81,9 +90,13 @@
 </head>
 <body>
 <!-- 메인메뉴 -->
-	<div>
-		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
-	</div>
+	<header class="m-2 d-flex justify-content-between">
+		<div>
+			<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+		</div>
+		<div></div>
+		<a href="/shop/emp/empLogoutAction.jsp" class="mt-4" id="logoutAtag">로그아웃</a>
+	</header>
 	<main class="d-flex justify-content-center  align-items-center flex-column">
 		<h1>카테고리 관리</h1>
 		<div>

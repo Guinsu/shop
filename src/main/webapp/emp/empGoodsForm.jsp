@@ -60,6 +60,29 @@
 		h1{
 			font-size: 100px;
 		}
+		input{
+			width: 500px;
+			border-radius: 10px;
+		}
+		select{
+			width: 500px;
+			border-radius: 10px;
+		}
+		textarea {
+			width: 500px;
+			border-radius: 10px;
+		}
+		button{
+			margin-top: 40px;
+			width: 400px;
+			border-radius: 20px;
+		}
+		#goodsForm{
+			width: 700px;
+		}
+		#goodsContentLabel{
+			padding-top: 80px;
+		}
 	</style>
 </head>
 <body>
@@ -68,9 +91,9 @@
 	</div>
 	<main class="d-flex justify-content-center  align-items-center flex-column">
 		<h1>상품등록</h1>
-		<form action="/shop/emp/addGoodsAction.jsp" method="post">
+		<form action="/shop/emp/addGoodsAction.jsp" method="post" class="mt-5" id="goodsForm" enctype="multipart/form-data">
 			<div class="d-flex justify-content-between">
-				category:
+				category :
 				<select name="category">
 					<option value="">선택</option>
 					<%
@@ -84,23 +107,29 @@
 			</div>
 			
 			<!-- emp_id 값은 action쪽에서 세션변수에서 바인딩-->
-			<div class="d-flex justify-content-between">
-				goodsTitle:
+			<div class="mt-2 d-flex justify-content-between">
+				goodsTitle :
 				<input type="text" name="goodsTitle">
 			</div>
-			<div class="d-flex justify-content-between">
-				goodsPrice:
+			<div class="mt-2 d-flex justify-content-between">
+				goodsImg :
+				<input type="file" name="goodsImg">
+			</div>
+			<div class="mt-2 d-flex justify-content-between">
+				goodsPrice :
 				<input type="text" name="goodsPrice">
 			</div>
-			<div class="d-flex justify-content-between">
-				goodsAmount:
+			<div class="mt-2 d-flex justify-content-between">
+				goodsAmount :
 				<input type="text" name="goodsAmount">
 			</div>
-			<div class="d-flex justify-content-between">
-				goodsContent
+			<div class="mt-2 d-flex justify-content-between">
+				<label id="goodsContentLabel">
+					goodsContent :
+				</label>
 				<textarea rows="5" cols="50" name="goodsContent"></textarea>
 			</div>
-			<div class="d-flex justify-content-center">
+			<div class="mt-2 d-flex justify-content-center">
 				<button type="submit">상품등록</button>
 			</div>
 		</form>
