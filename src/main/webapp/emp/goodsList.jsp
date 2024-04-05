@@ -166,7 +166,7 @@
 			}
 		img{
 			margin-top: 5px;
-			width: 200px;
+			width: 100px;
 			height: 100px;
 		}
 		a{
