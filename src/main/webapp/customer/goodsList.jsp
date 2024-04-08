@@ -1,16 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
+<!--controller layer  -->
 <%
-//controller layer
-
 	//인증 분기  
-	if(session.getAttribute("loginEmp")== null){
-		response.sendRedirect("/shop/emp/empLoginForm.jsp");
+	if(session.getAttribute("loginCustomer")== null){
+		response.sendRedirect("/shop/customer/loginForm.jsp");
 		return;
 	}
 	
+	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
+
 	String category = request.getParameter("category");
 	
 	int totalRow = 0;
@@ -175,6 +176,7 @@
 		
 		button{
 			width: 200px;
+			height: 100%;
 		}
 		nav{
 			border-top: 1px solid black;
@@ -182,7 +184,6 @@
 			padding-top: 10px;
 			padding-bottom: 10px; 
 		}
-		
 		.borderDiv{
 			border-bottom: 1px solid black;
 		}
@@ -240,8 +241,8 @@
 			font-size: 30px;
 			color: black;
 		}
-		#empMenu{
-			margin-left: 0px;
+		#customerId{
+			font-size: 30px;
 		}
 		
 	</style>
@@ -249,23 +250,24 @@
 <body>
 	<!-- 메인메뉴 -->
 	<header class="m-2 d-flex justify-content-between">
-		<div id="empMenu">
-			<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
-		</div>
 		<div></div>
-		<a href="/shop/emp/empLogoutAction.jsp" class="mt-4" id="logoutAtag">로그아웃</a>
+		<div></div>
+		<div class="d-flex justify-content-center align-items-center">
+			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
+			<a href="/shop/customer/logoutAction.jsp" class="ms-4"id="logoutAtag">로그아웃</a>
+		</div>
 	</header>
 	
 	<!-- 서브메뉴 / 카테고리별 상품 리스트-->
 	<nav class="m-4 d-flex justify-content-between">
 		<div class="ms-4 d-flex align-items-center">
 			
-			<a href="/shop/emp/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체</a>
+			<a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체보기</a>
 			
 			<%
 				for(HashMap m : categoryList){
 			%>
-				<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
+				<a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
 					<%=(String)(m.get("category"))%>
 					(<%=(Integer)(m.get("cnt"))%>)
 				</a>
@@ -279,11 +281,11 @@
 					if(currentPage > 1){
 						if(category == null || category.equals("null")){
 				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
 				<% 
 						}else{
 				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
 				<%
 						}
 					}else{
@@ -298,11 +300,11 @@
 				<%if(currentPage < lastPage ){
 					if(category == null || category.equals("null")){
 				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
+					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
 				<%
 					}else{
 				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
+					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
 				
 				<%
 						}
@@ -313,9 +315,6 @@
 				}
 				%>
 			</button>
-		</div>
-		<div class="d-flex align-items-center">
-			<a href="/shop/emp/empGoodsForm.jsp" class="listAtags">상품등록</a>
 		</div>
 	</nav>
 	<div class="ms-5 d-flex justify-content-center" >
@@ -337,13 +336,7 @@
 						<div class="borderDiv">수량 : <%=(Integer)(m3.get("amount"))%></div>
 						<div>생성 날짜 : <%=(String)(m3.get("createDate"))%></div>
 					</div>
-					<div class="mb-2">
-						<a href="" class="listATag">수정</a>
-						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
-					</div>
 				</div>
-			
-			
 			<%		
 					}
 				}else{
@@ -362,10 +355,6 @@
 						<div class="borderDiv">가격 : <%=(Integer)(m2.get("price"))%></div>
 						<div class="borderDiv">수량 : <%=(Integer)(m2.get("amount"))%></div>
 						<div>생성 날짜 : <%=(String)(m2.get("createDate"))%></div>
-					</div>
-					<div class="mb-2">
-						<a href="" class="listATag">수정</a>
-						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
 					</div>
 				</div>
 			<%

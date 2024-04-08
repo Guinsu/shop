@@ -2,8 +2,8 @@
     
 <%
 	//인증 분기 
-	if(session.getAttribute("loginEmp")!= null){
-		response.sendRedirect("/shop/emp/empList.jsp");
+	if(session.getAttribute("loginCustomer")!= null){
+		response.sendRedirect("/shop/customer/goodsList.jsp");
 		return;
 	}
 	
@@ -47,36 +47,46 @@
 			height: 40px;
 			border-radius: 10px;
 		}
-		
+		a{
+			text-decoration: none;
+			color: black;
+			border: 2px solid black;
+			border-radius: 20px;
+			width: 200px;
+			height: 50px;
+			text-align: center;
+		}
 		#formDiv{
 			margin-top: 50px;
 		}
 		#loginBtnDiv{
 			margin-top: 70px;
+			width: 100%;
 		}
 		.loginDiv{
-			width: 300px;
+			width: 100%;
 		}
 	</style>
 </head>
 <body >
 	<main>
 		<div class="d-flex justify-content-center">
-			<h1>관리자 로그인 페이지</h1>
+			<h1>로그인 페이지</h1>
 		</div>
 		<div  class="d-flex justify-content-center" id="formDiv">
-			<form action="empLoginAction.jsp" method="post">
+			<form action="/shop/customer/loginAction.jsp" method="post">
 				<div>
 					<div class="d-flex justify-content-between loginDiv">
 						<label>아이디</label>
-						<input type="text" name="empId">
+						<input type="text" name="customerId">
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDiv">
 						<label>비밀번호</label>
-						<input type="password" name="empPw">
+						<input type="password" name="customerPw">
 					</div>
 				</div>
 				<div class="d-flex justify-content-center" id="loginBtnDiv">				
+					<a href="/shop/customer/addCustomerForm.jsp">회원가입</a>
 					<button type="submit">로그인</button>
 				</div>
 			</form>
