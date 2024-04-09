@@ -87,7 +87,7 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-center" id="loginBtnDiv">				
-					<a href="/shop/customer/addCustomerForm.jsp" class="me-2">회원가입</a>
+					<a href="/shop/customer/addCustomerForm.jsp" class="me-3">회원가입</a>
 					<button type="submit">로그인</button>
 				</div>
 			</form>
