@@ -46,7 +46,7 @@
 		}
 		input{
 			height: 40px;
-			border-radius: 10px;
+			border-radius: 8px;
 		}
 		a{
 			text-decoration: none;
