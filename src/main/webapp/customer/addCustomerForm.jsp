@@ -39,7 +39,7 @@
   			font-style: normal;
 		}
 		main{
-			margin-top: 100px;
+			margin-top: 50px;
 		}
 		form{
 			border: 1px solid black;

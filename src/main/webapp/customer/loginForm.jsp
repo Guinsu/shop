@@ -30,7 +30,7 @@
   			font-style: normal;
 		}
 		main{
-			margin-top: 200px;
+			margin-top: 100px;
 			
 		}
 		form{
