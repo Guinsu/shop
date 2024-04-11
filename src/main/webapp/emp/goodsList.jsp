@@ -25,8 +25,8 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	// 한 페이지에 보이는 인원수
-	int rowPerPage = 20;
+	// 한 페이지에 보이는 수
+	int rowPerPage = 4;
 	
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
 	int startRow = (currentPage-1)* rowPerPage;
@@ -157,17 +157,19 @@
 	<meta charset="UTF-8">
 	<title>goodsList</title>
 	<style>
+		
 		body{
 			width:100%;
 			height:100%;
 		 	font-family: "Dongle", sans-serif;
   			font-size: 20px;
   			font-style: normal;
+  			background-color: #FCE4EC;
 			}
 		img{
 			margin-top: 5px;
-			width: 100px;
-			height: 100px;
+			width: 250px;
+			height: 250px;
 		}
 		a{
 			text-decoration: none;
@@ -177,8 +179,8 @@
 			width: 200px;
 		}
 		nav{
-			border-top: 1px solid black;
-			border-bottom: 1px solid black;
+			border-top: 3px solid white;
+			border-bottom: 3px solid white;
 			padding-top: 10px;
 			padding-bottom: 10px; 
 		}
@@ -211,7 +213,7 @@
 			margin-right: 10px;
 		}
 		#contents{
-			border: 1px solid #c4c8cb;
+			border: 3px solid white;
 			border-radius: 10px;
 			margin-right: 10px;
 			margin-left: 10px;
@@ -226,7 +228,9 @@
 			max-height: 600px;
 		}
 		#btnDiv{
-			padding-right: 100px;
+			margin-top:20px;
+			margin-left:25%;
+			width: 50%;
 		}
 		#currentNum{
 			font-size: 30px;
@@ -273,47 +277,7 @@
 				}
 			%>
 		</div>
-		<div class="btn-group me-2" role="group" aria-label="Second group" id="btnDiv">
-			<button type="button" class="btn btn-light border border-secondary"  >
-				<%
-					if(currentPage > 1){
-						if(category == null || category.equals("null")){
-				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
-				<% 
-						}else{
-				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
-				<%
-						}
-					}else{
-				%>
-					<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
-				<%
-					}
-				%>
-			</button>
-			<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-			<button type="button" class="btn btn-light border border-secondary">
-				<%if(currentPage < lastPage ){
-					if(category == null || category.equals("null")){
-				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
-				<%
-					}else{
-				%>
-					<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
-				
-				<%
-						}
-					}else{
-				%>
-					<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
-				<%
-				}
-				%>
-			</button>
-		</div>
+		<div></div>
 		<div class="d-flex align-items-center">
 			<a href="/shop/emp/empGoodsForm.jsp" class="listAtags">상품등록</a>
 		</div>
@@ -373,6 +337,47 @@
 				}
 			%>
 		</div>
+	</div>
+	<div class="btn-group" role="group" aria-label="Second group" id="btnDiv">
+		<button type="button" class="btn btn-light border border-secondary"  >
+			<%
+				if(currentPage > 1){
+					if(category == null || category.equals("null")){
+			%>
+				<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+			<% 
+					}else{
+			%>
+				<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+			<%
+					}
+				}else{
+			%>
+				<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+			<%
+				}
+			%>
+		</button>
+		<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
+		<button type="button" class="btn btn-light border border-secondary">
+			<%if(currentPage < lastPage ){
+				if(category == null || category.equals("null")){
+			%>
+				<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
+			<%
+				}else{
+			%>
+				<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
+			
+			<%
+					}
+				}else{
+			%>
+				<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+			<%
+			}
+			%>
+		</button>
 	</div>
 </body>
 </html>

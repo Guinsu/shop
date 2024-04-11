@@ -2,6 +2,7 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
+
 <!--controller layer  -->
 <%
 	//인증 분기  
@@ -27,7 +28,7 @@
 	}
 	
 	// 한 페이지에 보이는 인원수
-	int rowPerPage = 20;
+	int rowPerPage = 4;
 	
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
 	int startRow = (currentPage-1)* rowPerPage;
@@ -164,14 +165,19 @@
 		 	font-family: "Dongle", sans-serif;
   			font-size: 20px;
   			font-style: normal;
+  			background-color: #FCE4EC;
 			}
 		img{
-			margin-top: 5px;
-			width: 100px;
-			height: 100px;
+			width: 250px;
+			height: 300px;
 		}
 		a{
 			text-decoration: none;
+		}
+		
+		h1{
+			font-size: 100px;
+			margin-left: 50px;
 		}
 		
 		button{
@@ -179,8 +185,8 @@
 			height: 100%;
 		}
 		nav{
-			border-top: 1px solid black;
-			border-bottom: 1px solid black;
+			border-top: 3px solid white;
+			border-bottom: 3px solid white;
 			padding-top: 10px;
 			padding-bottom: 10px; 
 		}
@@ -191,7 +197,6 @@
 			font-size: 25px; 
 			margin-right: 20px;
 			color: black;
-			border: 1px solid black;
 			border-radius: 10px;
 			padding-right : 10px;
 			padding-left: 10px;
@@ -212,7 +217,7 @@
 			margin-right: 10px;
 		}
 		#contents{
-			border: 1px solid #c4c8cb;
+			border: 3px solid white;
 			border-radius: 10px;
 			margin-right: 10px;
 			margin-left: 10px;
@@ -227,10 +232,12 @@
 			max-height: 600px;
 		}
 		#btnDiv{
-			padding-right: 100px;
+			margin-top:20px;
+			margin-left:25%;
+			width: 50%;
 		}
 		#currentNum{
-			font-size: 30px;
+			font-size: 25px;
 		}
 		#logoutAtag{
 			height: 40px;
@@ -244,17 +251,35 @@
 		#customerId{
 			font-size: 30px;
 		}
+		#mainImg{
+			width: 150px;
+			height: 150px;
+		}
+		#customerOneAtag{
+			height: 40px;
+			border: 1px solid black;
+			border-radius: 10px;
+			padding-right: 20px;
+			padding-left: 20px;
+			font-size: 30px;
+			color: black;
+		}
 		
 	</style>
 </head>
 <body>
 	<!-- 메인메뉴 -->
 	<header class="m-2 d-flex justify-content-between">
-		<div></div>
-		<div></div>
+		<div>
+			<img alt="하츄핑" src="/shop/img/ping.webp" id="mainImg">
+		</div>
+		<div class="d-flex justify-content-center align-items-center">
+			<h1>캐치! 티니핑</h1>
+		</div>
 		<div class="d-flex justify-content-center align-items-center">
 			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/logoutAction.jsp" class="ms-4"id="logoutAtag">로그아웃</a>
+			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
+			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
 		</div>
 	</header>
 	
@@ -275,46 +300,7 @@
 				}
 			%>
 		</div>
-		<div class="btn-group me-2" role="group" aria-label="Second group" id="btnDiv">
-			<button type="button" class="btn btn-light border border-secondary"  >
-				<%
-					if(currentPage > 1){
-						if(category == null || category.equals("null")){
-				%>
-					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
-				<% 
-						}else{
-				%>
-					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
-				<%
-						}
-					}else{
-				%>
-					<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
-				<%
-					}
-				%>
-			</button>
-			<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-			<button type="button" class="btn btn-light border border-secondary">
-				<%if(currentPage < lastPage ){
-					if(category == null || category.equals("null")){
-				%>
-					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
-				<%
-					}else{
-				%>
-					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
-				
-				<%
-						}
-					}else{
-				%>
-					<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
-				<%
-				}
-				%>
-			</button>
+		<div>
 		</div>
 	</nav>
 	<div class="ms-5 d-flex justify-content-center" >
@@ -362,6 +348,47 @@
 				}
 			%>
 		</div>
+	</div>
+	<div class="btn-group" role="group" aria-label="Second group" id="btnDiv">
+		<button type="button" class="btn btn-light border border-secondary"  >
+			<%
+				if(currentPage > 1){
+					if(category == null || category.equals("null")){
+			%>
+				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+			<% 
+					}else{
+			%>
+				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+			<%
+					}
+				}else{
+			%>
+				<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+			<%
+				}
+			%>
+		</button>
+		<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
+		<button type="button" class="btn btn-light border border-secondary">
+			<%if(currentPage < lastPage ){
+				if(category == null || category.equals("null")){
+			%>
+				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
+			<%
+				}else{
+			%>
+				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
+			
+			<%
+					}
+				}else{
+			%>
+				<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+			<%
+			}
+			%>
+		</button>
 	</div>
 </body>
 </html>
