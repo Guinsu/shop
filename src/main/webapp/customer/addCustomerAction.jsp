@@ -38,7 +38,7 @@
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
-	// goodsList 카테고리와 카테고리 내용들의 합계 가져오기
+	// 회원의 아이디가 중복되는지 확인하기
 	String sql1 = "SELECT email FROM customer WHERE email = ? ;";
 	PreparedStatement stmt = null;
 	ResultSet rs = null; 
@@ -55,7 +55,9 @@
 		
 		//디버깅
 		//System.out.println(checkId + "<---------checkId");
+		
 	}else{
+		// 중복이 아니면 데이터 저장
 		String sql2 = "INSERT INTO customer (email, pw, name, birth, gender, update_date, create_date) VALUES(?,PASSWORD(?),?,?,?, NOW(),NOW());";
 		PreparedStatement stmt2 = null;
 		stmt2 = conn.prepareStatement(sql2);	
