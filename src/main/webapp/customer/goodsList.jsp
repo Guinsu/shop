@@ -271,7 +271,7 @@
 	<!-- 메인메뉴 -->
 	<header class="m-2 d-flex justify-content-between">
 		<div>
-			<img alt="하츄핑" src="/shop/img/ping.webp" id="mainImg">
+			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
 		</div>
 		<div class="d-flex justify-content-center align-items-center">
 			<h1>캐치! 티니핑</h1>
