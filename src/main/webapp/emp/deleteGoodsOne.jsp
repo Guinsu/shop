@@ -2,6 +2,7 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
+<%@ page import="shop.dao.*" %>
 
 <!-- controller layer-->
 <%
@@ -11,29 +12,16 @@
 		return;
 	}
 
+	int no = Integer.parseInt(request.getParameter("no"));
+	String category = request.getParameter("category");
+	String totalRow = request.getParameter("totalRow");
+
+	
 %>
 
 <!--Model layer -->
 <%
-	int no = Integer.parseInt(request.getParameter("no"));
-	String category = request.getParameter("category");
-	String totalRow = request.getParameter("totalRow");
-	
-	//디버깅
-	//System.out.println(category);
-	//System.out.println(totalRow);
-	
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	// goods_no 삭제하기
-	String sql1 = "DELETE FROM goods WHERE goods_no =?;";
-	PreparedStatement stmt = null;
-	ResultSet rs = null; 
-	stmt = conn.prepareStatement(sql1);	
-	stmt.setInt(1,no);
-	int row =  stmt.executeUpdate();
+	int row = GoodsDao.deleteGoodsOne(no, category, totalRow);
 	
 	if(row > 0) {
 	    String mainUrl = "/shop/emp/goodsList.jsp";
@@ -44,5 +32,6 @@
 	    }
 	    response.sendRedirect(mainUrl);
 	}
+	
 	
 %>

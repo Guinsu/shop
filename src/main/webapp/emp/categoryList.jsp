@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
-
+<%@ page import="shop.dao.*" %>
 <!--controller layer  -->
 <%
 	//인증 분기  
@@ -9,40 +9,24 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
-
+	
 %>
 
 <!-- model layer -->
 <%
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCateogrys();
 
-	String sql1 = "SELECT *,(SELECT COUNT(*) FROM category) cnt FROM category;";
-	PreparedStatement stmt = null;
-	ResultSet rs = null; 
-	stmt = conn.prepareStatement(sql1);	
-	rs = stmt.executeQuery();
-
-	ArrayList<HashMap<String, Object>> categoryList = new ArrayList<HashMap<String, Object>>();
-	
 	int totalCount = 0;
 	
-	while(rs.next()){
-		if(totalCount == 0){
-			totalCount = rs.getInt("cnt");
-		}
-		
-		HashMap<String, Object> list = new HashMap<String, Object>();
-		list.put("category", rs.getString("category"));
-		list.put("createDate", rs.getString("create_date"));
-		list.put("cnt", rs.getString("cnt"));
-		categoryList.add(list);
-	}
-	
-	
-	//System.out.println(totalCount);
-	
+  	if (!categoryList.isEmpty()) {
+       Object cntObject = categoryList.get(0).get("cnt");
+       if (cntObject != null) {
+           totalCount = Integer.parseInt(cntObject.toString()); // String을 int로 변환
+       }
+    }
+  	
+  	//디버깅
+  	//System.out.println(totalCount);
 %>
 <!DOCTYPE html>
 <html>
@@ -116,7 +100,7 @@
 				}
 			%>
 			<div class="d-flex justify-content-between" >
-				<div>전체 카테고리 합계 : <%=totalCount%></div>
+				<div>전체 카테고리 합계 : <%=totalCount%> </div>
 				<div>
 					<a class="categoryATag" href="/shop/emp/addCategoryForm.jsp">카테고리 추가</a>
 				</div>

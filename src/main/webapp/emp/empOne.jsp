@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
-    
+<%@ page import="shop.dao.*" %>
 <!-- Controller layer -->
 <%
 	//인증 분기 
@@ -18,30 +18,11 @@
 
 <!-- model layer -->
 <%
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+
+
+	ArrayList<HashMap<String, Object>> empList = EmpDao.empOne((String)loginEmp.get("empId"), (String)loginEmp.get("empName"), (Integer)loginEmp.get("grade"));
+
 	
-	String sql2 = "SELECT emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active FROM emp WHERE emp_id = ? AND emp_name = ? AND grade = ?";
-	PreparedStatement stmt2 = null;
-	ResultSet rs2 = null; 
-	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1,(String)loginEmp.get("empId"));
-	stmt2.setString(2,(String)loginEmp.get("empName"));
-	stmt2.setInt(3,(Integer)loginEmp.get("grade"));
-	rs2 = stmt2.executeQuery();
-	
-	ArrayList<HashMap<String, Object>> empList = new ArrayList<HashMap<String, Object>>();
-	
-	while(rs2.next()){
-		HashMap<String, Object> list = new HashMap<String, Object>();
-		list.put("empId", rs2.getString("empid"));
-		list.put("empName", rs2.getString("empName"));
-		list.put("empJob", rs2.getString("empJob"));
-		list.put("hireDate", rs2.getString("hireDate"));
-		list.put("active", rs2.getString("active"));
-		empList.add(list);
-	}
 %>
 
 

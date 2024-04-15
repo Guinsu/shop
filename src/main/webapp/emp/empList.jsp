@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
+<%@ page import="shop.dao.*" %>
 
 <!-- Controller layer -->
 <%
@@ -10,6 +11,8 @@
 		return;
 	}
 	
+	String searchWord = "";
+	
 	//현재 페이지 값 
 	int currentPage = 1;
 	
@@ -18,7 +21,7 @@
 	}
 	
 	// 전체 회원수 
-	int totalRow = 0;
+	int totalRow = EmpDao.empCount(searchWord);
 	
 	// 한 페이지에 보이는 인원수
 	int rowPerPage = 10;
@@ -27,7 +30,6 @@
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
 	int startRow = (currentPage-1)* rowPerPage;
 	
-	String searchWord = "";
 	
 	if(request.getParameter("searchWord") != null ){
 		searchWord = request.getParameter("searchWord");
@@ -35,25 +37,8 @@
 	
 %>    
 
+<!-- model layer -->
 <%
-	
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	//전체 회원의 수 구하기
-	String sql3 = "SELECT count(*) cnt FROM emp WHERE emp_id LIKE ?";
-	PreparedStatement stmt3 = null;
-	ResultSet rs3 = null; 
-	stmt3 = conn.prepareStatement(sql3);
-	stmt3.setString(1, "%"+searchWord+"%");
-	rs3 = stmt3.executeQuery();
-	
-	
-	if(rs3.next()){
-		totalRow = rs3.getInt("cnt");
-	}
-	
 	// 마지막 페이지 계산하기 = 전체 회원수 / 한 페이지에서 보이는 인원수
 	int lastPage = totalRow / rowPerPage;
 	
@@ -73,37 +58,8 @@
 
 <!-- model layer -->
 <%
-	//특수한 형태의 자료구조 RDBMS : maradb 
-	//-> API사용(JDBC API)하여 자료구조(ResultSet) 취득 
-	//-> 일반화된 자료구조 (ArrayList<HashMap>) 로 변경 -> 모델 취득
 	
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-
-	String sql2 = "SELECT emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active FROM emp WHERE emp_name LIKE ? ORDER BY hire_date DESC limit ?,?";
-	PreparedStatement stmt2 = null;
-	ResultSet rs2 = null; 
-	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1, "%"+searchWord+"%");
-	stmt2.setInt(2, startRow);
-	stmt2.setInt(3, rowPerPage);
-	rs2 = stmt2.executeQuery(); // JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArrayList)로 변경
-	
-	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();   // 모든 타입의 부모는 object 
-	
-	// Result -> ArrayList<HashMap<String, Object>> 이동
-	
-	while(rs2.next()){
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("empId", rs2.getString("empid"));
-		m.put("empName", rs2.getString("empName"));
-		m.put("empJob", rs2.getString("empJob"));
-		m.put("hireDate", rs2.getString("hireDate"));
-		m.put("active", rs2.getString("active"));
-		list.add(m);
-	}
-	
-	
+	ArrayList<HashMap<String, Object>> list = EmpDao.empList(searchWord, startRow, rowPerPage);
 	
 %>    
 
