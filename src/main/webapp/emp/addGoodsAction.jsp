@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.nio.file.*" %>
+<%@ page import="shop.dao.*" %>
     
 <!-- Controller layer -->
 <%
@@ -46,22 +47,9 @@
 <!-- Model layer -->
 
 <%
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
-	String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
-	PreparedStatement stmt = null;
-	stmt = conn.prepareStatement(sql1);	
-	stmt.setString(1,category);
-	stmt.setString(2,(String)loginMember.get("empName"));
-	stmt.setString(3,goodsTitle);
-	stmt.setString(4,filename);
-	stmt.setString(5,goodsContent);
-	stmt.setInt(6,goodsPrice);
-	stmt.setInt(7,goodsAmount);
-	int row = stmt.executeUpdate();
-
+	int row = GoodsDao.addGoodsAction(category, (String)loginMember.get("empName"), goodsTitle, filename, goodsContent, goodsPrice, goodsAmount);
+	
 	if(row > 0){ // insert 성공 -> 파일도 업로드 시키자 
 		// part -> inputStream -> outputStream -> 빈파일
 		String uploadPath = request.getServletContext().getRealPath("upload"); // 저장될 위치

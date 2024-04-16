@@ -93,7 +93,7 @@ public class GoodsDao {
 		return goodsTotalCnt;
 	}
 	
-	//Goods 등록하기 
+	//Goods페이지에 category 등록하기 
 	public static ArrayList<String> insertGoodsOne() throws Exception{
 			
 		Connection conn = DBHelper.getConnection();
@@ -126,6 +126,28 @@ public class GoodsDao {
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setInt(1,no);
 		int row =  stmt.executeUpdate();
+		
+		conn.close();
+		return row;
+	}
+	
+	//Goods 저장하기
+	public static int addGoodsAction(
+		String category, String empName, String goodsTitle, String filename, 
+		String goodsContent, int goodsPrice, int goodsAmount ) throws Exception{
+			
+		Connection conn = DBHelper.getConnection();
+		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
+		PreparedStatement stmt = null;
+		stmt = conn.prepareStatement(sql1);	
+		stmt.setString(1,category);
+		stmt.setString(2,empName);
+		stmt.setString(3,goodsTitle);
+		stmt.setString(4,filename);
+		stmt.setString(5,goodsContent);
+		stmt.setInt(6,goodsPrice);
+		stmt.setInt(7,goodsAmount);
+		int row = stmt.executeUpdate();
 		
 		conn.close();
 		return row;
