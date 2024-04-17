@@ -5,7 +5,7 @@ import java.util.*;
 
 public class GoodsDao {
 	
-	//GoodsList 찾기
+	//GoodsList 내용 가져오기
 	public static ArrayList<HashMap<String, Object>> selectGoodsList(String category,int startRow, int rowPerPage) throws Exception{
 	
 		Connection conn = DBHelper.getConnection();

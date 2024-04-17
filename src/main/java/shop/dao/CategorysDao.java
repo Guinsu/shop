@@ -6,6 +6,20 @@ import java.util.*;
 
 public class CategorysDao {
 	
+	//카테고리 추가하기
+	public static int addCategory(String newCategory)throws Exception {
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "INSERT INTO category (category, create_date) VALUES (?,NOW());";
+		PreparedStatement stmt = null;
+		stmt = conn.prepareStatement(sql1);	
+		stmt.setString(1,newCategory);
+		int row = stmt.executeUpdate();
+		
+		return row;
+	}
+	
+	
 	//모든 카테고리 리스트와 합계 찾기
 	public static ArrayList<HashMap<String, Object>> selectCategoryList() throws Exception{
 		

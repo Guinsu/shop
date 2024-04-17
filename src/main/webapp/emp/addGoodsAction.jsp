@@ -48,7 +48,7 @@
 
 <%
 	
-	int row = GoodsDao.addGoodsAction(category, (String)loginMember.get("empName"), goodsTitle, filename, goodsContent, goodsPrice, goodsAmount);
+	int row = GoodsDao.addGoodsAction(category,(String)loginMember.get("empName"), goodsTitle, filename, goodsContent, goodsPrice, goodsAmount);
 	
 	if(row > 0){ // insert 성공 -> 파일도 업로드 시키자 
 		// part -> inputStream -> outputStream -> 빈파일

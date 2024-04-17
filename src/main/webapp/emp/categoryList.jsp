@@ -88,8 +88,10 @@
 				for(HashMap list : categoryList){
 			%>	
 				<div class="d-flex justify-content-between" id="categoryDiv">
-					<div>제목 :<%=(String)list.get("category")%></div>
-					<div>작성일 :<%=(String)list.get("createDate")%></div>
+					<div>
+						<div>제목 :<%=(String)list.get("category")%></div>
+						<div>작성일 :<%=(String)list.get("createDate")%></div>
+					</div>
 					<div>
 						<a class="categoryATag" href="/shop/emp/modifyCategoryForm.jsp?category=<%=(String)list.get("category")%>">수정</a>
 						<a class="categoryATag" href="/shop/emp/deleteCategoryAction.jsp?category=<%=(String)list.get("category")%>&createDate=<%=(String)list.get("createDate")%>">삭제</a>

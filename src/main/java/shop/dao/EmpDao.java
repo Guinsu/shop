@@ -1,8 +1,8 @@
 package shop.dao;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+
 
 // emp 테이블을 CRUD하는 static 메서드의 컨테이너
 public class EmpDao {
