@@ -22,8 +22,6 @@
 <!-- Model layer -->
 
 <%
-
 	CategorysDao.deleteCategoryOne(category, createDate);
 	response.sendRedirect("/shop/emp/categoryList.jsp");
-	
 %>

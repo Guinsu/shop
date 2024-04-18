@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
+<%@ page import="shop.dao.*" %>
 
 <!--controller layer  -->
 <%
@@ -20,19 +21,8 @@
 
 <!-- model layer -->
 <%
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	//기존 비밀번호 확인하기
-	String sql = "DELETE FROM customer WHERE email =? AND pw = ?";
-	PreparedStatement stmt = null;
-	ResultSet rs = null; 
-	stmt = conn.prepareStatement(sql);
-	stmt.setString(1,(String)loginMember.get("customerId"));
-	stmt.setString(2,(String)loginMember.get("customerPw"));
-	int row = stmt.executeUpdate();
-	
+	int row = CustomerDao.deleteCustomer((String)loginMember.get("customerId"), (String)loginMember.get("customerPw"));	
+
 	if(row > 0){
 		session.invalidate();
 		response.sendRedirect("/shop/customer/loginForm.jsp");	

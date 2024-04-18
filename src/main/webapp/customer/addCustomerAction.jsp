@@ -2,7 +2,7 @@
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
-
+<%@ page import="shop.dao.*" %>
 <!--controller layer-->
 <%
 	//인증 분기  
@@ -34,47 +34,25 @@
 
 <!-- model layer -->
 <%
-	Connection conn = null;
-	Class.forName("org.mariadb.jdbc.Driver");
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	boolean checkId = CustomerDao.addCustomerIdCheck(customerId);
 	
-	// 회원의 아이디가 중복되는지 확인하기
-	String sql1 = "SELECT email FROM customer WHERE email = ? ;";
-	PreparedStatement stmt = null;
-	ResultSet rs = null; 
-	stmt = conn.prepareStatement(sql1);	
-	stmt.setString(1,customerId);
-	rs = stmt.executeQuery();
+	//디버깅
+	//System.out.println(checkId + "<---------checkId");
 	
-	int row = 0;
-	boolean checkId = false;
-	
-	if(rs.next()){
-		checkId = true;
+	if(checkId == true){
+
 		response.sendRedirect("/shop/customer/addCustomerForm.jsp?checkId="+checkId);
-		
 		//디버깅
-		//System.out.println(checkId + "<---------checkId");
-		
-	}else{
-		// 중복이 아니면 데이터 저장
-		String sql2 = "INSERT INTO customer (email, pw, name, birth, gender, update_date, create_date) VALUES(?,PASSWORD(?),?,?,?, NOW(),NOW());";
-		PreparedStatement stmt2 = null;
-		stmt2 = conn.prepareStatement(sql2);	
-		stmt2.setString(1, customerId);
-		stmt2.setString(2, customerPw);
-		stmt2.setString(3, customerName);
-		stmt2.setString(4, customerBirth);
-		stmt2.setString(5, customerGender);
-		
-		row = stmt2.executeUpdate();
-		
-		if(row > 0) {
-			response.sendRedirect("/shop/customer/loginForm.jsp");
-		}else{
-			response.sendRedirect("/shop/customer/addCustomerForm.jsp");
-		}
 		
 	}
+		
+	int row = CustomerDao.addCustomer(customerId, customerPw, customerName, customerBirth, customerGender);
+	
+	if(row > 0) {
+		response.sendRedirect("/shop/customer/loginForm.jsp");
+	}else{
+		response.sendRedirect("/shop/customer/addCustomerForm.jsp");
+	}
+		
 	
 %>

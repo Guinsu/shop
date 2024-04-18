@@ -8,14 +8,16 @@ public class CategorysDao {
 	
 	//카테고리 추가하기
 	public static int addCategory(String newCategory)throws Exception {
+		
+		PreparedStatement stmt = null;
 		Connection conn = DBHelper.getConnection();
 		
 		String sql1 = "INSERT INTO category (category, create_date) VALUES (?,NOW());";
-		PreparedStatement stmt = null;
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setString(1,newCategory);
 		int row = stmt.executeUpdate();
 		
+		conn.close();
 		return row;
 	}
 	
@@ -23,12 +25,12 @@ public class CategorysDao {
 	//모든 카테고리 리스트와 합계 찾기
 	public static ArrayList<HashMap<String, Object>> selectCategoryList() throws Exception{
 		
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
 		Connection conn = DBHelper.getConnection();
 		
 		// goodsList 카테고리와 카테고리 합계 가져오기
 		String sql1 = "SELECT category, COUNT(*) cnt FROM goods GROUP BY category ORDER BY category ASC;";
-		PreparedStatement stmt = null;
-		ResultSet rs = null; 
 		stmt = conn.prepareStatement(sql1);	
 		rs = stmt.executeQuery();
 		
@@ -49,10 +51,10 @@ public class CategorysDao {
 	//카테고리 삭제하기
 	public static int deleteCategoryOne(String category,String createDate) throws Exception{
 		
+		PreparedStatement stmt = null;
 		Connection conn = DBHelper.getConnection();
 		
 		String sql1 = "DELETE FROM category WHERE category = ? AND create_date = ?";
-		PreparedStatement stmt = null;
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setString(1,category);
 		stmt.setString(2,createDate);
@@ -66,10 +68,11 @@ public class CategorysDao {
 	//모든 카테고리 리스트 보기
 	public static ArrayList<HashMap<String, Object>> selectCateogrys () throws Exception{
 		
-		Connection conn = DBHelper.getConnection();
-		String sql1 = "SELECT *,(SELECT COUNT(*) FROM category) cnt FROM category;";
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "SELECT *,(SELECT COUNT(*) FROM category) cnt FROM category;";
 		stmt = conn.prepareStatement(sql1);	
 		rs = stmt.executeQuery();
 

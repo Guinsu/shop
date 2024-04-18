@@ -68,7 +68,7 @@
 			border: 1px solid black;
 			border-radius : 20px;
 			padding: 60px;
-			width: 500px;
+			width: 600px;
 		}
 		button{
 			width: 200px;
@@ -122,14 +122,6 @@
 						<input type="text" name="customerId" value="<%=(String)(list.get("email"))%>">
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDivTags">
-						<label>비밀번호</label>
-						<input type="password" name="customerOriginalPw"  placeholder="비밀번호를 입력해주세요.">
-					</div>
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
-						<label>변경 비밀번호</label>
-						<input type="password" name="customerChangePw" placeholder="새로운 비밀번호를 입력해주세요.">
-					</div>
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
 						<label>이름</label>
 						<input type="text" name="customerName" value="<%=(String)(list.get("name"))%>">
 					</div>
@@ -156,12 +148,18 @@
 						%>
 						</select>
 					</div >
+					<div class="mt-4 d-flex justify-content-between loginDivTags">
+						<label>비밀번호 확인</label>
+						<input type="password" name="customerOriginalPw"  placeholder="비밀번호를 입력해주세요.">
+					</div>
 					<%
 						}
 					%>
 				</div>
-				<div class="d-flex justify-content-center" id="loginBtnDiv">				
+				<div class="d-flex justify-content-center" id="loginBtnDiv">
+					<a href="/shop/customer/goodsList.jsp">뒤로가기</a>				
 					<button type="submit">수정하기</button>
+					<a href="/shop/customer/modifyCustomerPwForm.jsp?customerId=<%=customerId%>">비밀번호 변경</a>
 					<a href="/shop/customer/deleteCustomerAction.jsp">회원탈퇴</a>
 				</div>
 			</form>

@@ -34,8 +34,6 @@ public class EmpDao {
 	
 	
 	//emp로그인
-	//HashMap<String, Object> : null 이면 로그인 실패, 아니면 성공
-	//String empId, String empPw : 로그인폼에서 사용자가 입력한 id/pw
 	public static HashMap<String, Object> empLogin(String empId, String empPw)throws Exception{
 		
 		HashMap<String, Object> resultMap = null;
