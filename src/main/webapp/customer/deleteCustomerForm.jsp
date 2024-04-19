@@ -10,13 +10,9 @@
 		return;
 	}
 
-	String customerId = request.getParameter("customerId");
+	
 %>
 
-<!-- model layer -->
-<%
-	ArrayList<HashMap<String, Object>> customerList =  CustomerDao.selectCustomer(customerId);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +23,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 	
 <meta charset="EUC-KR">
-<title>customerOne page</title>
+<title>deleteCustomerForm page</title>
 	<style>
 	
 		body{
@@ -85,58 +81,20 @@
 <body >
 	<main>
 		<div class="d-flex justify-content-center">
-			<h1>개인정보</h1>
+			<h1>회원탈퇴</h1>
 		</div>
 		<div  class="d-flex justify-content-center" id="formDiv">
-			<form action="/shop/customer/modifyCustomerAction.jsp" method="post">
+			<form action="/shop/customer/deleteCustomerAction.jsp" method="post">
+				<div>고객님의 모든 회원정보는 안전하게 삭제 됩니다.</div>
 				<div>
-					<%
-						for(HashMap list : customerList){
-					%>
 					<div class="d-flex justify-content-between loginDivTags">
-						<label>아이디</label>
-						<input type="text" name="customerId" value="<%=(String)(list.get("email"))%>">
+						<label>비밀번호 입력</label>
+						<input type="password" name="customerPw" >
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
-						<label>이름</label>
-						<input type="text" name="customerName" value="<%=(String)(list.get("name"))%>">
-					</div>
-					<div class="mt-4 d-flex justify-content-between  loginDivTags">
-						<label>생년월일</label>
-						<input type="date" name="customerBirth" value="<%=(String)(list.get("birth"))%>">
-					</div>
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
-						<label>성별</label>
-						<select name="customerGender">
-							<option value="" >성별을 선택해 주세요.</option>
-						<%
-							if((list.get("gender")).equals("남")){	
-						%>
-							<option value="남" selected>남</option>
-							<option value="여">여</option>						
-						<%
-							}else{
-						%>
-							<option value="남" >남</option>
-							<option value="여" selected>여</option>	
-						<% 	
-							}
-						%>
-						</select>
-					</div >
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
-						<label>비밀번호 확인</label>
-						<input type="password" name="customerOriginalPw"  placeholder="비밀번호를 입력해주세요.">
-					</div>
-					<%
-						}
-					%>
 				</div>
 				<div class="d-flex justify-content-center" id="loginBtnDiv">
 					<a href="/shop/customer/goodsList.jsp">뒤로가기</a>				
-					<button type="submit">수정하기</button>
-					<a href="/shop/customer/modifyCustomerPwForm.jsp?customerId=<%=customerId%>">비밀번호 변경</a>
-					<a href="/shop/customer/deleteCustomerForm.jsp">회원탈퇴</a>
+					<button type="submit">탈퇴하기</button>
 				</div>
 			</form>
 		</div>

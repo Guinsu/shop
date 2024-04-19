@@ -61,7 +61,7 @@ public class CustomerDao {
 	
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "SELECT email customerId, pw customerPw FROM customer WHERE email=? AND pw = password(?)";
+		String sql = "SELECT email customerId, name, gender FROM customer WHERE email=? AND pw = password(?)";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, customerId);
 		stmt.setString(2, customerPw);
@@ -70,7 +70,8 @@ public class CustomerDao {
 		if(rs.next()) {
 			resultMap = new HashMap<String, Object>();
 			resultMap.put("customerId",rs.getString("customerId")); 
-			resultMap.put("customerPw",rs.getString("customerPw")); 
+			resultMap.put("name",rs.getString("name")); 
+			resultMap.put("gender",rs.getString("gender")); 
 		}
 		
 		conn.close();
@@ -78,13 +79,39 @@ public class CustomerDao {
 		
 	}
 	
-	//고객정보 수정
-	public static int modifyCustomer(String customerId, String customerOriginalPw, 
-			String customerName, String customerBirth, String customerGender) throws Exception{
+	//고객정보 보기 
+	public static ArrayList<HashMap<String, Object>> selectCustomer(String customerId) throws Exception{
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
+		Connection conn = DBHelper.getConnection();
+		
+		String sql = "SELECT email, name, birth, gender FROM customer WHERE email = ?";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1,customerId);
+		rs = stmt.executeQuery();
+		
+		ArrayList<HashMap<String, Object>> customerList =  new ArrayList<HashMap<String, Object>>();
+		
+		if(rs.next()){
+			HashMap<String, Object> list = new HashMap<String, Object>();
+			list.put("email", rs.getString("email"));
+			list.put("name", rs.getString("name"));
+			list.put("birth", rs.getString("birth"));
+			list.put("gender", rs.getString("gender"));
+			customerList.add(list);
+		}
+		
+		return customerList;
+	}
+	
+	//고객정보 수정
+	public static int modifyCustomer(String orginalId, String changeId, String customerOriginalPw, 
+			String customerName, String customerBirth, String customerGender) throws Exception{
+		
+		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		ResultSet rs = null; 
 		int row = 0;
 
 		//사용자의 기존 비밀번호 확인
@@ -98,12 +125,13 @@ public class CustomerDao {
 		if(rs.next()){
 			String sql2 = "UPDATE customer SET email = ?, name = ?, birth = ?, gender = ?, update_date = NOW() WHERE email = ? AND pw = PASSWORD(?)";
 			stmt2 = conn.prepareStatement(sql2);
-			stmt2.setString(1,customerId);
+			stmt2.setString(1,changeId);
 			stmt2.setString(2,customerName);
 			stmt2.setString(3,customerBirth);
 			stmt2.setString(4,customerGender);
-			stmt2.setString(5,customerId);
+			stmt2.setString(5,orginalId);
 			stmt2.setString(6,customerOriginalPw);
+			
 			row = stmt2.executeUpdate();
 		}
 		
@@ -117,6 +145,7 @@ public class CustomerDao {
 	public static int modifyCustomerPw(String customerOriginalPw, String customerChangePw, String customerId) throws Exception {
 
 		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
 		ResultSet rs = null; 
 		int row = 0;
 		
@@ -131,7 +160,6 @@ public class CustomerDao {
 		
 		if(rs.next()){
 			String sql2 = "UPDATE customer SET pw = PASSWORD(?),update_date = NOW() WHERE email = ? AND pw = PASSWORD(?)";
-			PreparedStatement stmt2 = null;
 			stmt2 = conn.prepareStatement(sql2);
 			stmt2.setString(1,customerChangePw);
 			stmt2.setString(2,customerId);
@@ -152,7 +180,7 @@ public class CustomerDao {
 		Connection conn = DBHelper.getConnection();
 		
 		//기존 비밀번호 확인하기
-		String sql = "DELETE FROM customer WHERE email =? AND pw = ?";
+		String sql = "DELETE FROM customer WHERE email =? AND pw = PASSWORD(?)";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1,customerId);
 		stmt.setString(2,customerPw);

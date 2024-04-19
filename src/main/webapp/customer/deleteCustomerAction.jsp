@@ -11,18 +11,17 @@
 		return;
 	}
 	
+	String customerPw = request.getParameter("customerPw");
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");	
-
+	
 	//디버깅
-	//System.out.println(customerId);
 	//System.out.println(customerPw);
 	
 %>
 
 <!-- model layer -->
 <%
-	int row = CustomerDao.deleteCustomer((String)loginMember.get("customerId"), (String)loginMember.get("customerPw"));	
-
+	int row = CustomerDao.deleteCustomer((String)loginMember.get("customerId"), customerPw);	
 	if(row > 0){
 		session.invalidate();
 		response.sendRedirect("/shop/customer/loginForm.jsp");	

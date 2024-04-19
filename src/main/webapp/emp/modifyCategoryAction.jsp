@@ -16,9 +16,6 @@
 <%
 
 /*
-
-
-
 	Connection conn = null;
 	Class.forName("org.mariadb.jdbc.Driver");
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");

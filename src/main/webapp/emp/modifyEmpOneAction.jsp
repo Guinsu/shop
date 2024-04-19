@@ -1,12 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1>여기는 emp 정보 수정</h1>
-</body>
-</html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%
+	//인증 분기  
+	if(session.getAttribute("loginEmp")== null){
+		response.sendRedirect("/shop/emp/empLoginForm.jsp");
+		return;
+	}
+
+
+	String empId = request.getParameter("empId");
+	String empName = request.getParameter("empName");
+	String empJob = request.getParameter("empJob");
+	String empDate = request.getParameter("empDate");
+	
+	//디버깅
+	//System.out.println(empId);
+	//System.out.println(empName);
+	//System.out.println(empJob);
+	//System.out.println(empDate);
+	
+	
+	
+%>

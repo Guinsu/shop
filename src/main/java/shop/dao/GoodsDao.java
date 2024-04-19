@@ -8,11 +8,11 @@ public class GoodsDao {
 	//GoodsList 내용 가져오기
 	public static ArrayList<HashMap<String, Object>> selectGoodsList(String category,int startRow, int rowPerPage) throws Exception{
 	
+		PreparedStatement stmt2 = null;
+		ResultSet rs2 = null; 
 		Connection conn = DBHelper.getConnection();
 		
 		String sql2 = "SELECT goods_no no, category, goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate  FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
-		PreparedStatement stmt2 = null;
-		ResultSet rs2 = null; 
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
 		stmt2.setInt(2,startRow);
@@ -42,11 +42,11 @@ public class GoodsDao {
 	//GoodsList 내용 가져오기
 	public static ArrayList<HashMap<String, Object>> selectGoodsContent(int startRow, int rowPerPage) throws Exception{
 			
+		PreparedStatement stmt3 = null;
+		ResultSet rs3 = null; 
 		Connection conn = DBHelper.getConnection();
 		
 		String sql3 = "SELECT goods_no no, category, goods_title title,filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
-		PreparedStatement stmt3 = null;
-		ResultSet rs3 = null; 
 		stmt3 = conn.prepareStatement(sql3);
 		stmt3.setInt(1, startRow);
 		stmt3.setInt(2, rowPerPage);
@@ -75,11 +75,11 @@ public class GoodsDao {
 	//GoodsList 합계 가져오기
 	public static int selectGoodsContent() throws Exception{
 		
+		PreparedStatement stmt4 = null;
+		ResultSet rs4 = null; 
 		Connection conn = DBHelper.getConnection();
 		
 		String sql4 = "SELECT COUNT(*) cnt FROM goods";
-		PreparedStatement stmt4 = null;
-		ResultSet rs4 = null; 
 		stmt4 = conn.prepareStatement(sql4);	
 		rs4 = stmt4.executeQuery();
 
@@ -96,11 +96,11 @@ public class GoodsDao {
 	//Goods페이지에 category 등록하기 
 	public static ArrayList<String> insertGoodsOne() throws Exception{
 			
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
 		Connection conn = DBHelper.getConnection();
 		
 		String sql1 = "SELECT category FROM category;";
-		PreparedStatement stmt = null;
-		ResultSet rs = null; 
 		stmt = conn.prepareStatement(sql1);	
 		rs = stmt.executeQuery();
 		
@@ -118,11 +118,11 @@ public class GoodsDao {
 	//Goods 삭제하기
 	public static int deleteGoodsOne(int no, String category, String totalRow) throws Exception{
 		
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
 		Connection conn = DBHelper.getConnection();
 		
 		String sql1 = "DELETE FROM goods WHERE goods_no =?;";
-		PreparedStatement stmt = null;
-		ResultSet rs = null; 
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setInt(1,no);
 		int row =  stmt.executeUpdate();
@@ -136,9 +136,10 @@ public class GoodsDao {
 		String category, String empName, String goodsTitle, String filename, 
 		String goodsContent, int goodsPrice, int goodsAmount ) throws Exception{
 			
-		Connection conn = DBHelper.getConnection();
-		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
 		PreparedStatement stmt = null;
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setString(1,category);
 		stmt.setString(2,empName);

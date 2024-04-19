@@ -18,11 +18,7 @@
 
 <!-- model layer -->
 <%
-
-
 	ArrayList<HashMap<String, Object>> empList = EmpDao.empOne((String)loginEmp.get("empId"), (String)loginEmp.get("empName"), (Integer)loginEmp.get("grade"));
-
-	
 %>
 
 

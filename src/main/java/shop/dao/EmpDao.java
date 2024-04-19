@@ -33,7 +33,7 @@ public class EmpDao {
 	}
 	
 	
-	//emp로그인
+	//emp 로그인
 	public static HashMap<String, Object> empLogin(String empId, String empPw)throws Exception{
 		
 		HashMap<String, Object> resultMap = null;
@@ -62,7 +62,7 @@ public class EmpDao {
 		
 	}
 	
-	//emp리스트
+	//emp 리스트 보기
 	public static ArrayList<HashMap<String, Object>> empList(String searchWord, int startRow, int rowPerPage )throws Exception{
 			
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>(); 
@@ -150,7 +150,7 @@ public class EmpDao {
 	}
 	
 	
-	//emp 정보 수정하기
+	//emp active 권한 수정하기
 	public static int modifyEmpAction(String empId, String active)throws Exception{
 		
 		Connection conn = DBHelper.getConnection();
@@ -171,6 +171,35 @@ public class EmpDao {
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, empId);
 		row = stmt2.executeUpdate();
+		
+		conn.close();
+		return row;
+	}
+	
+	public static int modifyEmpOne(String empId,String empPw, String empName, String empJob)throws Exception{
+		
+		PreparedStatement stmt = null;
+		PreparedStatement stmt2 = null;
+		ResultSet rs = null; 
+		int row = 0;
+		
+		Connection conn = DBHelper.getConnection();
+		String sql= "SELECT emp_pw FORM emp WHERE emp_pw = PASSWORD(?)";
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1,empPw);
+		rs = stmt.executeQuery();
+		
+		if(rs.next()){
+			String sql2 = "UPDATE emp SET emp_id = ?, emp_name = ?, emp_job = ?, update_date = NOW() WHERE emp_id =? AND emp_pw = ?";
+			stmt2 = conn.prepareStatement(sql2);
+			stmt2.setString(1,empId);
+			stmt2.setString(2,empName);
+			stmt2.setString(3,empJob);
+			stmt2.setString(4,empId);
+			stmt2.setString(5,empPw);
+			
+			row = stmt2.executeUpdate();
+		}
 		
 		conn.close();
 		return row;
