@@ -5,7 +5,69 @@ import java.util.*;
 
 public class GoodsDao {
 	
-	//GoodsList 내용 가져오기
+	//goods 저장하기
+	public static int addGoodsAction(
+		String category, String empName, String goodsTitle, String filename, 
+		String goodsContent, int goodsPrice, int goodsAmount ) throws Exception{
+			
+		PreparedStatement stmt = null;
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
+		stmt = conn.prepareStatement(sql1);	
+		stmt.setString(1,category);
+		stmt.setString(2,empName);
+		stmt.setString(3,goodsTitle);
+		stmt.setString(4,filename);
+		stmt.setString(5,goodsContent);
+		stmt.setInt(6,goodsPrice);
+		stmt.setInt(7,goodsAmount);
+		int row = stmt.executeUpdate();
+		
+		conn.close();
+		return row;
+	}
+	
+	
+	//goods페이지에 category 모두 가져오기
+	public static ArrayList<String> insertGoodsOne() throws Exception{
+			
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "SELECT category FROM category;";
+		stmt = conn.prepareStatement(sql1);	
+		rs = stmt.executeQuery();
+		
+		ArrayList<String> categoryList =  new ArrayList<String>();
+		
+		while(rs.next()){
+			categoryList.add(rs.getString("category"));
+			
+		}
+		
+		conn.close();
+		return categoryList;
+	}
+	
+	//goods 삭제하기
+	public static int deleteGoodsOne(int no, String category, String totalRow) throws Exception{
+		
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		Connection conn = DBHelper.getConnection();
+		
+		String sql1 = "DELETE FROM goods WHERE goods_no =?;";
+		stmt = conn.prepareStatement(sql1);	
+		stmt.setInt(1,no);
+		int row =  stmt.executeUpdate();
+		
+		conn.close();
+		return row;
+	}
+	
+	//goodsList 가져오기
 	public static ArrayList<HashMap<String, Object>> selectGoodsList(String category,int startRow, int rowPerPage) throws Exception{
 	
 		PreparedStatement stmt2 = null;
@@ -39,7 +101,7 @@ public class GoodsDao {
 		return categoryList;
 	}
 	
-	//GoodsList 내용 가져오기
+	//goodsList 내용 가져오기
 	public static ArrayList<HashMap<String, Object>> selectGoodsContent(int startRow, int rowPerPage) throws Exception{
 			
 		PreparedStatement stmt3 = null;
@@ -72,7 +134,7 @@ public class GoodsDao {
 		return categoryList3;
 	}
 	
-	//GoodsList 합계 가져오기
+	//goodsList 합계 가져오기
 	public static int selectGoodsContent() throws Exception{
 		
 		PreparedStatement stmt4 = null;
@@ -93,65 +155,31 @@ public class GoodsDao {
 		return goodsTotalCnt;
 	}
 	
-	//Goods페이지에 category 등록하기 
-	public static ArrayList<String> insertGoodsOne() throws Exception{
-			
+	//goodsOne
+	public static HashMap<String, Object> selectGoodsOne(int no) throws Exception{
+		
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		Connection conn = DBHelper.getConnection();
+		HashMap<String, Object> list = new HashMap<>();
 		
-		String sql1 = "SELECT category FROM category;";
-		stmt = conn.prepareStatement(sql1);	
+		String sql = "SELECT goods_no no, category, goods_title title, filename, goods_content content, goods_price price, goods_amount amount, create_date createDate FROM goods WHERE goods_no = ?";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, no);
 		rs = stmt.executeQuery();
 		
-		ArrayList<String> categoryList =  new ArrayList<String>();
-		
-		while(rs.next()){
-			categoryList.add(rs.getString("category"));
-			
+		while(rs.next()) {
+			list.put("no",rs.getInt("no"));
+			list.put("category",rs.getString("category"));
+			list.put("title",rs.getString("title"));
+			list.put("filename",rs.getString("filename"));
+			list.put("content",rs.getString("content"));
+			list.put("price",rs.getInt("price"));
+			list.put("amount",rs.getInt("amount"));
+			list.put("createDate",rs.getString("createDate"));
 		}
 		
-		conn.close();
-		return categoryList;
+		return  list;
 	}
-	
-	//Goods 삭제하기
-	public static int deleteGoodsOne(int no, String category, String totalRow) throws Exception{
-		
-		PreparedStatement stmt = null;
-		ResultSet rs = null; 
-		Connection conn = DBHelper.getConnection();
-		
-		String sql1 = "DELETE FROM goods WHERE goods_no =?;";
-		stmt = conn.prepareStatement(sql1);	
-		stmt.setInt(1,no);
-		int row =  stmt.executeUpdate();
-		
-		conn.close();
-		return row;
-	}
-	
-	//Goods 저장하기
-	public static int addGoodsAction(
-		String category, String empName, String goodsTitle, String filename, 
-		String goodsContent, int goodsPrice, int goodsAmount ) throws Exception{
-			
-		PreparedStatement stmt = null;
-		Connection conn = DBHelper.getConnection();
-		
-		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
-		stmt = conn.prepareStatement(sql1);	
-		stmt.setString(1,category);
-		stmt.setString(2,empName);
-		stmt.setString(3,goodsTitle);
-		stmt.setString(4,filename);
-		stmt.setString(5,goodsContent);
-		stmt.setInt(6,goodsPrice);
-		stmt.setInt(7,goodsAmount);
-		int row = stmt.executeUpdate();
-		
-		conn.close();
-		return row;
-	}
-	
+
 }

@@ -59,9 +59,10 @@
 	ArrayList<HashMap<String, Object>> categoryList2 = GoodsDao.selectGoodsList(category,startRow,rowPerPage);
 	ArrayList<HashMap<String, Object>> categoryList3 = GoodsDao.selectGoodsContent(startRow, rowPerPage);
 	int goodsTotalCnt = GoodsDao.selectGoodsContent();
-	
+	int selectOrderCount = OrderDao.selectOrderCount();
 	//디버깅
 	//System.out.println(goodsTotalCnt);
+	//System.out.println(selectOrderCount);
 %>
 
 <!-- view Layer -->
@@ -134,6 +135,18 @@
 			padding: 3px;
 			margin-right: 10px;
 		}
+		.saveGoodsATag{
+			border: 1px solid black;
+			border-radius: 10px;
+			height: 50px;
+			width: 100px;
+			font-size:25px;
+			text-decoration: none;
+			color: black;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 		#contents{
 			border: 3px solid white;
 			border-radius: 10px;
@@ -181,14 +194,6 @@
 			font-size: 30px;
 			color: black;
 		}
-		#saveGoodsATag{
-			border: 1px solid black;
-			border-radius: 10px;
-			padding: 2px;
-			height: 30px;
-			text-decoration: none;
-			color: black;
-		}
 		
 	</style>
 </head>
@@ -203,7 +208,7 @@
 		</div>
 		<div class="d-flex justify-content-center align-items-center">
 			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/orderGoodsForm.jsp" id="customerOneAtag">장바구니 보기</a>
+			<a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
 			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
 			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
 		</div>
@@ -246,9 +251,9 @@
 						<div class="borderDiv">내용 : <%=(String)(m3.get("content"))%></div>
 						<div class="borderDiv">가격 : <%=(Integer)(m3.get("price"))%></div>
 						<div class="borderDiv">수량 : <%=(Integer)(m3.get("amount"))%></div>
-						<div>생성 날짜 : <%=(String)(m3.get("createDate"))%></div>
-						<div class="d-flex justify-content-center">
-							<a id="saveGoodsATag" href="/shop/customer/addToCart.jsp?no=<%=(Integer)(m3.get("no"))%>?">장바구니 추가</a>
+						<div class="mt-2 mb-2 d-flex justify-content-center">
+							<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m3.get("no"))%>">장바구니 추가</a>
+							<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>">상세보기</a>
 						</div>
 					</div>
 				</div>
@@ -269,9 +274,9 @@
 						<div class="borderDiv">내용 : <%=(String)(m2.get("content"))%></div>
 						<div class="borderDiv">가격 : <%=(Integer)(m2.get("price"))%></div>
 						<div class="borderDiv">수량 : <%=(Integer)(m2.get("amount"))%></div>
-						<div>생성 날짜 : <%=(String)(m2.get("createDate"))%></div>
-						<div class="d-flex justify-content-center">
-							<a id="saveGoodsATag" href="/shop/customer/addToCart.jsp?no=<%=(Integer)(m2.get("no"))%>?">장바구니 추가</a>
+						<div class="mt-2 mb-2 d-flex justify-content-center">
+							<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m2.get("no"))%>">장바구니 추가</a>
+							<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>">상세보기</a>
 						</div>
 					</div>
 				</div>
