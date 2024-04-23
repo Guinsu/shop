@@ -137,7 +137,7 @@
 		</div>
 		<div class="d-flex justify-content-center align-items-center">
 			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/orderGoodsForm.jsp" id="customerOneAtag" class="ms-3">장바구니 보기</a>
+			<a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기</a>
 			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
 			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
 		</div>

@@ -44,6 +44,7 @@
 	if(totalRow % rowPerPage != 0){
 		lastPage = lastPage +1 ;
 	}
+	
 	/*
 		null이면
 		SELECT * FROM goods
@@ -60,6 +61,7 @@
 	ArrayList<HashMap<String, Object>> categoryList3 = GoodsDao.selectGoodsContent(startRow, rowPerPage);
 	int goodsTotalCnt = GoodsDao.selectGoodsContent();
 	int selectOrderCount = OrderDao.selectOrderCount();
+	
 	//디버깅
 	//System.out.println(goodsTotalCnt);
 	//System.out.println(selectOrderCount);

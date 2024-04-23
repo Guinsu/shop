@@ -40,10 +40,7 @@
 	//System.out.println(checkId + "<---------checkId");
 	
 	if(checkId == true){
-
 		response.sendRedirect("/shop/customer/addCustomerForm.jsp?checkId="+checkId);
-		//디버깅
-		
 	}
 		
 	int row = CustomerDao.addCustomer(customerId, customerPw, customerName, customerBirth, customerGender);

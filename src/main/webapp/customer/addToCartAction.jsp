@@ -20,14 +20,17 @@
 
 <!-- model layer -->
 <%
+	//선택한 goods 제품정보 가져오기
 	HashMap<String, Object> selectGoodsOne = GoodsDao.selectGoodsOne(no);
 	
 	//형변환
-	String customerId = (String) loginMember.get("customerId");  
+	String customerId = (String)loginMember.get("customerId");
+	String goodsTitle = (String)selectGoodsOne.get("title");
 	int price = ((Integer) selectGoodsOne.get("price")).intValue();  
 	int amount = ((Integer) selectGoodsOne.get("amount")).intValue();  
 
-	OrderDao.addOrderAction(customerId ,no ,price ,amount);
+	//선택한 goods 장바구니에 저장하기
+	OrderDao.addOrderAction(customerId, no, goodsTitle, price, amount);
 	response.sendRedirect("/shop/customer/goodsList.jsp");
 	
 	

@@ -12,14 +12,19 @@
 
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
 
-	
+	String customerId = (String)loginMember.get("customerId");
 	//디버깅
 	//System.out.println(no);
 %>
-
+	
 <!-- model layer -->
 <%
+
+	ArrayList<HashMap<String, Object>> list = OrderDao.selectOrders(customerId);
 	
+	//orders 테이블에 있는 모든 제품보기
+	//System.out.println(list);
+
 %>
 
 <!DOCTYPE html>
@@ -32,7 +37,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 		
 	<meta charset="UTF-8">
-	<title>goodsOne page</title>
+	<title>cart page</title>
 	<style>
 		body{
 			width:100%;
@@ -41,10 +46,6 @@
   			font-size: 30px;
   			font-style: normal;
   			background-color: #FCE4EC;
-			}
-		img{
-			width: 450px;
-			height: 400px;
 		}
 		a{
 			text-decoration: none;
@@ -54,9 +55,13 @@
 			font-size: 100px;
 			margin-left: 50px;
 		}
+		h3{
+			font-size: 50px;
+			text-align: center;
+		}
 		
 		button{
-			width: 200px;
+			width: 100px;
 			height: 100%;
 		}
 		header{
@@ -64,17 +69,36 @@
 		}
 		
 		input{
-			width: 800px;
+			width: 500px;
 		}
 		
-		.borderDiv{
-			border-bottom: 1px solid white;
+		table{
+			border: 3px solid black;
+			margin-left: 40px;
+			margin-top: 20px;
+		 	border-collapse: separate;
+        	border-spacing: 0;
+        	border-radius: 20px;
+        	overflow: hidden;
 		}
 		
-		#contentDiv{
-			width: 600px;
-			max-height: 600px;
+		th,td{
+			border: 1px solid black;
+			text-align: center;
+			font-size: 30px;
+			height: 30px;
+			width: 200px;
+			padding: 10px;
 		}
+		
+		th {
+    		background-color: #f8f8ff;
+  		}
+  		
+  		td{
+  			background-color: #f0ffff;	
+  		}
+  		
 		#mainImg{
 			width: 150px;
 			height: 150px;
@@ -100,27 +124,6 @@
 			font-size: 30px;
 			color: black;
 		}
-		#contents{
-			border: 3px solid white;
-			border-radius: 10px;
-			margin-right: 10px;
-			margin-left: 10px;
-		}
-		#commentDiv{
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			margin-right: 10px;
-		}
-		#goodsComment{
-			display: flex;
-			flex-grow: 1;
-			background-color: red;
-		}
-		#goBackATag{
-			padding-left: 50px;
-			padding-right: 50px;
-		}
 	</style>
 </head>
 <body>
@@ -129,17 +132,57 @@
 			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
 		</div>
 		<div class="d-flex justify-content-center align-items-center">
-			<h1>캐치! 티니핑</h1>
+			<h1>장바구니</h1>
 		</div>
 		<div class="d-flex justify-content-center align-items-center">
 			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/orderGoodsForm.jsp" id="customerOneAtag" class="ms-3">장바구니 보기</a>
 			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
 			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
 		</div>
 	</header>
 	<main class="d-flex">
-		
+		<table>
+			<tr>
+				<th>주문번호</th>
+				<th>제품번호</th>
+				<th>제품이름</th>
+				<th>제품가격</th>
+				<th>제품개수</th>
+			</tr>
+			<%
+				for(HashMap m : list){
+				
+			%>
+				<tr>
+					<td><%=(Integer)m.get("orderNo")%></td>
+					<td><%=(Integer)m.get("no")%></td>
+					<td><%=(String)m.get("goodsTitle")%></td>
+					<td><%=(Integer)m.get("price")%></td>
+					<td>1</td>
+				</tr>
+			<%
+				}
+			%>
+		</table>
+		<div class="ms-4">
+			<h3>배송지 주소를 입력해주세요.</h3>
+			<form action="/shop/customer/paymentGoodsAction.jsp" method="post">
+				<label>입력 : </label>
+				<input type="text" name="address">
+				<input type="hidden" name="payment" value="결제완료">
+				<input type="hidden" name="customerId" value="<%=customerId%>">
+				<%
+					for(HashMap m : list){
+						int orderNo = (Integer)m.get("orderNo");
+				%>
+					<input type="hidden" name="orderNo" value="<%=orderNo%>">
+				<%
+					}
+				%>
+				<button type="submit">결제하기</button>
+				<button><a href="/shop/customer/goodsList.jsp">뒤로가기</a></button>
+			</form>
+		</div>
 	</main>
 </body>
 </html>
