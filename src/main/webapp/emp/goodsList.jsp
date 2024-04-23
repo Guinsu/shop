@@ -198,6 +198,7 @@
 		<div></div>
 		<div class="d-flex align-items-center">
 			<a href="/shop/emp/empGoodsForm.jsp" class="listAtags">상품등록</a>
+			<a href="/shop/emp/paymentOrderForm.jsp" class="listAtags">상품배송정보</a>
 		</div>
 	</nav>
 	<div class="ms-5 d-flex justify-content-center" >

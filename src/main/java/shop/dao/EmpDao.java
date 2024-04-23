@@ -63,7 +63,7 @@ public class EmpDao {
 	}
 	
 	//emp 리스트 보기
-	public static ArrayList<HashMap<String, Object>> empList(String searchWord, int startRow, int rowPerPage )throws Exception{
+	public static ArrayList<HashMap<String, Object>> empList(String searchWord, int startRow, int rowPerPage)throws Exception{
 			
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>(); 
 		

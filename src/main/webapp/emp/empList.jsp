@@ -20,7 +20,7 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	// 전체 회원수 
+	// 전체 회원수 가져오기
 	int totalRow = EmpDao.empCount(searchWord);
 	
 	// 한 페이지에 보이는 인원수
@@ -33,12 +33,8 @@
 	
 	if(request.getParameter("searchWord") != null ){
 		searchWord = request.getParameter("searchWord");
-	}
+	} 
 	
-%>    
-
-<!-- model layer -->
-<%
 	// 마지막 페이지 계산하기 = 전체 회원수 / 한 페이지에서 보이는 인원수
 	int lastPage = totalRow / rowPerPage;
 	
