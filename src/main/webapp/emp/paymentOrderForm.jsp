@@ -10,6 +10,7 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
+
 	String searchWord = "";
 	
 	//현재 페이지 값 
@@ -175,27 +176,31 @@
 				for(HashMap m : selectAllOrder){
 				
 			%>
-				<tr>
-					<td><%=(Integer)m.get("orderNo")%></td>
-					<td><%=(Integer)m.get("no")%></td>
-					<td><%=(String)m.get("email")%></td>
-					<td><%=(String)m.get("goodsTitle")%></td>
-					<td><%=(Integer)m.get("price")%></td>
-					<td><%=(String)m.get("address")%></td>
-					<td><%=(String)m.get("state")%></td>
-					<td>
-						<form action="/shop/emp/modifyPaymentOrderStateAction.jsp">
-							<select>
-								<option value="결제대기">결제대기</option>
-								<option value="결제완료">결제완료</option>
-								<option value="배송중">배송중</option>
-								<option value="배송완료">배송완료</option>
-							</select>
-							<button id="formBtn">수정</button>
-						</form>
-					</td>
-					<td>1</td>
-				</tr>
+					<tr>
+						<td><%=(Integer)m.get("orderNo")%></td>
+						<td><%=(Integer)m.get("no")%></td>
+						<td><%=(String)m.get("email")%></td>
+						<td><%=(String)m.get("goodsTitle")%></td>
+						<td><%=(Integer)m.get("price")%></td>
+						<td><%=(String)m.get("address")%></td>
+						<td><%=(String)m.get("state")%></td>
+						<td>
+							<form action="/shop/emp/modifyPaymentOrderStateAction.jsp">
+								<input type="hidden" value="<%=(Integer)m.get("orderNo")%>" name="orderNo">
+								<input type="hidden" value="<%=(Integer)m.get("no")%>" name="no">
+								<input type="hidden" value="<%=(String)m.get("email")%>" name="customerId">
+								<input type="hidden" value="<%=(Integer)m.get("totalAmount")%>" name="totalAmount">
+								<input type="hidden" value="<%=currentPage%>" name="currentPage">		
+								<select name="orderState">
+									<option value="결제완료">결제완료</option>
+									<option value="배송중">배송중</option>
+									<option value="배송완료">배송완료</option>
+								</select>
+								<button id="formBtn">수정</button>
+							</form>
+						</td>
+						<td>1</td>
+					</tr>
 			<%
 				}
 			%>
@@ -205,26 +210,26 @@
 					<%
 						if(currentPage > 1){
 					%>
-						<a href="/shop/emp/paymentOrderForm.jsp?currentPage=<%=currentPage -1%>" class="aTags">이전</a>
+							<a href="/shop/emp/paymentOrderForm.jsp?currentPage=<%=currentPage -1%>" class="aTags">이전</a>
 					<%
 						}else{
 					%>
-						<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+							<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
 					<%
 						}
 					%>
 				</button>
 				<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
 				<button type="button" class="btn btn-light border border-secondary">
-					<%if(currentPage < lastPage ){
+					<%	if(currentPage < lastPage ){
 					%>
-						<a href="/shop/emp/paymentOrderForm.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
+							<a href="/shop/emp/paymentOrderForm.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
 					<%
-					}else{
+						}else{
 					%>
-						<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+							<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
 					<%
-					}
+						}
 					%>
 				</button>
 			</div>				
@@ -234,7 +239,7 @@
 		<div class="d-flex justify-content-center">
 			<form action="/shop/emp/paymentOrderForm.jsp">
 				<label>
-					이름으로 검색 : 
+					주문자 아이디 검색 : 
 				</label>
 				<input type="text" name="searchWord">
 				<button type="submit" id="searchBtn">확인</button>			

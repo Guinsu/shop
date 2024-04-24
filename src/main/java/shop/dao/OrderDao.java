@@ -67,7 +67,7 @@ public class OrderDao {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 			
 	
-		String sql = "SELECT order_no orderNo, email, goods_no no, goods_title goodsTitle, price, address, state, update_date updateDate FROM orders WHERE email LIKE ? ORDER BY order_no DESC limit ?,?;";
+		String sql = "SELECT order_no orderNo, email, goods_no no, goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,update_date updateDate FROM orders WHERE state != '결제대기' AND email LIKE ? ORDER BY order_no DESC limit ?,?;";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, "%"+searchWord+"%");
 		stmt.setInt(2, startRow);
@@ -81,8 +81,10 @@ public class OrderDao {
 			m.put("no",rs.getInt("no"));
 			m.put("goodsTitle",rs.getString("goodsTitle"));
 			m.put("price",rs.getInt("price"));
+			m.put("totalAmount",rs.getInt("totalAmount"));
 			m.put("address",rs.getString("address"));
 			m.put("state",rs.getString("state"));
+			m.put("commentState",rs.getString("commentState"));
 			m.put("updateDate",rs.getString("updateDate"));
 			list.add(m);
 		}
@@ -152,6 +154,25 @@ public class OrderDao {
 			stmt.setInt(4, Integer.parseInt(list)); 
 			row += stmt.executeUpdate();			
 		}
+		
+		return row;
+	}
+	
+	// 배송진행상태 "결제완료" 를 배송중,배송완료로 상태변경 
+	public static int modifyOrderState(int orderNo, String customerId, int no, int totalAmount, String orderState) throws Exception{
+		PreparedStatement stmt = null;
+		int row = 0;
+		Connection conn = DBHelper.getConnection();
+		
+		
+		String sql = "UPDATE orders SET total_amount = ?, state = ?, update_date = NOW() WHERE email = ?  AND order_no = ? AND goods_no = ? ";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, totalAmount - 1);
+		stmt.setString(2, orderState);
+		stmt.setString(3, customerId);
+		stmt.setInt(4, orderNo); 
+		stmt.setInt(5, no); 
+		row  = stmt.executeUpdate();			
 		
 		return row;
 	}

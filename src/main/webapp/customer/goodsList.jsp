@@ -211,6 +211,7 @@
 		<div class="d-flex justify-content-center align-items-center">
 			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
 			<a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
+			<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
 			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
 			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
 		</div>
@@ -219,16 +220,15 @@
 	<!-- 서브메뉴 / 카테고리별 상품 리스트-->
 	<nav class="m-4 d-flex justify-content-between">
 		<div class="ms-4 d-flex align-items-center">
-			
 			<a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체보기</a>
 			
 			<%
 				for(HashMap m : categoryList){
 			%>
-				<a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
-					<%=(String)(m.get("category"))%>
-					(<%=(Integer)(m.get("cnt"))%>)
-				</a>
+					<a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
+						<%=(String)(m.get("category"))%>
+						(<%=(Integer)(m.get("cnt"))%>)
+					</a>
 			<%
 				}
 			%>
@@ -242,46 +242,46 @@
 				if(category == null){
 					for(HashMap m3: categoryList3){
 			%>
-				<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
-					<div id="imgDiv" class="d-flex justify-content-center">
-						<img alt="이미지" src="/shop/upload/<%=(String)(m3.get("filename"))%>">
-					</div>
-					<div id="contentDiv">
-						<div class="borderDiv">번호 : <%=(Integer)(m3.get("no"))%></div>
-						<div class="borderDiv">카테고리 : <%=(String)(m3.get("category"))%></div>
-						<div class="borderDiv">제목 : <%=(String)(m3.get("title"))%></div>
-						<div class="borderDiv">내용 : <%=(String)(m3.get("content"))%></div>
-						<div class="borderDiv">가격 : <%=(Integer)(m3.get("price"))%></div>
-						<div class="borderDiv">수량 : <%=(Integer)(m3.get("amount"))%></div>
-						<div class="mt-2 mb-2 d-flex justify-content-center">
-							<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m3.get("no"))%>">장바구니 추가</a>
-							<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>">상세보기</a>
+						<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
+							<div id="imgDiv" class="d-flex justify-content-center">
+								<img alt="이미지" src="/shop/upload/<%=(String)(m3.get("filename"))%>">
+							</div>
+							<div id="contentDiv">
+								<div class="borderDiv">번호 : <%=(Integer)(m3.get("no"))%></div>
+								<div class="borderDiv">카테고리 : <%=(String)(m3.get("category"))%></div>
+								<div class="borderDiv">제목 : <%=(String)(m3.get("title"))%></div>
+								<div class="borderDiv">내용 : <%=(String)(m3.get("content"))%></div>
+								<div class="borderDiv">가격 : <%=(Integer)(m3.get("price"))%></div>
+								<div class="borderDiv">수량 : <%=(Integer)(m3.get("amount"))%></div>
+								<div class="mt-2 mb-2 d-flex justify-content-center">
+									<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m3.get("no"))%>">장바구니 추가</a>
+									<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>">상세보기</a>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
 			<%		
 					}
 				}else{
 					for(HashMap m2: categoryList2){
 					
 			%>
-				<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
-					<div id="imgDiv" class="d-flex justify-content-center">
-						<img alt="이미지" src="/shop/upload/<%=(String)(m2.get("filename"))%>">
-					</div>
-					<div id="contentDiv">
-						<div class="borderDiv">번호 : <%=(Integer)(m2.get("no"))%></div>
-						<div class="borderDiv">카테고리 : <%=(String)(m2.get("category"))%></div>
-						<div class="borderDiv">제목 : <%=(String)(m2.get("title"))%></div>
-						<div class="borderDiv">내용 : <%=(String)(m2.get("content"))%></div>
-						<div class="borderDiv">가격 : <%=(Integer)(m2.get("price"))%></div>
-						<div class="borderDiv">수량 : <%=(Integer)(m2.get("amount"))%></div>
-						<div class="mt-2 mb-2 d-flex justify-content-center">
-							<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m2.get("no"))%>">장바구니 추가</a>
-							<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>">상세보기</a>
+						<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
+							<div id="imgDiv" class="d-flex justify-content-center">
+								<img alt="이미지" src="/shop/upload/<%=(String)(m2.get("filename"))%>">
+							</div>
+							<div id="contentDiv">
+								<div class="borderDiv">번호 : <%=(Integer)(m2.get("no"))%></div>
+								<div class="borderDiv">카테고리 : <%=(String)(m2.get("category"))%></div>
+								<div class="borderDiv">제목 : <%=(String)(m2.get("title"))%></div>
+								<div class="borderDiv">내용 : <%=(String)(m2.get("content"))%></div>
+								<div class="borderDiv">가격 : <%=(Integer)(m2.get("price"))%></div>
+								<div class="borderDiv">수량 : <%=(Integer)(m2.get("amount"))%></div>
+								<div class="mt-2 mb-2 d-flex justify-content-center">
+									<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m2.get("no"))%>">장바구니 추가</a>
+									<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>">상세보기</a>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
 			<%
 					}
 				}
@@ -294,16 +294,16 @@
 				if(currentPage > 1){
 					if(category == null || category.equals("null")){
 			%>
-				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+						<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&totalRow=<%=totalRow%>" class="aTags">이전</a>
 			<% 
 					}else{
 			%>
-				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
+						<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage -1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">이전</a>
 			<%
 					}
 				}else{
 			%>
-				<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+						<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
 			<%
 				}
 			%>
@@ -313,19 +313,19 @@
 			<%if(currentPage < lastPage ){
 				if(category == null || category.equals("null")){
 			%>
-				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
+					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&totalRow=<%=totalRow%>" class="aTags">다음</a>
 			<%
 				}else{
 			%>
-				<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
+					<a href="/shop/customer/goodsList.jsp?currentPage=<%=currentPage +1%>&category=<%=category %>&totalRow=<%=totalRow%>" class="aTags">다음</a>		
 			
 			<%
 					}
 				}else{
 			%>
-				<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+					<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
 			<%
-			}
+				}
 			%>
 		</button>
 	</div>
