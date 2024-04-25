@@ -70,25 +70,23 @@ public class EmpDao {
 		// DB 접근
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
-	
 		Connection conn = DBHelper.getConnection();
 		
 		String sql2 = "SELECT emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active FROM emp WHERE emp_name LIKE ? ORDER BY hire_date DESC limit ?,?";
-		PreparedStatement stmt2 = null;
-		ResultSet rs2 = null; 
-		stmt2 = conn.prepareStatement(sql2);
-		stmt2.setString(1, "%"+searchWord+"%");
-		stmt2.setInt(2, startRow);
-		stmt2.setInt(3, rowPerPage);
-		rs2 = stmt2.executeQuery();
 		
-		while(rs2.next()){
+		stmt = conn.prepareStatement(sql2);
+		stmt.setString(1, "%"+searchWord+"%");
+		stmt.setInt(2, startRow);
+		stmt.setInt(3, rowPerPage);
+		rs = stmt.executeQuery();
+		
+		while(rs.next()){
 			HashMap<String, Object> m = new HashMap<String, Object>();
-			m.put("empId", rs2.getString("empid"));
-			m.put("empName", rs2.getString("empName"));
-			m.put("empJob", rs2.getString("empJob"));
-			m.put("hireDate", rs2.getString("hireDate"));
-			m.put("active", rs2.getString("active"));
+			m.put("empId", rs.getString("empid"));
+			m.put("empName", rs.getString("empName"));
+			m.put("empJob", rs.getString("empJob"));
+			m.put("hireDate", rs.getString("hireDate"));
+			m.put("active", rs.getString("active"));
 			list.add(m);
 		}
 		
@@ -153,10 +151,11 @@ public class EmpDao {
 	//emp active 권한 수정하기
 	public static int modifyEmpAction(String empId, String active)throws Exception{
 		
-		Connection conn = DBHelper.getConnection();
-		
+		PreparedStatement stmt2 = null;
 		String sql2 = null;
 		int row = 0;
+		Connection conn = DBHelper.getConnection();
+		
 		
 		if(active.equals("OFF")){
 		 	sql2 = "UPDATE emp SET active = 'ON' WHERE emp_id= ?";
@@ -167,7 +166,6 @@ public class EmpDao {
 			//System.out.println("OFF 으로 변경 성공");
 		}
 		
-		PreparedStatement stmt2 = null;
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, empId);
 		row = stmt2.executeUpdate();

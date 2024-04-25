@@ -139,6 +139,7 @@ public class OrderDao {
 	
 	//장바구니 제품 결제하기 
 	public static int paymentGoods(String address, String state, String email, String[] orderNo) throws Exception{
+		
 		PreparedStatement stmt = null;
 		int row = 0;
 		Connection conn = DBHelper.getConnection();

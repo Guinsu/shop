@@ -24,7 +24,7 @@
 	int totalRow = OrderDao.orderCount(searchWord);
 	
 	// 한 페이지에 보이는 인원수
-	int rowPerPage = 5;
+	int rowPerPage = 10;
 	
 	
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수

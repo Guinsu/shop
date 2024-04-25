@@ -11,18 +11,39 @@
 		return;
 	}
 
+	//세션에서 loginMember 가져오기
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
 	
-	int no = Integer.parseInt(request.getParameter("no"));
+	// 주문번호, 제품번호 받기
+	int goodsNo = Integer.parseInt(request.getParameter("no"));
+	String orderString = request.getParameter("orderNo");		
+	int orderNo = 0;
+	
+	// 제품을 구매하고 배송완료된 사람만 후기 작성할 수 있게 분기
+	if(orderString != null && !orderString.equals("null")){
+		orderNo = Integer.parseInt(orderString);
+	}
+	
+	
+	//디버깅
+	//System.out.println(goodsNo);
+	//System.out.println(orderString +  "< - orderString");
+	//System.out.println(orderNo);
 %>
 
 
 <!-- model layer -->
 <%
+	// 선택된 goods 제품 정보 가져오기
+	HashMap<String, Object> goodsOne = GoodsDao.selectGoodsOne(goodsNo);
 
-	HashMap<String, Object> goodsOne = GoodsDao.selectGoodsOne(no);
+	// 선택된 goods 제품의 댓글 가져오기
+	ArrayList<HashMap<String, Object>> list = CommentDao.commentList(goodsNo);
+	
 	//디버깅
-	//System.out.println(no);
+	//System.out.println(goodsNo + "< -- goodsNo");
+	//System.out.println(orderNo + "< -- orderNo");
+	//System.out.println(list + "< -- list");
 %>
 
 
@@ -68,7 +89,16 @@
 		}
 		
 		input{
-			width: 800px;
+			width: 500px;
+		}
+		
+		label{
+			width: 70px;
+		}
+		
+		hr{
+			border: 3px solid white;
+			margin: 0px;
 		}
 		
 		.borderDiv{
@@ -79,13 +109,16 @@
 			width: 600px;
 			max-height: 600px;
 		}
+		
 		#mainImg{
 			width: 150px;
 			height: 150px;
 		}
+		
 		#customerId{
 			font-size: 30px;
 		}
+		
 		#logoutAtag{
 			height: 40px;
 			border: 1px solid black;
@@ -95,6 +128,7 @@
 			font-size: 30px;
 			color: black;
 		}
+		
 		#customerOneAtag{
 			height: 40px;
 			border: 1px solid black;
@@ -104,27 +138,41 @@
 			font-size: 30px;
 			color: black;
 		}
+		
 		#contents{
 			border: 3px solid white;
 			border-radius: 10px;
 			margin-right: 10px;
 			margin-left: 10px;
 		}
+		
 		#commentDiv{
 			width: 100%;
 			display: flex;
 			flex-direction: column;
 			margin-right: 10px;
 		}
+		
 		#goodsComment{
-			display: flex;
-			flex-grow: 1;
-			background-color: red;
+			height: 100%;
+			border: 3px solid white;
+			border-radius: 10px;
 		}
+		
 		#goBackATag{
 			padding-left: 50px;
 			padding-right: 50px;
 		}
+		
+		#customerCmt{
+			display: flex;
+			justify-content: space-between;
+		}
+		
+		.startRadio{
+			width: 30px;
+		}
+		
 	</style>
 </head>
 <body>
@@ -158,25 +206,61 @@
 			</div>
 		</div>
 		<div id="commentDiv">
-			<div id="goodsComment">다른분들 후기는 여기
+			<div id="goodsComment">
 			<%
-				for(int i=0; i<5; i++){
+				for(HashMap m : list){
 			%>
-			
+					<div id="customerCmt">
+						<div>
+							익명 : <%=(String)m.get("content")%>
+						</div>
+						<div>
+							평가점수 : <%=(Integer)m.get("score")%> 점
+							&nbsp;&nbsp;&nbsp;
+							 <%=(String)m.get("createDate")%> 
+						</div>												
+					</div>
+					<hr>
 			<%
 				}
 			%>
 			</div>
-			<div style="background-color:yellow;">
-				후기 남기기 / order 테이블에서 state 상태가 배송완료면 보이게 하기
-				<form action="/shop/customer/addCommentAction.jsp?no=<%=no%>" method="post">
-					<input type="text" name="comment">
-					<button type="submit">입력</button>
-					<button>
-						<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
-					</button>
-				</form>
-			</div>
+			<%
+				// 제품을 구매하고 배송완료된 사람만 후기 작성할 수 있게 분기
+				if(orderNo > 0){
+			%>
+				<div style="background-color:yellow;">
+					<form action="/shop/customer/addCommentAction.jsp" method="post">
+						<div>
+							<input type="hidden" value="<%=orderNo%>" name="orderNo">
+							<input type="hidden" value="<%=goodsNo%>" name="goodsNo">
+							<span>&nbsp;&nbsp;상품 만족도 평가 : </span>
+							<label>
+						    	<input type="radio" name="rating" value="1"  class="startRadio"/> 1점
+						  	</label>
+						  	<label>
+						    	<input type="radio" name="rating" value="2" class="startRadio"/> 2점
+						  	</label>
+						  	<label>
+							    <input type="radio" name="rating" value="3" class="startRadio"/> 3점
+						  	</label>
+						  	<label>
+							    <input type="radio" name="rating" value="4" class="startRadio"/> 4점
+							  </label>
+						  	<label>
+							    <input type="radio" name="rating" value="5" class="startRadio"/> 5점
+						  	</label>
+						</div>
+						<input type="text" name="comment">
+						<button type="submit">입력</button>
+						<button>
+							<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
+						</button>
+					</form>
+				</div>
+			<%
+				}
+			%>
 		</div>
 	</main>
 </body>

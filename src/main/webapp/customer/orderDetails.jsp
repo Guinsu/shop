@@ -176,9 +176,22 @@
 			border-radius: 20px;
 			margin: 0px;
 		}
+		#backBtn{
+			margin-left: 20px;
+		}
 		.aTags{
 			padding-left: 100px;
 			padding-right: 100px;
+		}
+		.goBackHomeTag{
+			border: 1px solid black;
+			border-radius : 10px;
+			margin-top: 20px;
+			margin-left: 20px;
+			height: 59px;
+			padding-left: 20px;
+			padding-right: 20px;
+			padding-top: 10px;
 		}
 	</style>
 </head>
@@ -208,7 +221,7 @@
 			</tr>
 			<%
 				for(HashMap m : list){
-					if("N".equals((String)m.get("commentState"))){
+					if("N".equals((String)m.get("commentState")) && "배송완료".equals((String)m.get("state"))){
 						//디버깅 
 						//System.out.println((String)m.get("commentState"));
 			%>
@@ -220,13 +233,12 @@
 							<td>1</td>
 							<td>
 								<button id="formBtn">
-									<a>후기작성 하기</a>
+									<a href="/shop/customer/goodsOne.jsp?no=<%=m.get("no")%>&orderNo=<%=(Integer)m.get("orderNo")%>">후기작성 하기</a>
 								</button>
 							</td>
 						</tr>
 			<%	
-					}else{
-						
+					}else if("Y".equals((String)m.get("commentState")) && "배송완료".equals((String)m.get("state"))){
 			%>
 						<tr>
 							<td><%=(Integer)m.get("orderNo")%></td>
@@ -234,7 +246,20 @@
 							<td><%=(String)m.get("state")%></td>
 							<td><%=(Integer)m.get("price")%></td>
 							<td>1</td>
-							<td>O</td>
+							<td>
+								후기 작성 완료
+							</td>
+						</tr>
+			<%
+					}else{	
+			%>
+						<tr>
+							<td><%=(Integer)m.get("orderNo")%></td>
+							<td><%=(String)m.get("goodsTitle")%></td>
+							<td><%=(String)m.get("state")%></td>
+							<td><%=(Integer)m.get("price")%></td>
+							<td>1</td>
+							<td>배송진행 중 입니다.</td>
 						</tr>
 			<%
 					}
@@ -268,6 +293,7 @@
 					}
 				%>
 			</button>
+			<a class="goBackHomeTag" href="/shop/customer/goodsList.jsp">뒤로가기</a>
 		</div>
 	</main>
 </body>
