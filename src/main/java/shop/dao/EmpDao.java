@@ -174,6 +174,7 @@ public class EmpDao {
 		return row;
 	}
 	
+	//
 	public static int modifyEmpOne(String empId,String empPw, String empName, String empJob)throws Exception{
 		
 		PreparedStatement stmt = null;

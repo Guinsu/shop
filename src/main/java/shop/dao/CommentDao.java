@@ -37,7 +37,7 @@ public class CommentDao {
 	}
 	
 	//선택된 제품의 comment 정보 가져오기 
-	public static ArrayList<HashMap<String, Object>> commentList(int goodsNo)throws Exception{
+	public static ArrayList<HashMap<String, Object>> commentList(int goodsNo,int startRow, int rowPerPage)throws Exception{
 			
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
@@ -45,14 +45,17 @@ public class CommentDao {
 			
 		Connection conn = DBHelper.getConnection();
 		
-		String sql2 = "SELECT comment_no commentNo, content, score, create_date createDate FROM comment WHERE goods_no = ? ORDER BY comment_no ASC";
+		String sql2 = "SELECT comment_no commentNo, goods_no goodsNo, content, score, create_date createDate FROM comment WHERE goods_no = ? ORDER BY comment_no ASC limit ?,?";
 		stmt = conn.prepareStatement(sql2);
 		stmt.setInt(1, goodsNo);
+		stmt.setInt(2, startRow);
+		stmt.setInt(3, rowPerPage);
 		rs = stmt.executeQuery();
 		
 		while(rs.next()){
 			HashMap<String, Object> m = new HashMap<String, Object>();
 			m.put("commentNo", rs.getInt("commentNo"));
+			m.put("goodsNo", rs.getInt("goodsNo"));
 			m.put("content", rs.getString("content"));
 			m.put("score", rs.getInt("score"));
 			m.put("createDate", rs.getString("createDate"));
@@ -63,4 +66,54 @@ public class CommentDao {
 		return list;
 	}
 	
+	
+	//선택된 제품의 모든 comment 개수 가져오기 
+	public static int commentCount()throws Exception{
+			
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		int commentCount = 0;
+		
+		Connection conn = DBHelper.getConnection();
+		
+		String sql2 = "SELECT COUNT(*) cnt FROM comment";
+		stmt = conn.prepareStatement(sql2);
+		rs = stmt.executeQuery();
+		
+		while(rs.next()){
+			commentCount = rs.getInt("cnt");
+		}
+		
+		conn.close();
+		return commentCount;
+	}
+	
+
+	//선택된 제품의 모든 comment score 개수 가져오기 
+	public static ArrayList<HashMap<String, Object>> commentScoreSum(int goodsNo)throws Exception{
+			
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		int commentScoreSum = 0;
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>(); 
+		
+		Connection conn = DBHelper.getConnection();
+		
+		String sql2 = "SELECT SUM(score) sum, COUNT(*) cnt FROM comment WHERE goods_no = ?";
+		stmt = conn.prepareStatement(sql2);
+		stmt.setInt(1,goodsNo);
+		rs = stmt.executeQuery();
+		
+		while(rs.next()){
+			HashMap<String, Object> m = new HashMap<String, Object>();
+			m.put("sum", rs.getInt("sum"));
+			m.put("cnt", rs.getInt("cnt"));
+			list.add(m);
+		}
+		
+		conn.close();
+		return list;
+	}
+		
 }
+

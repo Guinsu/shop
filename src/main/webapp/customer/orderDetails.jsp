@@ -18,7 +18,7 @@
 	//디버깅
 	//System.out.println(no);
 	
-	int totalRow = 10;
+	int totalRow = OrderDao.orderCount(searchWord);
 	
 	if(request.getParameter("totalRow") != null){	
 		totalRow = Integer.parseInt(request.getParameter("totalRow"));
@@ -47,13 +47,6 @@
 		lastPage = lastPage +1 ;
 	}
 	
-	/*
-		null이면
-		SELECT * FROM goods
-		
-		null이 아니면
-		SELECT * FROM goods WHERE category = ? ORDER BY DESC limit ?,?
-	*/
 %>
 	
 <!-- model layer -->

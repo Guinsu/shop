@@ -141,48 +141,58 @@
 		</div>
 	</header>
 	<main class="d-flex">
-		<table>
-			<tr>
-				<th>주문번호</th>
-				<th>제품번호</th>
-				<th>제품이름</th>
-				<th>제품가격</th>
-				<th>제품개수</th>
-			</tr>
-			<%
-				for(HashMap m : list){
-				
-			%>
-				<tr>
-					<td><%=(Integer)m.get("orderNo")%></td>
-					<td><%=(Integer)m.get("no")%></td>
-					<td><%=(String)m.get("goodsTitle")%></td>
-					<td><%=(Integer)m.get("price")%></td>
-					<td>1</td>
-				</tr>
-			<%
-				}
-			%>
-		</table>
-		<div class="ms-4">
-			<h3>배송지 주소를 입력해주세요.</h3>
-			<form action="/shop/customer/paymentGoodsAction.jsp" method="post">
-				<label>입력 : </label>
-				<input type="text" name="address">
-				<input type="hidden" name="payment" value="결제완료">
-				<input type="hidden" name="customerId" value="<%=customerId%>">
-				<%
-					for(HashMap m : list){
-						int orderNo = (Integer)m.get("orderNo");
-				%>
-					<input type="hidden" name="orderNo" value="<%=orderNo%>">
-				<%
-					}
-				%>
-				<button type="submit">결제하기</button>
-				<button><a href="/shop/customer/goodsList.jsp">뒤로가기</a></button>
-			</form>
-		</div>
+		<%
+			if(list.size() > 0){
+		%>
+				<table>
+					<tr>
+						<th>주문번호</th>
+						<th>제품번호</th>
+						<th>제품이름</th>
+						<th>제품가격</th>
+						<th>제품개수</th>
+					</tr>
+					<%
+						for(HashMap m : list){
+						
+					%>
+						<tr>
+							<td><%=(Integer)m.get("orderNo")%></td>
+							<td><%=(Integer)m.get("no")%></td>
+							<td><%=(String)m.get("goodsTitle")%></td>
+							<td><%=(Integer)m.get("price")%></td>
+							<td>1</td>
+						</tr>
+					<%
+						}
+					%>
+				</table>
+				<div class="ms-4">
+					<h3>배송지 주소를 입력해주세요.</h3>
+					<form action="/shop/customer/paymentGoodsAction.jsp" method="post">
+						<label>입력 : </label>
+						<input type="text" name="address">
+						<input type="hidden" name="payment" value="결제완료">
+						<input type="hidden" name="customerId" value="<%=customerId%>">
+						<%
+							for(HashMap m : list){
+								int orderNo = (Integer)m.get("orderNo");
+						%>
+							<input type="hidden" name="orderNo" value="<%=orderNo%>">
+						<%
+							}
+						%>
+						<button type="submit">결제하기</button>
+						<button><a href="/shop/customer/goodsList.jsp">뒤로가기</a></button>
+					</form>
+				</div>
+		<%
+			}else{
+		%>
+				<div>장바구니에 아무런 제품이 없습니다!</div>
+		<%
+			}
+		%>
 	</main>
 </body>
 </html>

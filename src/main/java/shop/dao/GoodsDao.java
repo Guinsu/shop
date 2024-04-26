@@ -139,13 +139,14 @@ public class GoodsDao {
 		
 		PreparedStatement stmt4 = null;
 		ResultSet rs4 = null; 
+		int goodsTotalCnt = 0;
+
 		Connection conn = DBHelper.getConnection();
 		
 		String sql4 = "SELECT COUNT(*) cnt FROM goods";
 		stmt4 = conn.prepareStatement(sql4);	
 		rs4 = stmt4.executeQuery();
 
-		int goodsTotalCnt = 0;
 		
 		if(rs4.next()){
 			goodsTotalCnt = rs4.getInt("cnt");

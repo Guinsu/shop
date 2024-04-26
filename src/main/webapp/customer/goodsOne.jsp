@@ -1,7 +1,9 @@
+<%@page import="java.awt.geom.Arc2D.Double"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*" %>
 <%@ page import="shop.dao.*" %>
+
 
 <!--controller layer  -->
 <%
@@ -18,12 +20,42 @@
 	int goodsNo = Integer.parseInt(request.getParameter("no"));
 	String orderString = request.getParameter("orderNo");		
 	int orderNo = 0;
+	double totalScore = 0;
 	
 	// 제품을 구매하고 배송완료된 사람만 후기 작성할 수 있게 분기
 	if(orderString != null && !orderString.equals("null")){
 		orderNo = Integer.parseInt(orderString);
 	}
 	
+	// 선택된 goods의 전체 댓글 수 가져오기 
+	int totalRow = CommentDao.commentCount();
+	
+	if(request.getParameter("totalRow") != null){	
+		totalRow = Integer.parseInt(request.getParameter("totalRow"));
+	}
+	
+	int currentPage = 1;
+	
+	if(request.getParameter("currentPage") != null){
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	// 한 페이지에 보이는 수
+	int rowPerPage = 12;
+	
+	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
+	int startRow = (currentPage-1)* rowPerPage;
+	
+
+	
+	// 마지막 페이지 계산하기 = 전체 회원수 / 한 페이지에서 보이는 인원수
+	int lastPage = totalRow / rowPerPage;
+	
+	//인원수가 남을 때 마지막 페이지는 +1 해준다. 
+	//예) 회원수가 11명이라면 한 페이지당 10명씩 1페이지가 나와야하는데 1명이 더 있기 때문에 총 페이지는 2페이지가 된다.
+	if(totalRow % rowPerPage != 0){
+		lastPage = lastPage +1 ;
+	}
 	
 	//디버깅
 	//System.out.println(goodsNo);
@@ -38,12 +70,25 @@
 	HashMap<String, Object> goodsOne = GoodsDao.selectGoodsOne(goodsNo);
 
 	// 선택된 goods 제품의 댓글 가져오기
-	ArrayList<HashMap<String, Object>> list = CommentDao.commentList(goodsNo);
+	ArrayList<HashMap<String, Object>> list = CommentDao.commentList(goodsNo, startRow, rowPerPage);
+
+	ArrayList<HashMap<String, Object>> comment = CommentDao.commentScoreSum(goodsNo);
+	
+	
+	int sum = (int)comment.get(0).get("sum");
+	int cnt = (int)comment.get(0).get("cnt");
+		
+	totalScore = sum;
+	
+	
+	double averageScore =  totalScore / cnt;
 	
 	//디버깅
 	//System.out.println(goodsNo + "< -- goodsNo");
 	//System.out.println(orderNo + "< -- orderNo");
 	//System.out.println(list + "< -- list");
+	//System.out.println(list.size() + "< -- list.size");
+	//System.out.println(totalScore + "< -- 선택된 제품 리뷰 합계");
 %>
 
 
@@ -105,6 +150,13 @@
 			border-bottom: 1px solid white;
 		}
 		
+		.aTags{
+			color: black;
+			font-size: 25px;
+			padding-left: 60px;
+			padding-right: 60px;
+		}
+		
 		#contentDiv{
 			width: 600px;
 			max-height: 600px;
@@ -155,6 +207,7 @@
 		
 		#goodsComment{
 			height: 100%;
+			max-height:100%;
 			border: 3px solid white;
 			border-radius: 10px;
 		}
@@ -171,6 +224,25 @@
 		
 		.startRadio{
 			width: 30px;
+		}
+		
+		.star-rating span {
+		    font-size: 40px;
+		    position: relative;
+		    display: inline-block;
+		    color: white;
+		}
+		
+		.star-rating span.full, .star-rating span.half:before {
+		    color: black; 
+		}
+		
+		.star-rating span.half:before {
+		    content: '★';
+		    position: absolute;
+		    left: 0;
+		    width: 50%; 
+		    overflow: hidden;
 		}
 		
 	</style>
@@ -207,57 +279,119 @@
 		</div>
 		<div id="commentDiv">
 			<div id="goodsComment">
-			<%
-				for(HashMap m : list){
-			%>
-					<div id="customerCmt">
-						<div>
-							익명 : <%=(String)m.get("content")%>
+				<%
+					for(HashMap m : list){
+				%>
+						<div id="customerCmt">
+							<div>
+								익명 : <%=(String)m.get("content")%>
+							</div>
+							<div>
+								평가점수 : <%=(Integer)m.get("score")%> 점
+								&nbsp;&nbsp;&nbsp;
+								 <%=(String)m.get("createDate")%> 
+								 <a>수정</a>
+								 <a>삭제</a>
+							</div>												
 						</div>
-						<div>
-							평가점수 : <%=(Integer)m.get("score")%> 점
-							&nbsp;&nbsp;&nbsp;
-							 <%=(String)m.get("createDate")%> 
-						</div>												
-					</div>
-					<hr>
-			<%
-				}
-			%>
+						<hr>
+				<%
+					}
+				%>
 			</div>
 			<%
 				// 제품을 구매하고 배송완료된 사람만 후기 작성할 수 있게 분기
 				if(orderNo > 0){
 			%>
-				<div style="background-color:yellow;">
-					<form action="/shop/customer/addCommentAction.jsp" method="post">
+					<div style="background-color:yellow;">
+						<form action="/shop/customer/addCommentAction.jsp" method="post">
+							<div>
+								<input type="hidden" value="<%=orderNo%>" name="orderNo">
+								<input type="hidden" value="<%=goodsNo%>" name="goodsNo">
+								<span>&nbsp;&nbsp;상품 만족도 평가 : </span>
+								<label>
+							    	<input type="radio" name="rating" value="1"  class="startRadio"/> 1점
+							  	</label>
+							  	<label>
+							    	<input type="radio" name="rating" value="2" class="startRadio"/> 2점
+							  	</label>
+							  	<label>
+								    <input type="radio" name="rating" value="3" class="startRadio"/> 3점
+							  	</label>
+							  	<label>
+								    <input type="radio" name="rating" value="4" class="startRadio"/> 4점
+								  </label>
+							  	<label>
+								    <input type="radio" name="rating" value="5" class="startRadio"/> 5점
+							  	</label>
+							</div>
+							<input type="text" name="comment">
+							<button type="submit">입력</button>
+							<button>
+								<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
+							</button>
+						</form>
+					</div>
+			<%
+				}else{
+			%>
+					<div  class="d-flex justify-content-between">
 						<div>
-							<input type="hidden" value="<%=orderNo%>" name="orderNo">
-							<input type="hidden" value="<%=goodsNo%>" name="goodsNo">
-							<span>&nbsp;&nbsp;상품 만족도 평가 : </span>
-							<label>
-						    	<input type="radio" name="rating" value="1"  class="startRadio"/> 1점
-						  	</label>
-						  	<label>
-						    	<input type="radio" name="rating" value="2" class="startRadio"/> 2점
-						  	</label>
-						  	<label>
-							    <input type="radio" name="rating" value="3" class="startRadio"/> 3점
-						  	</label>
-						  	<label>
-							    <input type="radio" name="rating" value="4" class="startRadio"/> 4점
-							  </label>
-						  	<label>
-							    <input type="radio" name="rating" value="5" class="startRadio"/> 5점
-						  	</label>
+							 평균 별점: <%= String.format("%.1f", averageScore) %> / 5
+						    <div class="star-rating">
+					        	<% 
+							    	for (int i = 1; i <= 5; i++) {
+								        if (i <= (int)averageScore) {
+								    %>
+								        <span class="full">&#9733;</span>
+								    <% 
+								        } else if (i - averageScore > 0 && i - averageScore < 1) { 
+								    %>
+								        <span class="half">&#9733;</span>
+								    <% 
+								        } else { 
+								    %>
+								        <span>&#9733;</span>
+								    <% 
+								        }
+								    }
+							    %>
+						    </div>
 						</div>
-						<input type="text" name="comment">
-						<button type="submit">입력</button>
-						<button>
-							<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
-						</button>
-					</form>
-				</div>
+						<div class="mt-4 d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
+							<button type="button" class="btn btn-light border border-secondary"  >
+								<%
+									if(currentPage > 1){
+								%>
+									<a href="/shop/customer/goodsOne.jsp?no=<%=goodsNo%>&currentPage=<%=currentPage -1%>" class="aTags">이전</a>
+								<%
+									}else{
+								%>
+									<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+								<%
+									}
+								%>
+							</button>
+							<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
+							<button type="button" class="btn btn-light border border-secondary">
+								<%if(currentPage < lastPage ){
+								%>
+									<a href="/shop/customer/goodsOne.jsp?no=<%=goodsNo%>&currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
+								<%
+								}else{
+								%>
+									<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+								<%
+								}
+								%>
+							</button>
+						</div>
+						<div class="mt-3">
+							<button class="btn btn-light border border-secondary">
+								<a class="aTags" href="/shop/customer/goodsList.jsp">뒤로가기</a>
+							</button>
+						</div>
+					</div>
 			<%
 				}
 			%>
