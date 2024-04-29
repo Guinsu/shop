@@ -291,7 +291,7 @@
 								&nbsp;&nbsp;&nbsp;
 								 <%=(String)m.get("createDate")%> 
 								 <a>수정</a>
-								 <a>삭제</a>
+								 <a href="deleteCommentAction.jsp?commentNo=<%=(Integer)m.get("commentNo")%>">삭제</a>
 							</div>												
 						</div>
 						<hr>
