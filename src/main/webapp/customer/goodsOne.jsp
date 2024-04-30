@@ -15,6 +15,7 @@
 
 	//세션에서 loginMember 가져오기
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
+	String customerId = String.valueOf(loginMember.get("customerId"));
 	
 	// 주문번호, 제품번호 받기
 	int goodsNo = Integer.parseInt(request.getParameter("no"));
@@ -61,6 +62,7 @@
 	//System.out.println(goodsNo);
 	//System.out.println(orderString +  "< - orderString");
 	//System.out.println(orderNo);
+	
 %>
 
 
@@ -71,7 +73,6 @@
 
 	// 선택된 goods 제품의 댓글 가져오기
 	ArrayList<HashMap<String, Object>> list = CommentDao.commentList(goodsNo, startRow, rowPerPage);
-
 	ArrayList<HashMap<String, Object>> comment = CommentDao.commentScoreSum(goodsNo);
 	
 	
@@ -81,8 +82,12 @@
 	totalScore = sum;
 	
 	
-	double averageScore =  totalScore / cnt;
+	double averageScore = 0;
 	
+	if (cnt > 0) {
+	    averageScore = totalScore / cnt;
+	} 
+
 	//디버깅
 	//System.out.println(goodsNo + "< -- goodsNo");
 	//System.out.println(orderNo + "< -- orderNo");
@@ -145,7 +150,9 @@
 			border: 3px solid white;
 			margin: 0px;
 		}
-		
+		h3{
+			font-size: 50px;
+		}
 		.borderDiv{
 			border-bottom: 1px solid white;
 		}
@@ -280,21 +287,33 @@
 		<div id="commentDiv">
 			<div id="goodsComment">
 				<%
-					for(HashMap m : list){
+					if(list.size() > 0){
+						for(HashMap m : list){
 				%>
-						<div id="customerCmt">
-							<div>
-								익명 : <%=(String)m.get("content")%>
+							<div id="customerCmt">
+								<div>
+									익명 : <%=(String)m.get("content")%>
+								</div>
+								<div>
+									평가점수 : <%=(Integer)m.get("score")%> 점
+									&nbsp;&nbsp;&nbsp;
+									 <%=(String)m.get("createDate")%> 
+									 <%
+									 	if(customerId.equals((String)m.get("email"))){
+							 		%>
+									 <a href="deleteCommentAction.jsp?commentNo=<%=(Integer)m.get("commentNo")%>&orderNo=<%=(Integer)m.get("orderNo")%>&goodsNo=<%=(Integer)m.get("goodsNo")%>&no=<%=goodsNo%>&currentPage=<%=currentPage%>">삭제</a>						 		
+							 		<%
+									 	}
+									 %>
+								</div>												
 							</div>
-							<div>
-								평가점수 : <%=(Integer)m.get("score")%> 점
-								&nbsp;&nbsp;&nbsp;
-								 <%=(String)m.get("createDate")%> 
-								 <a>수정</a>
-								 <a href="deleteCommentAction.jsp?commentNo=<%=(Integer)m.get("commentNo")%>">삭제</a>
-							</div>												
-						</div>
-						<hr>
+							<hr>
+				
+				<%		
+						}
+					}else{
+				%>
+						<h3 class="d-flex justify-content-center align-items-center">후기가 존재하지 않습니다.</h3>
 				<%
 					}
 				%>
@@ -303,7 +322,7 @@
 				// 제품을 구매하고 배송완료된 사람만 후기 작성할 수 있게 분기
 				if(orderNo > 0){
 			%>
-					<div style="background-color:yellow;">
+					<div>
 						<form action="/shop/customer/addCommentAction.jsp" method="post">
 							<div>
 								<input type="hidden" value="<%=orderNo%>" name="orderNo">

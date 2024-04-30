@@ -124,6 +124,9 @@
 			font-size: 30px;
 			color: black;
 		}
+		#emptyCartDiv{
+			width: 100%;
+		}
 	</style>
 </head>
 <body>
@@ -189,7 +192,12 @@
 		<%
 			}else{
 		%>
-				<div>장바구니에 아무런 제품이 없습니다!</div>
+				<div class="d-flex flex-column justify-content-center align-items-center" id="emptyCartDiv">
+					<h3>장바구니에 아무런 제품이 없습니다!</h3>
+					<button>
+						<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
+					</button>
+				</div>
 		<%
 			}
 		%>

@@ -3,7 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="shop.dao.*" %>
     
-<!--controller layer  -->
+<!--controller layer-->
 <%
 	//인증 분기  
 	if(session.getAttribute("loginCustomer")== null){
@@ -11,6 +11,10 @@
 		return;
 	}
 
+	//세션에서 loginMember 가져오기
+	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
+	
+	String customerId = String.valueOf(loginMember.get("customerId"));
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	int score = Integer.parseInt(request.getParameter("rating"));
@@ -27,7 +31,7 @@
 <!-- model layer -->
 <%
 	//상품 댓글 및 점수 저장하기
-	CommentDao.addCommentAndScore(orderNo, goodsNo, score, content);
+	CommentDao.addCommentAndScore(orderNo, goodsNo, customerId,  score, content);
 	response.sendRedirect("/shop/customer/goodsOne.jsp?no="+goodsNo);
 %>
 

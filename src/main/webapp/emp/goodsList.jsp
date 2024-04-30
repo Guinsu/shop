@@ -221,7 +221,6 @@
 						<div>생성 날짜 : <%=(String)(m3.get("createDate"))%></div>
 					</div>
 					<div class="mb-2">
-						<a href="" class="listATag">수정</a>
 						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
 					</div>
 				</div>
@@ -247,7 +246,6 @@
 						<div>생성 날짜 : <%=(String)(m2.get("createDate"))%></div>
 					</div>
 					<div class="mb-2">
-						<a href="" class="listATag">수정</a>
 						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
 					</div>
 				</div>

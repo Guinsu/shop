@@ -6,21 +6,22 @@ public class CommentDao {
 	
 	//comment 정보 저장
 	public static int addCommentAndScore(
-		int orderNo, int goodsNo, int score, String content) throws Exception{
+		int orderNo, int goodsNo, String customerId, int score, String content) throws Exception{
 			
 		PreparedStatement stmt = null;
 		PreparedStatement stmt2 = null;
+		int row2 = 0;
 		Connection conn = DBHelper.getConnection();
 		
-		String sql1 = "INSERT INTO comment (order_no, goods_no, score, content, update_date, create_date) VALUES (?,?,?,?,NOW(),NOW());";
+		String sql1 = "INSERT INTO comment (order_no, goods_no, email, score, content, update_date, create_date) VALUES (?,?,?,?,?,NOW(),NOW());";
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setInt(1,orderNo);
 		stmt.setInt(2,goodsNo);
-		stmt.setInt(3,score);
-		stmt.setString(4,content);
+		stmt.setString(3,customerId);
+		stmt.setInt(4,score);
+		stmt.setString(5,content);
 		
 		int row = stmt.executeUpdate();
-		int row2 = 0;
 		
 		if(row > 0) {
 			String sql2 = "UPDATE orders SET comment_state = ? WHERE order_no = ? AND goods_no =?";
@@ -45,7 +46,7 @@ public class CommentDao {
 			
 		Connection conn = DBHelper.getConnection();
 		
-		String sql2 = "SELECT comment_no commentNo, goods_no goodsNo, content, score, create_date createDate FROM comment WHERE goods_no = ? ORDER BY comment_no ASC limit ?,?";
+		String sql2 = "SELECT comment_no commentNo, order_no orderNo, goods_no goodsNo, email, content, score, create_date createDate FROM comment WHERE goods_no = ? ORDER BY comment_no ASC limit ?,?";
 		stmt = conn.prepareStatement(sql2);
 		stmt.setInt(1, goodsNo);
 		stmt.setInt(2, startRow);
@@ -55,7 +56,9 @@ public class CommentDao {
 		while(rs.next()){
 			HashMap<String, Object> m = new HashMap<String, Object>();
 			m.put("commentNo", rs.getInt("commentNo"));
+			m.put("orderNo", rs.getInt("orderNo"));
 			m.put("goodsNo", rs.getInt("goodsNo"));
+			m.put("email", rs.getString("email"));
 			m.put("content", rs.getString("content"));
 			m.put("score", rs.getInt("score"));
 			m.put("createDate", rs.getString("createDate"));
@@ -114,6 +117,25 @@ public class CommentDao {
 		conn.close();
 		return list;
 	}
+	
+	// 선택된 comment 삭제하기
+	public static int deleteComment(
+			int commentNo, int orderNo, int goodsNo) throws Exception{
+				
+			PreparedStatement stmt = null;
+			Connection conn = DBHelper.getConnection();
+			
+			String sql = "DELETE FROM COMMENT WHERE comment_no = ? AND order_no =? AND goods_no = ?";
+			stmt = conn.prepareStatement(sql);	
+			stmt.setInt(1,commentNo);
+			stmt.setInt(2,orderNo);
+			stmt.setInt(3,goodsNo);
+
+			int row = stmt.executeUpdate();
+			
+			conn.close();
+			return row;
+		}
 		
 }
 

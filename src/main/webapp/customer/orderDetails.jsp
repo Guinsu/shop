@@ -11,7 +11,7 @@
 	}
 
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
-
+	
 	String customerId = (String)loginMember.get("customerId");
 	String searchWord = "";
 	
@@ -203,91 +203,104 @@
 		</div>
 	</header>
 	<main class="d-flex justify-content-center  align-items-center flex-column">
-		<table>
-			<tr>
-				<th>주문번호</th>
-				<th>제품이름</th>
-				<th>진행상태</th>
-				<th>제품가격</th>
-				<th>제품개수</th>
-				<th>후기작성</th>
-			</tr>
-			<%
-				for(HashMap m : list){
-					if("N".equals((String)m.get("commentState")) && "배송완료".equals((String)m.get("state"))){
-						//디버깅 
-						//System.out.println((String)m.get("commentState"));
-			%>
-						<tr>
-							<td><%=(Integer)m.get("orderNo")%></td>
-							<td><%=(String)m.get("goodsTitle")%></td>
-							<td><%=(String)m.get("state")%></td>
-							<td><%=(Integer)m.get("price")%></td>
-							<td>1</td>
-							<td>
-								<button id="formBtn">
-									<a href="/shop/customer/goodsOne.jsp?no=<%=m.get("no")%>&orderNo=<%=(Integer)m.get("orderNo")%>">후기작성 하기</a>
-								</button>
-							</td>
-						</tr>
-			<%	
-					}else if("Y".equals((String)m.get("commentState")) && "배송완료".equals((String)m.get("state"))){
-			%>
-						<tr>
-							<td><%=(Integer)m.get("orderNo")%></td>
-							<td><%=(String)m.get("goodsTitle")%></td>
-							<td><%=(String)m.get("state")%></td>
-							<td><%=(Integer)m.get("price")%></td>
-							<td>1</td>
-							<td>
-								후기 작성 완료
-							</td>
-						</tr>
-			<%
-					}else{	
-			%>
-						<tr>
-							<td><%=(Integer)m.get("orderNo")%></td>
-							<td><%=(String)m.get("goodsTitle")%></td>
-							<td><%=(String)m.get("state")%></td>
-							<td><%=(Integer)m.get("price")%></td>
-							<td>1</td>
-							<td>배송진행 중 입니다.</td>
-						</tr>
-			<%
-					}
-				}
-			%>
-		</table>
-		<div class="d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-light border border-secondary"  >
+		<%
+			if(customerId.equals((String)list.get(0).get("email"))){
+		%>
+			<table>
+				<tr>
+					<th>주문번호</th>
+					<th>제품이름</th>
+					<th>진행상태</th>
+					<th>제품가격</th>
+					<th>제품개수</th>
+					<th>후기작성</th>
+				</tr>
 				<%
-					if(currentPage > 1){
+					for(HashMap m : list){
+						if("N".equals((String)m.get("commentState")) && "배송완료".equals((String)m.get("state"))){
+							//디버깅 
+							//System.out.println((String)m.get("commentState"));
 				%>
-						<a href="/shop/customer/orderDetails.jsp?currentPage=<%=currentPage -1%>" class="aTags">이전</a>
-				<%
-					}else{
+							<tr>
+								<td><%=(Integer)m.get("orderNo")%></td>
+								<td><%=(String)m.get("goodsTitle")%></td>
+								<td><%=(String)m.get("state")%></td>
+								<td><%=(Integer)m.get("price")%></td>
+								<td>1</td>
+								<td>
+									<button id="formBtn">
+										<a href="/shop/customer/goodsOne.jsp?no=<%=m.get("no")%>&orderNo=<%=(Integer)m.get("orderNo")%>">후기작성 하기</a>
+									</button>
+								</td>
+							</tr>
+				<%	
+						}else if("Y".equals((String)m.get("commentState")) && "배송완료".equals((String)m.get("state"))){
 				%>
-						<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+							<tr>
+								<td><%=(Integer)m.get("orderNo")%></td>
+								<td><%=(String)m.get("goodsTitle")%></td>
+								<td><%=(String)m.get("state")%></td>
+								<td><%=(Integer)m.get("price")%></td>
+								<td>1</td>
+								<td>
+									후기 작성 완료
+								</td>
+							</tr>
 				<%
+						}else{	
+				%>
+							<tr>
+								<td><%=(Integer)m.get("orderNo")%></td>
+								<td><%=(String)m.get("goodsTitle")%></td>
+								<td><%=(String)m.get("state")%></td>
+								<td><%=(Integer)m.get("price")%></td>
+								<td>1</td>
+								<td>배송진행 중 입니다.</td>
+							</tr>
+				<%
+						}
 					}
 				%>
+			</table>
+			<div class="d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-light border border-secondary"  >
+					<%
+						if(currentPage > 1){
+					%>
+							<a href="/shop/customer/orderDetails.jsp?currentPage=<%=currentPage -1%>" class="aTags">이전</a>
+					<%
+						}else{
+					%>
+							<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+					<%
+						}
+					%>
+				</button>
+				<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
+				<button type="button" class="btn btn-light border border-secondary">
+					<%	if(currentPage < lastPage ){
+					%>
+							<a href="/shop/customer/orderDetails.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
+					<%
+						}else{
+					%>
+							<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+					<%
+						}
+					%>
+				</button>
+				<a class="goBackHomeTag" href="/shop/customer/goodsList.jsp">뒤로가기</a>
+			</div>
+		<%
+			}else{
+		%>
+			<h3>주문하신 내역이 없습니다.</h3>
+			<button>
+				<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
 			</button>
-			<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-			<button type="button" class="btn btn-light border border-secondary">
-				<%	if(currentPage < lastPage ){
-				%>
-						<a href="/shop/customer/orderDetails.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
-				<%
-					}else{
-				%>
-						<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
-				<%
-					}
-				%>
-			</button>
-			<a class="goBackHomeTag" href="/shop/customer/goodsList.jsp">뒤로가기</a>
-		</div>
+		<%
+			}
+		%>
 	</main>
 </body>
 </html>
