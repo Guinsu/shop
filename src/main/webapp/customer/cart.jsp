@@ -143,7 +143,7 @@
 			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
 		</div>
 	</header>
-	<main class="d-flex">
+	<main class="d-flex justify-content-center">
 		<%
 			if(list.size() > 0){
 		%>

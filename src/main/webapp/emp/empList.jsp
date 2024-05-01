@@ -95,8 +95,11 @@
 		input{
 			width: 500px;
 			height: 40px;
+		}		
+		.aTags{
+			padding-left: 200px;
+			padding-right: 200px;
 		}
-		
 		#currentNum{
 			font-size: 30px;
 			color: black;
@@ -111,10 +114,6 @@
 		#searchBtn{
 			width: 60px;
 			height: 40px;
-		}
-		.aTags{
-			padding-left: 200px;
-			padding-right: 200px;
 		}
 	</style>
 	<title>empList page</title>

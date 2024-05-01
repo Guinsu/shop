@@ -132,7 +132,7 @@
 		
 		button{
 			width: 200px;
-			height: 100%;
+			height: 100px;
 		}
 		header{
 			border-bottom: 1px solid black
@@ -405,7 +405,7 @@
 								%>
 							</button>
 						</div>
-						<div class="mt-3">
+						<div class="mt-4">
 							<button class="btn btn-light border border-secondary">
 								<a class="aTags" href="/shop/customer/goodsList.jsp">뒤로가기</a>
 							</button>

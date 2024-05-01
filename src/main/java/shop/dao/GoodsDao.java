@@ -156,7 +156,7 @@ public class GoodsDao {
 		return goodsTotalCnt;
 	}
 	
-	//goodsOne
+	//goodsOne 제품 하나씩 보기
 	public static HashMap<String, Object> selectGoodsOne(int no) throws Exception{
 		
 		PreparedStatement stmt = null;
@@ -180,7 +180,29 @@ public class GoodsDao {
 			list.put("createDate",rs.getString("createDate"));
 		}
 		
+		conn.close();
 		return  list;
 	}
+	
+	//goods 제품을 장바구니에 담으면 주문 개수에 맞게 수량 감소 
+	
+	public static void changeGoodsAmount(String category, String title, int price,  int amount) throws Exception{
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		Connection conn = DBHelper.getConnection();
+		
+		String sql = "UPDATE goods SET goods_amount = ?, update_date = NOW() WHERE category = ?  AND goods_title = ? AND goods_price = ? ";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, amount - 1);
+		stmt.setString(2, category); 
+		stmt.setString(3, title);
+		stmt.setInt(4, price); 
+		stmt.executeUpdate();	
+		
+		conn.close();
+		return;
+	}
+	
 
 }

@@ -26,11 +26,13 @@
 	//형변환
 	String customerId = (String)loginMember.get("customerId");
 	String goodsTitle = (String)selectGoodsOne.get("title");
+	String category = (String)selectGoodsOne.get("category");
 	int price = ((Integer) selectGoodsOne.get("price")).intValue();  
 	int amount = ((Integer) selectGoodsOne.get("amount")).intValue();  
 
 	//선택한 goods 장바구니에 저장하기
 	OrderDao.addOrderAction(customerId, no, goodsTitle, price, amount);
+	GoodsDao.changeGoodsAmount(category, goodsTitle, price, amount);
 	response.sendRedirect("/shop/customer/goodsList.jsp");
 	
 	

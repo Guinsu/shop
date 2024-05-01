@@ -35,7 +35,8 @@
 	//장바구니 제품 결제하기
 	int paymentGoods = OrderDao.paymentGoods(address, payment, customerId, orderNo);
 	
-	if(paymentGoods > 0){		
+	if(paymentGoods > 0){
+		
 		response.sendRedirect("/shop/customer/goodsList.jsp");
 	}else{
 		response.sendRedirect("/shop/customer/cart.jsp");

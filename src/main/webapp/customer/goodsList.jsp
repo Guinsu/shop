@@ -13,7 +13,8 @@
 	}
 	
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
-
+	String customerId = String.valueOf(loginMember.get("customerId"));
+	
 	String category = request.getParameter("category");
 	
 	int totalRow = 0;
@@ -60,7 +61,7 @@
 	ArrayList<HashMap<String, Object>> categoryList2 = GoodsDao.selectGoodsList(category,startRow,rowPerPage);
 	ArrayList<HashMap<String, Object>> categoryList3 = GoodsDao.selectGoodsContent(startRow, rowPerPage);
 	int goodsTotalCnt = GoodsDao.selectGoodsContent();
-	int selectOrderCount = OrderDao.selectOrderCount();
+	int selectOrderCount = OrderDao.selectOrderCount(customerId);
 	
 	//디버깅
 	//System.out.println(goodsTotalCnt);
@@ -87,7 +88,7 @@
   			font-size: 20px;
   			font-style: normal;
   			background-color: #FCE4EC;
-			}
+		}
 		img{
 			width: 250px;
 			height: 300px;

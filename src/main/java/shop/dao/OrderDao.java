@@ -17,7 +17,7 @@ public class OrderDao {
 		stmt.setInt(2,goodsNo);
 		stmt.setString(3,goodsTitle);
 		stmt.setInt(4,price);
-		stmt.setInt(5,totalAmount);
+		stmt.setInt(5,1);
 		stmt.setString(6,"입력대기");
 		stmt.setString(7,"결제대기");
 		int row = stmt.executeUpdate();
@@ -95,16 +95,17 @@ public class OrderDao {
 	
 	
 	// "결제대기" 상태인 order 전체 개수 가져오기
-	public static int selectOrderCount()throws Exception{
+	public static int selectOrderCount(String customerId)throws Exception{
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
 		int orderTotalCount = 0;
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "SELECT count(order_no) cnt FROM orders WHERE state = ?;";
+		String sql = "SELECT count(order_no) cnt FROM orders WHERE state = ? AND email = ?;";
 		stmt = conn.prepareStatement(sql);	
 		stmt.setString(1, "결제대기");
+		stmt.setString(2, customerId);
 		rs = stmt.executeQuery();
 		
 		if(rs.next()){
@@ -168,7 +169,7 @@ public class OrderDao {
 		
 		String sql = "UPDATE orders SET total_amount = ?, state = ?, update_date = NOW() WHERE email = ?  AND order_no = ? AND goods_no = ? ";
 		stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, totalAmount - 1);
+		stmt.setInt(1, 1);
 		stmt.setString(2, orderState);
 		stmt.setString(3, customerId);
 		stmt.setInt(4, orderNo); 
