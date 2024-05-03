@@ -99,7 +99,7 @@
 		
 		h1{
 			font-size: 100px;
-			margin-left: 50px;
+			margin-left: 100px;
 		}
 		
 		button{
@@ -197,7 +197,12 @@
 			font-size: 30px;
 			color: black;
 		}
-		
+		#userMenuBar{
+			padding-top: 100px;
+		}
+		#emptyDiv{
+			margin-left: 100px;
+		}
 	</style>
 </head>
 <body>
@@ -206,10 +211,13 @@
 		<div>
 			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
 		</div>
+		<div>
+			<div id="emptyDiv">&nbsp;</div>
+		</div>
 		<div class="d-flex justify-content-center align-items-center">
 			<h1>캐치! 티니핑</h1>
 		</div>
-		<div class="d-flex justify-content-center align-items-center">
+		<div class="d-flex justify-content-center align-items-center" id="userMenuBar">
 			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
 			<a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
 			<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
