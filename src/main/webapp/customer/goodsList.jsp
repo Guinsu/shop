@@ -122,6 +122,7 @@
 			border-radius: 10px;
 			padding-right : 10px;
 			padding-left: 10px;
+			border: 1px solid white;
 		}
 		.aTags{
 			color: black;
@@ -139,7 +140,7 @@
 			margin-right: 10px;
 		}
 		.saveGoodsATag{
-			border: 1px solid black;
+			border: 1px solid white;
 			border-radius: 10px;
 			height: 50px;
 			width: 100px;

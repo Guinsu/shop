@@ -10,7 +10,10 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
-
+	HashMap<String, Object> loginEmp = (HashMap<String, Object>)session.getAttribute("loginEmp");
+	String empName = String.valueOf(loginEmp.get("empName"));
+	
+	
 	String searchWord = "";
 	
 	//현재 페이지 값 
@@ -56,9 +59,9 @@
 <%
 
 	//모든 order 정보 가져오기
-	ArrayList<HashMap<String, Object>> selectAllOrder = OrderDao.selectAllOrder(searchWord, startRow, rowPerPage);
+	ArrayList<HashMap<String, Object>> selectAllOrder = OrderDao.selectAllOrder(empName, searchWord, startRow, rowPerPage);
 	
-	//디버긍
+	//디버깅
 	//System.out.println(selectAllOrder);
 %>
 

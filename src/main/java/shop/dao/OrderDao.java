@@ -58,7 +58,7 @@ public class OrderDao {
 	}
 	
 	//모든 order 가져오기
-	public static ArrayList<HashMap<String, Object>> selectAllOrder(String searchWord, int startRow, int rowPerPage )throws Exception{
+	public static ArrayList<HashMap<String, Object>> selectAllOrder(String empName, String searchWord, int startRow, int rowPerPage )throws Exception{
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
@@ -67,11 +67,17 @@ public class OrderDao {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 			
 	
-		String sql = "SELECT order_no orderNo, email, goods_no no, goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,update_date updateDate FROM orders WHERE state != '결제대기' AND email LIKE ? ORDER BY order_no DESC limit ?,?;";
+		String sql = "SELECT order_no orderNo, email, orders.goods_no no, orders.goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,orders.update_date updateDate, emp_id "
+				+ "FROM orders "
+				+ "INNER JOIN goods "
+				+ "ON orders.goods_no = goods.goods_no "
+				+ "WHERE emp_id = ? AND state != '결제대기' AND email LIKE ? "
+				+ "ORDER BY order_no DESC limit ?,?;";
 		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, "%"+searchWord+"%");
-		stmt.setInt(2, startRow);
-		stmt.setInt(3, rowPerPage);
+		stmt.setString(1, empName);
+		stmt.setString(2, "%"+searchWord+"%");
+		stmt.setInt(3, startRow);
+		stmt.setInt(4, rowPerPage);
 		rs = stmt.executeQuery();
 		
 		while(rs.next()) {
