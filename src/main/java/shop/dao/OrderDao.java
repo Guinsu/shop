@@ -57,7 +57,7 @@ public class OrderDao {
 		return list;
 	}
 	
-	//모든 order 가져오기
+	//내가 등록한 상품의 모든 order 가져오기
 	public static ArrayList<HashMap<String, Object>> selectAllOrder(String empName, String searchWord, int startRow, int rowPerPage )throws Exception{
 		
 		PreparedStatement stmt = null;
@@ -99,6 +99,47 @@ public class OrderDao {
 		return list;
 	}
 	
+	
+	//내가 주문한 모든 order 가져오기
+		public static ArrayList<HashMap<String, Object>> selectMyAllOrder(String customerId, String searchWord, int startRow, int rowPerPage )throws Exception{
+			
+			PreparedStatement stmt = null;
+			ResultSet rs = null; 
+			Connection conn = DBHelper.getConnection();
+			
+			ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+				
+		
+			String sql = "SELECT order_no orderNo, email, goods_no no, goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,update_date updateDate "
+					+ "FROM orders "
+					+ "WHERE email =? AND state != '결제대기' AND email LIKE ? "
+					+ "ORDER BY order_no DESC limit ?,?;";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			stmt.setString(2, "%"+searchWord+"%");
+			stmt.setInt(3, startRow);
+			stmt.setInt(4, rowPerPage);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				HashMap<String, Object> m = new HashMap<String, Object>();
+				m.put("orderNo",rs.getInt("orderNo"));
+				m.put("email",rs.getString("email"));
+				m.put("no",rs.getInt("no"));
+				m.put("goodsTitle",rs.getString("goodsTitle"));
+				m.put("price",rs.getInt("price"));
+				m.put("totalAmount",rs.getInt("totalAmount"));
+				m.put("address",rs.getString("address"));
+				m.put("state",rs.getString("state"));
+				m.put("commentState",rs.getString("commentState"));
+				m.put("updateDate",rs.getString("updateDate"));
+				list.add(m);
+			}
+			
+			conn.close();
+			return list;
+		}
+		
 	
 	// "결제대기" 상태인 order 전체 개수 가져오기
 	public static int selectOrderCount(String customerId)throws Exception{

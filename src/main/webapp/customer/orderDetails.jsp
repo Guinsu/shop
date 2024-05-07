@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="shop.dao.*" %>
 
+<!--controller layer  -->
 <%
 	//인증 분기  
 	if(session.getAttribute("loginCustomer")== null){
@@ -15,8 +16,6 @@
 	String customerId = (String)loginMember.get("customerId");
 	String searchWord = "";
 	
-	//디버깅
-	//System.out.println(no);
 	
 	int totalRow = OrderDao.orderCount(searchWord);
 	
@@ -53,12 +52,16 @@
 <%
 
 	//orders 테이블에 있는 모든 제품보기
-	ArrayList<HashMap<String, Object>> list = OrderDao.selectAllOrder(searchWord, startRow, rowPerPage);
+	ArrayList<HashMap<String, Object>> list = OrderDao.selectMyAllOrder(customerId, searchWord, startRow, rowPerPage);
 	
 	//디버깅
 	//System.out.println(list);
+	//System.out.println(customerId);
+	//System.out.println(no);
 %>
 
+
+<!-- view Layer -->
 <!DOCTYPE html>
 <html>
 <head>
