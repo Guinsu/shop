@@ -10,7 +10,8 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
-	
+
+	HashMap<String, Object> sm = (HashMap<String, Object>)session.getAttribute("loginEmp");
 	String searchWord = "";
 	
 	//현재 페이지 값 
@@ -142,8 +143,7 @@
 				for(HashMap<String, Object> m : list){
 			%>
 				<tr>
-					<%
-						HashMap<String, Object> sm = (HashMap<String, Object>)session.getAttribute("loginEmp"); 
+					<% 
 						if((Integer)sm.get("grade") > 0){
 					%>
 					<td><%=(String)(m.get("empId"))%></td>

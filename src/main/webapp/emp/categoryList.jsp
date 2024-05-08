@@ -10,10 +10,12 @@
 		return;
 	}
 	
+	HashMap<String, Object> sm = (HashMap<String, Object>)session.getAttribute("loginEmp");
 %>
 
 <!-- model layer -->
 <%
+	
 	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCateogrys();
 
 	int totalCount = 0;
@@ -85,28 +87,30 @@
 		<h1>카테고리 관리</h1>
 		<div>
 			<%
-				for(HashMap list : categoryList){
+				if((Integer)sm.get("grade") > 0){
+					for(HashMap list : categoryList){
 			%>	
-				<div class="d-flex justify-content-between" id="categoryDiv">
-					<div>
-						<div>제목 :<%=(String)list.get("category")%></div>
-						<div>작성일 :<%=(String)list.get("createDate")%></div>
-					</div>
-					<div>
-						<a class="categoryATag" href="/shop/emp/modifyCategoryForm.jsp?category=<%=(String)list.get("category")%>">수정</a>
-						<a class="categoryATag" href="/shop/emp/deleteCategoryAction.jsp?category=<%=(String)list.get("category")%>&createDate=<%=(String)list.get("createDate")%>">삭제</a>
-					</div>
-				</div>
-				<hr>
+						<div class="d-flex justify-content-between" id="categoryDiv">
+							<div>
+								<div>제목 :<%=(String)list.get("category")%></div>
+								<div>작성일 :<%=(String)list.get("createDate")%></div>
+							</div>
+							<div>
+								<a class="categoryATag" href="/shop/emp/modifyCategoryForm.jsp?category=<%=(String)list.get("category")%>">수정</a>
+								<a class="categoryATag" href="/shop/emp/deleteCategoryAction.jsp?category=<%=(String)list.get("category")%>&createDate=<%=(String)list.get("createDate")%>">삭제</a>
+							</div>
+						</div>
+						<hr>
+						<div class="d-flex justify-content-between" >
+							<div>전체 카테고리 합계 : <%=totalCount%> </div>
+							<div>
+								<a class="categoryATag" href="/shop/emp/addCategoryForm.jsp">카테고리 추가</a>
+							</div>
+						</div>
 			<%
+					}
 				}
 			%>
-			<div class="d-flex justify-content-between" >
-				<div>전체 카테고리 합계 : <%=totalCount%> </div>
-				<div>
-					<a class="categoryATag" href="/shop/emp/addCategoryForm.jsp">카테고리 추가</a>
-				</div>
-			</div>
 		</div>
 	</main>
 </body>

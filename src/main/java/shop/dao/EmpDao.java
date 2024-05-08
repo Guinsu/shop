@@ -174,7 +174,7 @@ public class EmpDao {
 		return row;
 	}
 	
-	//
+	//직원 정보 수정 
 	public static int modifyEmpOne(String empId,String empPw, String empName, String empJob)throws Exception{
 		
 		PreparedStatement stmt = null;
