@@ -41,8 +41,8 @@
 		h2{
 			text-align: center;
 			font-size: 70px;
-			color: white;
-			border: 1px solid #FDF5E6;
+			color: black;
+			border: 1px solid black;
 			border-radius: 30px;
 			padding: 30px;
 			margin-top: 30px;
@@ -50,7 +50,7 @@
 		h3{
 			text-align: center;
 			font-size: 50px;
-			color: white;
+			color: black;
 		}
 		button{
 			width: 200px;
@@ -66,7 +66,7 @@
 		.btnCustom {
             background-color: #FFEFD5;
             color: white;
-            border: none;
+            border: 1px solid black;
             padding: 10px 20px;
             font-size: 18px;
             border-radius: 10px;
