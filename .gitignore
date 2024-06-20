@@ -1,3 +1,7 @@
 /build/
 
-/shop.jsp/src/main/java/shop/dao/DBHelper.java
+.gitignore
+.classpath
+.project
+
+/src/main/java/shop/dao/DBHelper.java
