@@ -35,7 +35,7 @@
 			
 		}
 		form{
-			border: 1px solid white;
+			border: 1px solid black;
 			border-radius : 20px;
 			padding: 30px;
 		}
@@ -45,8 +45,8 @@
 			background: none;
 			border-radius: 20px;
 			font-size: 30px;
-			color: white;
-			border: 2px solid white;
+			color: black;
+			border: 2px solid black;
 		}
 		input{
 			height: 40px;
@@ -55,8 +55,8 @@
 		}
 		a{
 			text-decoration: none;
-			color: white;
-			border: 2px solid white;
+			color: black;
+			border: 2px solid black;
 			border-radius: 20px;
 			width: 200px;
 			height: 50px;
@@ -70,13 +70,13 @@
 		h3{
 			text-align: center;
 			font-size: 50px;
-			color: white;
+			color: black;
 		}
 		header{
-			border-bottom: 3px solid white;
+			border-bottom: 3px solid black;
 		}
 		label{
-			color: white;
+			color: black;
 		}
 		.loginDiv{
 			width: 100%;
