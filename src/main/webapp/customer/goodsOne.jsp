@@ -20,7 +20,11 @@
 	// 주문번호, 제품번호 받기
 	int goodsNo = Integer.parseInt(request.getParameter("no"));
 	String orderString = request.getParameter("orderNo");		
+	
+	//주문번호
 	int orderNo = 0;
+	
+	//별점
 	double totalScore = 0;
 	
 	// 제품을 구매하고 배송완료된 사람만 후기 작성할 수 있게 분기
@@ -68,6 +72,15 @@
 
 <!-- model layer -->
 <%
+	//카테고리 리스트 가져오기
+	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCategoryList();
+	
+	//모든 굿즈 개수 가져오기
+	int goodsTotalCnt = GoodsDao.selectGoodsContent();
+
+	//장바구니에 추가한 개수 가져오기
+	int selectOrderCount = OrderDao.selectOrderCount(customerId);
+	
 	// 선택된 goods 제품 정보 가져오기
 	HashMap<String, Object> goodsOne = GoodsDao.selectGoodsOne(goodsNo);
 
@@ -100,188 +113,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-		
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta charset="UTF-8">
 	<title>goodsOne page</title>
-	<style>
-		body{
-			width:100%;
-			height:100%;
-		 	font-family: "Dongle", sans-serif;
-  			font-size: 30px;
-  			font-style: normal;
-  			background-color: #FCE4EC;
-			}
-		img{
-			width: 450px;
-			height: 400px;
-		}
-		a{
-			text-decoration: none;
-			color:black;
-		}
-		h1{
-			font-size: 100px;
-			margin-left: 50px;
-		}
-		
-		button{
-			width: 200px;
-			height: 100px;
-		}
-		header{
-			border-bottom: 1px solid black
-		}
-		
-		input{
-			width: 500px;
-		}
-		
-		label{
-			width: 70px;
-		}
-		
-		hr{
-			border: 3px solid white;
-			margin: 0px;
-		}
-		h3{
-			font-size: 50px;
-		}
-		.borderDiv{
-			border-bottom: 1px solid white;
-		}
-		
-		.aTags{
-			color: black;
-			font-size: 25px;
-			padding-left: 60px;
-			padding-right: 60px;
-		}
-		
-		#contentDiv{
-			width: 600px;
-			max-height: 600px;
-		}
-		
-		#mainImg{
-			width: 150px;
-			height: 150px;
-		}
-		
-		#customerId{
-			font-size: 30px;
-		}
-		
-		#logoutAtag{
-			height: 40px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding-right: 20px;
-			padding-left: 20px;
-			font-size: 30px;
-			color: black;
-		}
-		
-		#customerOneAtag{
-			height: 40px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding-right: 20px;
-			padding-left: 20px;
-			font-size: 30px;
-			color: black;
-		}
-		
-		#contents{
-			border: 3px solid white;
-			border-radius: 10px;
-			margin-right: 10px;
-			margin-left: 10px;
-		}
-		
-		#commentDiv{
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			margin-right: 10px;
-		}
-		
-		#goodsComment{
-			height: 100%;
-			max-height:100%;
-			border: 3px solid white;
-			border-radius: 10px;
-		}
-		
-		#goBackATag{
-			padding-left: 50px;
-			padding-right: 50px;
-		}
-		
-		#customerCmt{
-			display: flex;
-			justify-content: space-between;
-		}
-		
-		.startRadio{
-			width: 30px;
-		}
-		
-		.star-rating span {
-		    font-size: 40px;
-		    position: relative;
-		    display: inline-block;
-		    color: white;
-		}
-		
-		.star-rating span.full, .star-rating span.half:before {
-		    color: black; 
-		}
-		
-		.star-rating span.half:before {
-		    content: '★';
-		    position: absolute;
-		    left: 0;
-		    width: 50%; 
-		    overflow: hidden;
-		}
-		
-	</style>
+	<link rel="stylesheet" href="/shop/css/customerGoodsOne.css" />
 </head>
 <body>
-	<header class="m-2 d-flex justify-content-between">
-		<div>
-			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<h1>캐치! 티니핑</h1>
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기</a>
-			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
-			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
-		</div>
+	<header >
+		<div class="slider">
+	        <div class="slides">
+	        	<div class="siteName">
+	        		Tiniping World
+	        	</div>
+	            <a href="https://www.emotioncastle.com/products/118208055">
+	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
+	            </a>
+	            <a href="https://www.emotioncastle.com/products/118207999">
+	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
+	            </a>
+	            <div>
+	        		<img alt="" src="/shop/img/hachuping.png">
+	        	</div>
+	        </div>
+	        <div class="dots">
+	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
+	            <span class="dot" id="secondDot" onclick="clickEvent(2)"></span>
+	        </div>
+         </div>
 	</header>
-	<main class="d-flex">
-		<div class="ms-3 d-flex flex-column justify-content-center align-items-center" id="contents">
-			<div id="imgDiv" class="d-flex justify-content-center">
-				<img alt="이미지" src="/shop/upload/<%=(String)(goodsOne.get("filename"))%>">
+	
+	<nav>  
+		<a href="/shop/customer/goodsList.jsp">홈</a>
+	     <div class="dropdown">
+            <a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>">상품 목록</a>
+            <div class="dropdown-content">
+            
+            	<!-- 카테고리 종류 가져오기 -->
+                <% for(HashMap m : categoryList) { %>
+                    <a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
+                        <%=(String)(m.get("category"))%> (<%=(Integer)(m.get("cnt"))%>)
+                    </a>
+                <% } %>
+            </div>
+        </div>
+	    <a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
+		<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
+	    <a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>">개인정보보기</a>
+   		<a href="/shop/customer/logoutAction.jsp">로그아웃</a>
+	
+	</nav>
+	
+	<main>
+		<div id="contents">
+			<div>
+				<img id="contentImg" alt="이미지" src="/shop/upload/<%=(String)(goodsOne.get("filename"))%>">
 			</div>
 			<div id="contentDiv">
-				<div class="borderDiv">번호 : <%=(Integer)(goodsOne.get("no"))%></div>
 				<div class="borderDiv">카테고리 : <%=(String)(goodsOne.get("category"))%></div>
 				<div class="borderDiv">제목 : <%=(String)(goodsOne.get("title"))%></div>
 				<div class="borderDiv">내용 : <%=(String)(goodsOne.get("content"))%></div>
-				<div class="borderDiv">가격 : <%=(Integer)(goodsOne.get("price"))%></div>
-				<div class="borderDiv">수량 : <%=(Integer)(goodsOne.get("amount"))%></div>
-				<div>생성 날짜 : <%=(String)(goodsOne.get("createDate"))%></div>
+				<div class="borderDiv">가격 : <%=(Integer)(goodsOne.get("price"))%>원</div>
 			</div>
 		</div>
 		<div id="commentDiv">
@@ -313,7 +204,7 @@
 						}
 					}else{
 				%>
-						<h3 class="d-flex justify-content-center align-items-center">후기가 존재하지 않습니다.</h3>
+						<h3>후기가 존재하지 않습니다.</h3>
 				<%
 					}
 				%>
@@ -354,67 +245,69 @@
 			<%
 				}else{
 			%>
-					<div  class="d-flex justify-content-between">
-						<div>
-							 평균 별점: <%= String.format("%.1f", averageScore) %> / 5
-						    <div class="star-rating">
-					        	<% 
-							    	for (int i = 1; i <= 5; i++) {
-								        if (i <= (int)averageScore) {
-								    %>
-								        <span class="full">&#9733;</span>
-								    <% 
-								        } else if (i - averageScore > 0 && i - averageScore < 1) { 
-								    %>
-								        <span class="half">&#9733;</span>
-								    <% 
-								        } else { 
-								    %>
-								        <span>&#9733;</span>
-								    <% 
-								        }
-								    }
+				<div id="buttons">
+					<div>
+						 평균 별점: <%= String.format("%.1f", averageScore) %> / 5
+					    <div class="star-rating">
+				        	<% 
+						    	for (int i = 1; i <= 5; i++) {
+							        if (i <= (int)averageScore) {
 							    %>
-						    </div>
-						</div>
-						<div class="mt-4 d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
-							<button type="button" class="btn btn-light border border-secondary"  >
-								<%
-									if(currentPage > 1){
-								%>
-									<a href="/shop/customer/goodsOne.jsp?no=<%=goodsNo%>&currentPage=<%=currentPage -1%>" class="aTags">이전</a>
-								<%
-									}else{
-								%>
-									<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
-								<%
-									}
-								%>
-							</button>
-							<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-							<button type="button" class="btn btn-light border border-secondary">
-								<%if(currentPage < lastPage ){
-								%>
-									<a href="/shop/customer/goodsOne.jsp?no=<%=goodsNo%>&currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
-								<%
-								}else{
-								%>
-									<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
-								<%
-								}
-								%>
-							</button>
-						</div>
-						<div class="mt-4">
-							<button class="btn btn-light border border-secondary">
-								<a class="aTags" href="/shop/customer/goodsList.jsp">뒤로가기</a>
-							</button>
-						</div>
+							        <span class="full">&#9733;</span>
+							    <% 
+							        } else if (i - averageScore > 0 && i - averageScore < 1) { 
+							    %>
+							        <span class="half">&#9733;</span>
+							    <% 
+							        } else { 
+							    %>
+							        <span>&#9733;</span>
+							    <% 
+							        }
+							    }
+						    %>
+					    </div>
 					</div>
+					<div>
+						<button type="button">
+							<%
+								if(currentPage > 1){
+							%>
+								<a href="/shop/customer/goodsOne.jsp?no=<%=goodsNo%>&currentPage=<%=currentPage -1%>" class="aTags">이전</a>
+							<%
+								}else{
+							%>
+								<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+							<%
+								}
+							%>
+						</button>
+						<button id="currentNum"><%=currentPage%></button>
+						<button type="button" >
+							<%if(currentPage < lastPage ){
+							%>
+								<a href="/shop/customer/goodsOne.jsp?no=<%=goodsNo%>&currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
+							<%
+							}else{
+							%>
+								<a style="color: grey; cursor: not-allowed;" class="aTags">다음</a>
+							<%
+							}
+							%>
+						</button>
+					</div>
+					<div>
+						<button >
+							<a class="aTags" href="/shop/customer/goodsList.jsp">뒤로가기</a>
+						</button>
+					</div>
+				</div>
 			<%
 				}
 			%>
 		</div>
 	</main>
+	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
+	<script src="/shop/js/goodsSlider.js"></script>
 </body>
 </html>

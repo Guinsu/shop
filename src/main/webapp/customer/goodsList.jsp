@@ -12,11 +12,19 @@
 		return;
 	}
 	
+	//세션에서 loginCustomer의 정보를 가져오기
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
+	//System.out.println(loginMember);
+	
+	//세션에서 key가 customerId인 값 가져오기 
 	String customerId = String.valueOf(loginMember.get("customerId"));
+	//System.out.println(customerId);
 	
+	//카테고리 가져오기
 	String category = request.getParameter("category");
+	//System.out.println(category);
 	
+	// 전체 개수
 	int totalRow = 0;
 	
 	if(request.getParameter("totalRow") != null){	
@@ -29,7 +37,7 @@
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	// 한 페이지에 보이는 인원수
+	// 한 페이지에 보이는 굿즈의 개수
 	int rowPerPage = 4;
 	
 	// DB에서 시작 페이지 값 설정 = (현재 페이지-1) *   한 페이지에 보이는 인원수
@@ -46,24 +54,29 @@
 		lastPage = lastPage +1 ;
 	}
 	
-	/*
-		null이면
-		SELECT * FROM goods
-		
-		null이 아니면
-		SELECT * FROM goods WHERE category = ? ORDER BY DESC limit ?,?
-	*/
 %>
 
 <!-- model layer -->
 <%
+	//카테고리 리스트 가져오기
 	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCategoryList();
+	
+	//굿즈리스트 가져오기
 	ArrayList<HashMap<String, Object>> categoryList2 = GoodsDao.selectGoodsList(category,startRow,rowPerPage);
+	
+	//굿즈 내용 가져오기
 	ArrayList<HashMap<String, Object>> categoryList3 = GoodsDao.selectGoodsContent(startRow, rowPerPage);
+	
+	//모든 굿즈 개수 가져오기
 	int goodsTotalCnt = GoodsDao.selectGoodsContent();
+	
+	//장바구니에 추가한 개수 가져오기
 	int selectOrderCount = OrderDao.selectOrderCount(customerId);
 	
 	//디버깅
+	//System.out.println(categoryList);
+	//System.out.println(categoryList2);
+	//System.out.println(categoryList3);
 	//System.out.println(goodsTotalCnt);
 	//System.out.println(selectOrderCount);
 %>
@@ -76,156 +89,26 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <title>굿즈 쇼핑몰</title>
 	<title>goodsList</title>
-	<style>
-		body {
-		    font-family: Arial, sans-serif;
-		    margin: 0;
-		    padding: 0;
-		}
-		
-		nav {
-		    display: flex;
-		    justify-content: center;
-		    align-items:center;
-		    background-color: #ffe4e1;
-		    border: 1px solid white;
-		}
-		nav a {
-		    color: black;
-		    padding: 14px 20px;
-		    text-decoration: none;
-		    text-align: center;
-		}
-		
-		nav a:hover {
-		    background-color: #ddd;
-		}
-		
-        nav .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-        }
-
-        nav .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            display: block;
-            text-align: left;
-        }
-
-        nav .dropdown-content a:hover {
-            background-color: #ddd;
-        }
-
-        nav .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-		
-		img {
-		    width: 100%;
-		    height: 100%;
-		}
-		
-		.products {
-		    display: flex;
-		    flex-wrap: wrap;
-		    justify-content: center;
-		    padding: 20px;
-		}
-		.product {
-		    border: 1px solid #ddd;
-		    margin: 10px;
-		    padding: 10px;
-		    width: 200px;
-		    text-align: center;
-		}
-		.product img {
-		    width: 100%;
-		    height: auto;
-		}
-		footer {
-		    background-color: #ffe4e1;
-		    color: black;
-		    border: 2px solid white;
-		    text-align: center;
-		    padding: 10px 0;
-		    position: fixed;
-		    width: 100%;
-		    bottom: 0;
-		}
-		
-		.slider {
-		    position: relative;
-		    width: 100%;
-		    overflow: hidden;
-		    height: 300px;
-		    background-color: #ffe4e1;
-		}
-		
-		.slides {
-		    display: flex;
-		    justify-content: center;
-		    width: 100%;
-		    height: 100%;
-		}
-		
-		.slides a {
-		    display: flex;
-		    justify-content: center;
-		    border: 1px solid white;
-		}
-		
-		.dots {
-		    text-align: center;
-		    position: absolute;
-		    bottom: 10px;
-		    width: 100%;
-		}
-		
-		.dot {
-		    cursor: pointer;
-		    height: 15px;
-		    width: 15px;
-		    margin: 0 2px;
-		    background-color: #bbb;
-		    border-radius: 50%;
-		    display: inline-block;
-		}
-
-	</style>
+	<link rel="stylesheet" href="/shop/css/customerGoodsList.css" />
 </head>
 <body>
-	<!-- 메인메뉴 -->
-	
-	<!-- 
-		<div>
-			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
-		</div>
-		<div>
-			<div id="emptyDiv">&nbsp;</div>
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<h1>캐치! 티니핑</h1>
-		</div>
-		<div class="d-flex justify-content-center align-items-center" id="userMenuBar">
-			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
-			<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
-			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
-			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
-		</div>	
-	 -->
+
+	<!-- header 영역 / 광고 이미지-->
 	<header>	
 		<div class="slider">
 	        <div class="slides">
+	        	<div class="siteName">
+	        		Tiniping World
+	        	</div>
 	            <a href="https://www.emotioncastle.com/products/118208055">
 	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
 	            </a>
 	            <a href="https://www.emotioncastle.com/products/118207999">
 	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
 	            </a>
+	            <div>
+	        		<img alt="" src="/shop/img/hachuping.png">
+	        	</div>
 	        </div>
 	        <div class="dots">
 	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
@@ -234,7 +117,7 @@
          </div>
 	</header>
 	
-	<!-- 서브메뉴 / 카테고리별 상품 리스트-->
+	<!-- 서브메뉴 / 카테고리별 상품 리스트 및 사용자 정보-->
 	<nav>  
 		<a href="/shop/customer/goodsList.jsp">홈</a>
 	     <div class="dropdown">
@@ -249,49 +132,30 @@
                 <% } %>
             </div>
         </div>
-	    <a href="#">이벤트</a>
-	    <a href="#">고객센터</a>
-	    <a href="#">로그인</a>
+	    <a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
+		<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
+	    <a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>">개인정보보기</a>
+   		<a href="/shop/customer/logoutAction.jsp">로그아웃</a>
 	
-		<!-- 
-			<div class="ms-4 d-flex align-items-center">
-				<a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체보기</a>
-				
-				<%
-					for(HashMap m : categoryList){
-				%>
-						<a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
-							<%=(String)(m.get("category"))%>
-							(<%=(Integer)(m.get("cnt"))%>)
-						</a>
-				<%
-					}
-				%>
-			</div>
-			<div>
-			</div>		
-		 -->
 	</nav>
-	<div class="ms-5 d-flex justify-content-center" >
-		<div class="ms-5 d-flex align-content-start flex-wrap" >
+	
+	<!-- main -->
+	<main>
+		<div class="mainDiv">
 			<%
 				if(category == null){
 					for(HashMap m3: categoryList3){
 			%>
-						<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
-							<div id="imgDiv" class="d-flex justify-content-center">
-								<img alt="이미지" src="/shop/upload/<%=(String)(m3.get("filename"))%>">
+						<div class="contents">
+							<div class="imgDiv">
+								<img alt="이미지" class="goodsImg" src="/shop/upload/<%=(String)(m3.get("filename"))%>">
 							</div>
-							<div id="contentDiv">
-								<div class="borderDiv">번호 : <%=(Integer)(m3.get("no"))%></div>
-								<div class="borderDiv">카테고리 : <%=(String)(m3.get("category"))%></div>
-								<div class="borderDiv">제목 : <%=(String)(m3.get("title"))%></div>
-								<div class="borderDiv">내용 : <%=(String)(m3.get("content"))%></div>
-								<div class="borderDiv">가격 : <%=(Integer)(m3.get("price"))%></div>
-								<div class="borderDiv">수량 : <%=(Integer)(m3.get("amount"))%></div>
-								<div class="mt-2 mb-2 d-flex justify-content-center">
-									<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m3.get("no"))%>">장바구니 추가</a>
-									<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>">상세보기</a>
+							<div class="contentDiv">
+								<div class="borderDiv"><%=(String)(m3.get("title"))%></div>
+								<div class="borderDiv"><%=(Integer)(m3.get("price"))%>원</div>
+								<div class="buttons">
+									<a href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m3.get("no"))%>">장바구니 추가</a>
+									<a href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>">상세보기</a>
 								</div>
 							</div>
 						</div>
@@ -301,20 +165,16 @@
 					for(HashMap m2: categoryList2){
 					
 			%>
-						<div class="mb-3 d-flex flex-column justify-content-center align-items-center" id="contents">
-							<div id="imgDiv" class="d-flex justify-content-center">
-								<img alt="이미지" src="/shop/upload/<%=(String)(m2.get("filename"))%>">
+						<div class="contents">
+							<div class="imgDiv" >
+								<img alt="이미지" class="goodsImg" src="/shop/upload/<%=(String)(m2.get("filename"))%>">
 							</div>
-							<div id="contentDiv">
-								<div class="borderDiv">번호 : <%=(Integer)(m2.get("no"))%></div>
-								<div class="borderDiv">카테고리 : <%=(String)(m2.get("category"))%></div>
-								<div class="borderDiv">제목 : <%=(String)(m2.get("title"))%></div>
-								<div class="borderDiv">내용 : <%=(String)(m2.get("content"))%></div>
-								<div class="borderDiv">가격 : <%=(Integer)(m2.get("price"))%></div>
-								<div class="borderDiv">수량 : <%=(Integer)(m2.get("amount"))%></div>
-								<div class="mt-2 mb-2 d-flex justify-content-center">
-									<a class="me-3 saveGoodsATag" href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m2.get("no"))%>">장바구니 추가</a>
-									<a class="saveGoodsATag" href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>">상세보기</a>
+							<div class="contentDiv">
+								<div class="borderDiv"><%=(String)(m2.get("title"))%></div>
+								<div class="borderDiv"><%=(Integer)(m2.get("price"))%>원</div>
+								<div class="buttons">
+									<a href="/shop/customer/addToCartAction.jsp?no=<%=(Integer)(m2.get("no"))%>">장바구니 추가</a>
+									<a href="/shop/customer/goodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>">상세보기</a>
 								</div>
 							</div>
 						</div>
@@ -323,9 +183,9 @@
 				}
 			%>
 		</div>
-	</div>
-	<div class="btn-group" role="group" aria-label="Second group" id="btnDiv">
-		<button type="button" class="btn btn-light border border-secondary"  >
+	</main>
+	<div id="btnDiv">
+		<button type="button">
 			<%
 				if(currentPage > 1){
 					if(category == null || category.equals("null")){
@@ -344,8 +204,8 @@
 				}
 			%>
 		</button>
-		<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-		<button type="button" class="btn btn-light border border-secondary">
+		<button id="currentNum"><%=currentPage%></button>
+		<button type="button" >
 			<%if(currentPage < lastPage ){
 				if(category == null || category.equals("null")){
 			%>
@@ -365,6 +225,7 @@
 			%>
 		</button>
 	</div>
-	<script src="/shop/js/customerGoodsList.js"></script>
+	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
+	<script src="/shop/js/goodsSlider.js"></script>
 </body>
 </html>
