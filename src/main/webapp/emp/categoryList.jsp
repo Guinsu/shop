@@ -101,14 +101,19 @@
 							</div>
 						</div>
 						<hr>
+			<%
+					}
+			%>
+			
 						<div class="d-flex justify-content-between" >
 							<div>전체 카테고리 합계 : <%=totalCount%> </div>
 							<div>
 								<a class="categoryATag" href="/shop/emp/addCategoryForm.jsp">카테고리 추가</a>
 							</div>
 						</div>
-			<%
-					}
+			
+			
+			<% 
 				}
 			%>
 		</div>

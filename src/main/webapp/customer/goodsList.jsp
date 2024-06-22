@@ -72,143 +72,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-	
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>굿즈 쇼핑몰</title>
 	<title>goodsList</title>
 	<style>
-		body{
-			width:100%;
-			height:100%;
-		 	font-family: "Dongle", sans-serif;
-  			font-size: 20px;
-  			font-style: normal;
-  			background-color: #FCE4EC;
-		}
-		img{
-			width: 250px;
-			height: 300px;
-		}
-		a{
-			text-decoration: none;
+		body {
+		    font-family: Arial, sans-serif;
+		    margin: 0;
+		    padding: 0;
 		}
 		
-		h1{
-			font-size: 100px;
-			margin-left: 100px;
+		nav {
+		    display: flex;
+		    justify-content: center;
+		    align-items:center;
+		    background-color: #ffe4e1;
+		    border: 1px solid white;
+		}
+		nav a {
+		    color: black;
+		    padding: 14px 20px;
+		    text-decoration: none;
+		    text-align: center;
 		}
 		
-		button{
-			width: 200px;
-			height: 100%;
+		nav a:hover {
+		    background-color: #ddd;
 		}
-		nav{
-			border-top: 3px solid white;
-			border-bottom: 3px solid white;
-			padding-top: 10px;
-			padding-bottom: 10px; 
+		
+        nav .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+        }
+
+        nav .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            display: block;
+            text-align: left;
+        }
+
+        nav .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        nav .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+		
+		img {
+		    width: 100%;
+		    height: 100%;
 		}
-		.borderDiv{
-			border-bottom: 1px solid black;
+		
+		.products {
+		    display: flex;
+		    flex-wrap: wrap;
+		    justify-content: center;
+		    padding: 20px;
 		}
-		.listAtags{
-			font-size: 25px; 
-			margin-right: 20px;
-			color: black;
-			border-radius: 10px;
-			padding-right : 10px;
-			padding-left: 10px;
-			border: 1px solid white;
+		.product {
+		    border: 1px solid #ddd;
+		    margin: 10px;
+		    padding: 10px;
+		    width: 200px;
+		    text-align: center;
 		}
-		.aTags{
-			color: black;
-			font-size: 25px;
-			padding-left: 60px;
-			padding-right: 60px;
+		.product img {
+		    width: 100%;
+		    height: auto;
 		}
-		.listATag{
-			text-decoration: none;
-			color: black;
-			font-size: 30px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding: 3px;
-			margin-right: 10px;
+		footer {
+		    background-color: #ffe4e1;
+		    color: black;
+		    border: 2px solid white;
+		    text-align: center;
+		    padding: 10px 0;
+		    position: fixed;
+		    width: 100%;
+		    bottom: 0;
 		}
-		.saveGoodsATag{
-			border: 1px solid white;
-			border-radius: 10px;
-			height: 50px;
-			width: 100px;
-			font-size:25px;
-			text-decoration: none;
-			color: black;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+		
+		.slider {
+		    position: relative;
+		    width: 100%;
+		    overflow: hidden;
+		    height: 300px;
+		    background-color: #ffe4e1;
 		}
-		#contents{
-			border: 3px solid white;
-			border-radius: 10px;
-			margin-right: 10px;
-			margin-left: 10px;
+		
+		.slides {
+		    display: flex;
+		    justify-content: center;
+		    width: 100%;
+		    height: 100%;
 		}
-		#imgDiv{
-			width: 100%;
-			
+		
+		.slides a {
+		    display: flex;
+		    justify-content: center;
+		    border: 1px solid white;
 		}
-		#contentDiv{
-			width: 400px;
-			max-height: 600px;
+		
+		.dots {
+		    text-align: center;
+		    position: absolute;
+		    bottom: 10px;
+		    width: 100%;
 		}
-		#btnDiv{
-			margin-top:2px;
-			margin-left:25%;
-			width: 50%;
+		
+		.dot {
+		    cursor: pointer;
+		    height: 15px;
+		    width: 15px;
+		    margin: 0 2px;
+		    background-color: #bbb;
+		    border-radius: 50%;
+		    display: inline-block;
 		}
-		#currentNum{
-			font-size: 25px;
-		}
-		#logoutAtag{
-			height: 40px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding-right: 20px;
-			padding-left: 20px;
-			font-size: 30px;
-			color: black;
-		}
-		#customerId{
-			font-size: 30px;
-		}
-		#mainImg{
-			width: 150px;
-			height: 150px;
-		}
-		#customerOneAtag{
-			height: 40px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding-right: 20px;
-			padding-left: 20px;
-			font-size: 30px;
-			color: black;
-		}
-		#userMenuBar{
-			padding-top: 100px;
-		}
-		#emptyDiv{
-			margin-left: 100px;
-		}
+
 	</style>
 </head>
 <body>
 	<!-- 메인메뉴 -->
-	<header class="m-2 d-flex justify-content-between">
+	
+	<!-- 
 		<div>
 			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
 		</div>
@@ -224,27 +215,62 @@
 			<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
 			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
 			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
-		</div>
+		</div>	
+	 -->
+	<header>	
+		<div class="slider">
+	        <div class="slides">
+	            <a href="https://www.emotioncastle.com/products/118208055">
+	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
+	            </a>
+	            <a href="https://www.emotioncastle.com/products/118207999">
+	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
+	            </a>
+	        </div>
+	        <div class="dots">
+	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
+	            <span class="dot" id="secondDot" onclick="clickEvent(2)"></span>
+	        </div>
+         </div>
 	</header>
 	
 	<!-- 서브메뉴 / 카테고리별 상품 리스트-->
-	<nav class="m-4 d-flex justify-content-between">
-		<div class="ms-4 d-flex align-items-center">
-			<a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체보기</a>
-			
-			<%
-				for(HashMap m : categoryList){
-			%>
-					<a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
-						<%=(String)(m.get("category"))%>
-						(<%=(Integer)(m.get("cnt"))%>)
-					</a>
-			<%
-				}
-			%>
-		</div>
-		<div>
-		</div>
+	<nav>  
+		<a href="/shop/customer/goodsList.jsp">홈</a>
+	     <div class="dropdown">
+            <a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>">상품 목록</a>
+            <div class="dropdown-content">
+            
+            	<!-- 카테고리 종류 가져오기 -->
+                <% for(HashMap m : categoryList) { %>
+                    <a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
+                        <%=(String)(m.get("category"))%> (<%=(Integer)(m.get("cnt"))%>)
+                    </a>
+                <% } %>
+            </div>
+        </div>
+	    <a href="#">이벤트</a>
+	    <a href="#">고객센터</a>
+	    <a href="#">로그인</a>
+	
+		<!-- 
+			<div class="ms-4 d-flex align-items-center">
+				<a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>" class="listAtags">전체보기</a>
+				
+				<%
+					for(HashMap m : categoryList){
+				%>
+						<a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>" class="listAtags">
+							<%=(String)(m.get("category"))%>
+							(<%=(Integer)(m.get("cnt"))%>)
+						</a>
+				<%
+					}
+				%>
+			</div>
+			<div>
+			</div>		
+		 -->
 	</nav>
 	<div class="ms-5 d-flex justify-content-center" >
 		<div class="ms-5 d-flex align-content-start flex-wrap" >
@@ -339,5 +365,6 @@
 			%>
 		</button>
 	</div>
+	<script src="/shop/js/customerGoodsList.js"></script>
 </body>
 </html>
