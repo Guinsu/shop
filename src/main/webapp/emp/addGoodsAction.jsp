@@ -23,6 +23,7 @@
 	String goodsContent = request.getParameter("goodsContent");
 	
 	String originalName = part.getSubmittedFileName();
+	
 	// 원본 이름에서 확장자만 분리
 	int dotIdx = originalName.lastIndexOf(".");
 	String ext = originalName.substring(dotIdx);

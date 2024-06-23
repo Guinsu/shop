@@ -50,6 +50,14 @@
 	
 <!-- model layer -->
 <%
+	//카테고리 리스트 가져오기
+	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCategoryList();
+	
+	//모든 굿즈 개수 가져오기
+	int goodsTotalCnt = GoodsDao.selectGoodsContent();
+
+	//장바구니에 추가한 개수 가져오기
+	int selectOrderCount = OrderDao.selectOrderCount(customerId);
 
 	//orders 테이블에 있는 모든 제품보기
 	ArrayList<HashMap<String, Object>> list = OrderDao.selectMyAllOrder(customerId, searchWord, startRow, rowPerPage);
@@ -65,149 +73,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-		
 	<meta charset="UTF-8">
-	<title>orderDetails page</title>
-	<style>
-		body{
-			width:100%;
-			height:100%;
-		 	font-family: "Dongle", sans-serif;
-  			font-size: 30px;
-  			font-style: normal;
-  			background-color: #FCE4EC;
-		}
-		a{
-			text-decoration: none;
-			font-size: 30px;
-			color: black;
-		}
-		h1{
-			font-size: 100px;
-			margin-left: 50px;
-		}
-		h3{
-			font-size: 50px;
-			text-align: center;
-		}
-		
-		button{
-			margin-top: 20px;
-			width: 400px;
-			border-radius: 20px;
-		}
-		header{
-			border-bottom: 1px solid black
-		}
-		
-		input{
-			width: 500px;
-		}
-		
-		table{
-			border: 3px solid black;
-			width: 80%;
-			margin-left: 40px;
-			margin-right: 40px;
-			margin-top: 20px;
-		 	border-collapse: separate;
-        	border-spacing: 0;
-        	border-radius: 20px;
-        	overflow: hidden;
-		}
-		
-		th,td{
-			border: 1px solid black;
-			text-align: center;
-			font-size: 30px;
-			height: 30px;
-			width: 200px;
-			padding: 10px;
-		}
-		
-		th {
-    		background-color: #f8f8ff;
-  		}
-  		
-  		td{
-  			background-color: #f0ffff;	
-  		}
-  		
-		#mainImg{
-			width: 150px;
-			height: 150px;
-		}
-		#customerId{
-			font-size: 30px;
-		}
-		#logoutAtag{
-			height: 40px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding-right: 20px;
-			padding-left: 20px;
-			font-size: 30px;
-			color: black;
-		}
-		#customerOneAtag{
-			height: 40px;
-			border: 1px solid black;
-			border-radius: 10px;
-			padding-right: 20px;
-			padding-left: 20px;
-			font-size: 30px;
-			color: black;
-		}
-		#currentNum{
-			font-size: 30px;
-			color: black;
-		}
-		#formBtn{
-			width: 140px;
-			border-radius: 20px;
-			margin: 0px;
-		}
-		#backBtn{
-			margin-left: 20px;
-		}
-		.aTags{
-			padding-left: 100px;
-			padding-right: 100px;
-		}
-		.goBackHomeTag{
-			border: 1px solid black;
-			border-radius : 10px;
-			margin-top: 20px;
-			margin-left: 20px;
-			height: 59px;
-			padding-left: 20px;
-			padding-right: 20px;
-			padding-top: 10px;
-		}
-	</style>
+	<title>굿즈 쇼핑몰</title>
+	<link rel="stylesheet" href="/shop/css/customerOrderDetails.css" />
 </head>
 <body>
-	<header class="m-2 d-flex justify-content-between">
-		<div>
-			<img alt="하츄핑" src="/shop/img/hachuping.png" id="mainImg">
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<h1>주문내역 보기</h1>
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<div id="customerId"><%=loginMember.get("customerId")%> 님 환영합니다.</div>
-			<a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>" class="ms-2"id="customerOneAtag">개인정보보기</a>
-			<a href="/shop/customer/logoutAction.jsp" class="ms-2"id="logoutAtag">로그아웃</a>
-		</div>
+	<header>
+		<div class="slider">
+	        <div class="slides">
+	        	<div class="siteName">
+	        		Tiniping World
+	        	</div>
+	            <a href="https://www.emotioncastle.com/products/118208055">
+	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
+	            </a>
+	            <a href="https://www.emotioncastle.com/products/118207999">
+	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
+	            </a>
+	            <div>
+	        		<img alt="" src="/shop/img/hachuping.png">
+	        	</div>
+	        </div>
+	        <div class="dots">
+	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
+	            <span class="dot" id="secondDot" onclick="clickEvent(2)"></span>
+	        </div>
+         </div>
 	</header>
-	<main class="d-flex justify-content-center  align-items-center flex-column">
+	
+	<nav>  
+		<a href="/shop/customer/goodsList.jsp">홈</a>
+	     <div class="dropdown">
+            <a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>">상품 목록</a>
+            <div class="dropdownContent">
+            
+            	<!-- 카테고리 종류 가져오기 -->
+                <% for(HashMap m : categoryList) { %>
+                    <a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
+                        <%=(String)(m.get("category"))%> (<%=(Integer)(m.get("cnt"))%>)
+                    </a>
+                <% } %>
+            </div>
+        </div>
+	    <a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
+		<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
+	    <a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>">개인정보보기</a>
+   		<a href="/shop/customer/logoutAction.jsp">로그아웃</a>
+	</nav>
+	
+	<main>
 		<%
-			if(customerId.equals((String)list.get(0).get("email"))){
+			if(!list.isEmpty() && customerId.equals((String)list.get(0).get("email"))){
 		%>
 			<table>
 				<tr>
@@ -231,7 +147,7 @@
 								<td><%=(Integer)m.get("price")%></td>
 								<td>1</td>
 								<td>
-									<button id="formBtn">
+									<button class="reviewBtn">
 										<a href="/shop/customer/goodsOne.jsp?no=<%=m.get("no")%>&orderNo=<%=(Integer)m.get("orderNo")%>">후기작성 하기</a>
 									</button>
 								</td>
@@ -265,8 +181,8 @@
 					}
 				%>
 			</table>
-			<div class="d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
-				<button type="button" class="btn btn-light border border-secondary"  >
+			<div class="btnGroup">
+				<button type="button" >
 					<%
 						if(currentPage > 1){
 					%>
@@ -274,14 +190,15 @@
 					<%
 						}else{
 					%>
-							<a style="color: grey; cursor: not-allowed;" class="aTags" >이전</a>
+							<a style="color: grey; cursor: not-allowed;" class="aTags">이전</a>
 					<%
 						}
 					%>
 				</button>
-				<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-				<button type="button" class="btn btn-light border border-secondary">
-					<%	if(currentPage < lastPage ){
+				<button><%=currentPage%></button>
+				<button type="button">
+					<%	
+						if(currentPage < lastPage ){
 					%>
 							<a href="/shop/customer/orderDetails.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		
 					<%
@@ -292,18 +209,22 @@
 						}
 					%>
 				</button>
-				<a class="goBackHomeTag" href="/shop/customer/goodsList.jsp">뒤로가기</a>
+				<a  href="/shop/customer/goodsList.jsp">뒤로가기</a>
 			</div>
 		<%
 			}else{
 		%>
 			<h3>주문하신 내역이 없습니다.</h3>
-			<button>
-				<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
-			</button>
+			<div class="btnGroup">
+				<button>
+					<a href="/shop/customer/goodsList.jsp" >뒤로가기</a>
+				</button>
+			</div>
 		<%
 			}
 		%>
 	</main>
+	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
+	<script src="/shop/js/goodsSlider.js"></script>
 </body>
 </html>

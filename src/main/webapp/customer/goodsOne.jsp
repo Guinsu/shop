@@ -115,7 +115,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta charset="UTF-8">
-	<title>goodsOne page</title>
+	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/customerGoodsOne.css" />
 </head>
 <body>
@@ -146,7 +146,7 @@
 		<a href="/shop/customer/goodsList.jsp">홈</a>
 	     <div class="dropdown">
             <a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>">상품 목록</a>
-            <div class="dropdown-content">
+            <div class="dropdownContent">
             
             	<!-- 카테고리 종류 가져오기 -->
                 <% for(HashMap m : categoryList) { %>
@@ -160,7 +160,6 @@
 		<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
 	    <a href="/shop/customer/customerOne.jsp?customerId=<%=loginMember.get("customerId")%>">개인정보보기</a>
    		<a href="/shop/customer/logoutAction.jsp">로그아웃</a>
-	
 	</nav>
 	
 	<main>
@@ -192,7 +191,7 @@
 									 <%
 									 	if(customerId.equals((String)m.get("email"))){
 							 		%>
-									 <a href="deleteCommentAction.jsp?commentNo=<%=(Integer)m.get("commentNo")%>&orderNo=<%=(Integer)m.get("orderNo")%>&goodsNo=<%=(Integer)m.get("goodsNo")%>&no=<%=goodsNo%>&currentPage=<%=currentPage%>">삭제</a>						 		
+									 <a href="deleteCommentAction.jsp?commentNo=<%=(Integer)m.get("commentNo")%>&orderNo=<%=(Integer)m.get("orderNo")%>&goodsNo=<%=(Integer)m.get("goodsNo")%>&no=<%=goodsNo%>&currentPage=<%=currentPage%>" id="deleteATag">삭제</a>						 		
 							 		<%
 									 	}
 									 %>
@@ -235,18 +234,20 @@
 								    <input type="radio" name="rating" value="5" class="startRadio"/> 5점
 							  	</label>
 							</div>
-							<input type="text" name="comment">
-							<button type="submit">입력</button>
-							<button>
-								<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
-							</button>
+							<div id="commentInputDiv">
+								<input type="text" name="comment" id="commentInput">
+								<button type="submit">입력</button>
+								<button>
+									<a href="/shop/customer/goodsList.jsp" id="goBackATag">뒤로가기</a>
+								</button>							
+							</div>
 						</form>
 					</div>
 			<%
 				}else{
 			%>
-				<div id="buttons">
-					<div>
+				<div>
+					<div class="reviewScore">
 						 평균 별점: <%= String.format("%.1f", averageScore) %> / 5
 					    <div class="star-rating">
 				        	<% 
@@ -268,7 +269,7 @@
 						    %>
 					    </div>
 					</div>
-					<div>
+					<div class="moveBtn">
 						<button type="button">
 							<%
 								if(currentPage > 1){
@@ -296,7 +297,7 @@
 							%>
 						</button>
 					</div>
-					<div>
+					<div class="backBtn">
 						<button >
 							<a class="aTags" href="/shop/customer/goodsList.jsp">뒤로가기</a>
 						</button>

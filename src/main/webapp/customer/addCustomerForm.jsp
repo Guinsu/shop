@@ -8,7 +8,7 @@
 
 	String checkUserId = null;
 
-	boolean checkId = Boolean.parseBoolean( request.getParameter("checkId"));
+	boolean checkId = Boolean.parseBoolean(request.getParameter("checkId"));
 	
 	//디버깅
 	//System.out.println(checkId + "<--------checkId");
@@ -21,86 +21,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-	
-<meta charset="EUC-KR">
-<title>addCustomerForm page</title>
-	<style>
-	
-		body{
-			width:100%;
-			height:100%;
-		 	font-family: "Dongle", sans-serif;
-  			font-size: 30px;
-  			font-style: normal;
-		}
-		main{
-			margin-top: 50px;
-		}
-		form{
-			border: 1px solid black;
-			border-radius : 20px;
-			padding: 60px;
-			width: 500px;
-		}
-		button{
-			width: 200px;
-			height: 50px;
-			background: white;
-			border-radius: 20px;
-		}
-		input{
-			height: 40px;
-			border-radius: 10px;
-			width: 250px;
-		}
-		select{
-			width: 250px;
-		}
-		
-		#formDiv{
-			margin-top: 25px;
-		}
-		#loginBtnDiv{
-			margin-top: 70px;
-		}
-		.loginDiv{
-			width: 300px;
-		}
-		.loginDivTags{
-			width: 100%;
-		}
-	</style>
+	<meta charset="UTF-8">
+	<title>굿즈 쇼핑몰</title>
+	<link rel="stylesheet" href="/shop/css/addCustomerForm.css"/>
 </head>
-<body >
+<body>
+	<header>
+		<div class="slider">
+	        <div class="slides">
+	        	<div class="siteName">
+	        		Tiniping World
+	        	</div>
+	            <a href="https://www.emotioncastle.com/products/118208055">
+	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
+	            </a>
+	            <a href="https://www.emotioncastle.com/products/118207999">
+	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
+	            </a>
+	            <div>
+	        		<img alt="" src="/shop/img/hachuping.png">
+	        	</div>
+	        </div>
+	        <div class="dots">
+	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
+	            <span class="dot" id="secondDot" onclick="clickEvent(2)"></span>
+	        </div>
+         </div>
+	</header>
+	
 	<main>
-		<div class="d-flex justify-content-center">
+		<div>
 			<h1>회원가입 페이지</h1>
 		</div>
-		<div  class="d-flex justify-content-center" id="formDiv">
+		<div class="container">
 			<form action="/shop/customer/addCustomerAction.jsp" method="post">
 				<div>
-					<div class="d-flex justify-content-between loginDiv loginDivTags">
+					<div class="formField">
 						<label>아이디</label>
 						<input type="text" name="customerId">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDiv loginDivTags">
+					<div class="formField">
 						<label>비밀번호</label>
 						<input type="password" name="customerPw">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDiv loginDivTags">
+					<div class="formField">
 						<label>이름</label>
 						<input type="text" name="customerName">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDiv loginDivTags">
+					<div class="formField">
 						<label>생년월일</label>
 						<input type="date" name="customerBirth">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDiv loginDivTags">
+					<div class="formField">
 						<label>성별</label>
 						<select name="customerGender">
 							<option value="" >성별을 선택해 주세요.</option>
@@ -111,18 +83,23 @@
 					<%
 						if(checkId == true){
 					%>
-						<div class="mt-4 d-flex justify-content-between loginDiv loginDivTags">
-						<%=checkUserId%>
+						<div id="warningMsg">
+							<%=checkUserId%>
 						</div>
 					<%	
 						}
 					%>
 				</div>
-				<div class="d-flex justify-content-center" id="loginBtnDiv">				
-					<button type="submit">회원가입</button>
+				<div  id="buttonGroup">
+					<button>
+						<a href="/shop/customer/loginForm.jsp">뒤로가기</a>				
+					</button>				
+					<button type="submit">가입</button>
 				</div>
 			</form>
 		</div>
 	</main>
+	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
+	<script src="/shop/js/goodsSlider.js"></script>
 </body>
 </html>

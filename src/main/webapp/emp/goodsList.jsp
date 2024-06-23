@@ -12,8 +12,29 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
+
+	// session에서 로그인한 emp 정보 가져오기
+	HashMap<String, Object> loginEmp = (HashMap<String, Object>)session.getAttribute("loginEmp");
 	
+	//로그인한 괸리자 이름 가져오기
+	String empName = (String)loginEmp.get("empName");
+	
+	//로그인한 괸리자 아이디 가져오기
+	String empId = (String)loginEmp.get("empId");
+	
+	//로그인한 괸리자 아이디 가져오기
+	String empActive = (String)loginEmp.get("active");
+		
+	
+	//디버깅
+	//System.out.println(empName);
+	//System.out.println(empId);
+	System.out.println(empActive);
+	
+	
+	//카테고리 가져오기
 	String category = request.getParameter("category");
+	
 	
 	int totalRow = 0;
 	
@@ -54,11 +75,22 @@
 
 <!-- model layer -->
 <%
-
+	//카테고리 리스트 가져오기
 	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCategoryList();
+
+	//굿즈 리스트 가져오기
 	ArrayList<HashMap<String, Object>> categoryList2 = GoodsDao.selectGoodsList(category, startRow, rowPerPage);
+
+	//굿즈 정보 가져오기
 	ArrayList<HashMap<String, Object>> categoryList3 = GoodsDao.selectGoodsContent(startRow, rowPerPage);
+	
+	//모든 굿즈의 개수 가져오기
 	int goodsTotalCnt = GoodsDao.selectGoodsContent();
+	
+	//디버깅
+	//System.out.println("categoryList : " + categoryList);
+	//System.out.println("categoryList2 : " + categoryList2);
+	//System.out.println("categoryList3 : " + categoryList3);
 	
 %>
 
@@ -66,6 +98,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -197,7 +230,13 @@
 		</div>
 		<div></div>
 		<div class="d-flex align-items-center">
-			<a href="/shop/emp/empGoodsForm.jsp" class="listAtags">상품등록</a>
+			<%
+				if(empActive.equals("ON")){
+			%>
+				<a href="/shop/emp/empGoodsForm.jsp" class="listAtags">상품등록</a>			
+			<%
+				}
+			%>
 			<a href="/shop/emp/paymentOrderForm.jsp" class="listAtags">상품배송정보</a>
 		</div>
 	</nav>
@@ -221,7 +260,13 @@
 						<div>생성 날짜 : <%=(String)(m3.get("createDate"))%></div>
 					</div>
 					<div class="mb-2">
-						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
+						<% 
+							if(empName.equals((String)m3.get("empName")) || empId.equals("admin")){	
+						%>
+							<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m3.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>						
+						<%
+							}
+						%>
 					</div>
 				</div>
 			
@@ -246,7 +291,13 @@
 						<div>생성 날짜 : <%=(String)(m2.get("createDate"))%></div>
 					</div>
 					<div class="mb-2">
-						<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
+						<% 
+							if(empName.equals((String)m2.get("empName")) || empId.equals("admin")){	
+						%>
+							<a href="deleteGoodsOne.jsp?no=<%=(Integer)(m2.get("no"))%>&category=<%=category%>&totalRow=<%=totalRow%>" class="listATag">삭제</a>
+						<%
+							}
+						%>
 					</div>
 				</div>
 			<%

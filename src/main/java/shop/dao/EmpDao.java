@@ -44,7 +44,7 @@ public class EmpDao {
 
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "SELECT emp_id empId, emp_name empName, grade FROM emp WHERE emp_id=? AND emp_pw = password(?)";
+		String sql = "SELECT emp_id empId, emp_name empName, grade, active FROM emp WHERE emp_id=? AND emp_pw = password(?)";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, empId);
 		stmt.setString(2, empPw);
@@ -54,7 +54,8 @@ public class EmpDao {
 			resultMap = new HashMap<String, Object>();
 			resultMap.put("empId",rs.getString("empId")); 
 			resultMap.put("empName",rs.getString("empName")); 
-			resultMap.put("grade",rs.getInt("grade")); 
+			resultMap.put("grade",rs.getInt("grade"));
+			resultMap.put("active",rs.getString("active")); 
 		}
 		
 		conn.close();

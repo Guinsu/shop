@@ -23,28 +23,32 @@ nav a:hover{
     background-color: #c0c0c0;
 }
 
-nav .dropdown-content{
+nav .dropdownContent{
     display: none;
     position: absolute;
     background-color: #f9f9f9;
      z-index: 10;
 }
 
-nav .dropdown-content a{
+nav .dropdownContent a{
     color: black;
     padding: 12px 16px;
     display: block;
     text-align: left;
 }
 
-nav .dropdown-content a:hover{
+nav .dropdownContent a:hover{
     background-color: #c0c0c0;
 }
 
-nav .dropdown:hover .dropdown-content{
+nav .dropdown:hover .dropdownContent{
     display: block;
 }
 
+a{
+	text-decoration: none;
+	color: white;
+}
 
 img{
     width: 100%;
@@ -65,6 +69,16 @@ footer{
     text-align: center;
     padding: 10px 0;
     width: 100%;
+}
+
+form #commentInput{
+	width: 300px;
+	height: 30px;
+}
+
+
+form a{
+	color:black;
 }
 
 .siteName{
@@ -123,13 +137,6 @@ footer{
 	border-bottom: 1px solid white;
 }
 
-.aTags{
-	color: black;
-	font-size: 25px;
-	padding-left: 60px;
-	padding-right: 60px;
-}
-
 .startRadio{
 	width: 30px;
 }
@@ -137,7 +144,6 @@ footer{
 .star-rating span {
     font-size: 40px;
     position: relative;
-    display: inline-block;
     color: white;
 }
 
@@ -153,10 +159,61 @@ footer{
     overflow: hidden;
 }
 
+.reviewScore{
+	font-size: 25px;
+}
+
+.moveBtn{
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.moveBtn button{
+	width: 150px;
+	height: 50px;
+	margin: 0 5px 0 5px;
+ 	color: white;
+    background-color: #c0c0c0;
+    border: 0px;
+    border-radius: 5px;
+}
+
+.moveBtn button:hover{
+	background-color: #f9e6f4;
+}
+
+.backBtn{
+	display: flex;
+	justify-content: flex-end;	
+}
+
+.backBtn button{
+	margin-top: 30px;
+	width: 150px;
+	height: 50px;
+ 	color: white;
+    background-color: #c0c0c0;
+    border: 0px;
+    border-radius: 5px;
+}
+
+.backBtn button:hover{
+	background-color: #f9e6f4;
+}
+
+
+.aTags{
+	padding: 20px 40px 20px 40px;
+}
+
 #contents{
 	border: 1px solid #dedede;
+	border-radius: 10px;
 	width: 80%;
 	margin-right: 50px;
+ 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 	background-color: #fff;
 }
 #contentImg{
 	width: 100%;
@@ -167,7 +224,6 @@ footer{
 	width: 600px;
 	max-height: 600px;
 }
-
 
 #commentDiv{
 	width: 100%;
@@ -186,9 +242,24 @@ footer{
 #goBackATag{
 	padding-left: 50px;
 	padding-right: 50px;
+	width: 100px;
 }
 
 #customerCmt{
 	display: flex;
 	justify-content: space-between;
+}
+
+#commentInputDiv{
+	display:flex;
+	margin-top: 20px;
+}
+
+#commentInputDiv button{
+	margin: 0 10px;
+	width: 200px;
+}
+
+#deleteATag{
+	color:black;
 }

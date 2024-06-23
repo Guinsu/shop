@@ -17,8 +17,16 @@
 	String customerId = String.valueOf(loginMember.get("customerId"));
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-	int score = Integer.parseInt(request.getParameter("rating"));
 	String content = request.getParameter("comment");
+	
+	int score = 0;
+	String rating = request.getParameter("rating");
+	
+	if(rating != null && !rating.isEmpty()){
+		score = Integer.parseInt(rating);
+	}else{
+		score = 5;
+	}
 	
 	//디버깅
 	//System.out.println(orderNo + " < -- orderNo");

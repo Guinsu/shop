@@ -11,6 +11,7 @@
 		return;
 	}
 
+	//form 데이터 값 가져오기
 	String orderState = request.getParameter("orderState");
 	String customerId = request.getParameter("customerId");
 	int totalAmount = Integer.parseInt(request.getParameter("totalAmount"));

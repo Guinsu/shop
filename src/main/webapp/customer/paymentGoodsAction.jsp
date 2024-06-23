@@ -11,8 +11,6 @@
 		return;
 	}
 
-	HashMap<String, Object> loginMember = (HashMap<String, Object>)session.getAttribute("loginCustomer");
-
 	String address = request.getParameter("address");
 	String payment = request.getParameter("payment");
 	String customerId = request.getParameter("customerId");
@@ -36,12 +34,8 @@
 	int paymentGoods = OrderDao.paymentGoods(address, payment, customerId, orderNo);
 	
 	if(paymentGoods > 0){
-		
 		response.sendRedirect("/shop/customer/goodsList.jsp");
 	}else{
 		response.sendRedirect("/shop/customer/cart.jsp");
 	}
-
-	
-	
 %>

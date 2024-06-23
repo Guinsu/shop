@@ -86,9 +86,8 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     <title>굿즈 쇼핑몰</title>
-	<title>goodsList</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/customerGoodsList.css" />
 </head>
 <body>
@@ -122,7 +121,7 @@
 		<a href="/shop/customer/goodsList.jsp">홈</a>
 	     <div class="dropdown">
             <a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>">상품 목록</a>
-            <div class="dropdown-content">
+            <div class="dropdownContent">
             
             	<!-- 카테고리 종류 가져오기 -->
                 <% for(HashMap m : categoryList) { %>

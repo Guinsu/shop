@@ -10,6 +10,7 @@
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
+
 	HashMap<String, Object> loginEmp = (HashMap<String, Object>)session.getAttribute("loginEmp");
 	String empName = String.valueOf(loginEmp.get("empName"));
 	
@@ -87,7 +88,6 @@
 		}
 		a{
 			text-decoration: none;
-			font-size: 30px;
 			color: black;
 		}
 		h1{
@@ -100,23 +100,17 @@
 			width: 500px;
 			border-radius: 10px;
 		}
-		select{
-			width: 120px;
-			border-radius: 10px;
-		}
-		textarea {
-			width: 500px;
-			border-radius: 10px;
-		}
+		
 		button{
 			margin-top: 20px;
-			width: 400px;
+			width: 100px;
+			height:40px;
 			border-radius: 20px;
 
 		}
 		table{
 			border: 3px solid black;
-			margin-left: 40px;
+			width:80%;
 			margin-top: 20px;
 		 	border-collapse: separate;
         	border-spacing: 0;
@@ -127,9 +121,9 @@
 		th,td{
 			border: 1px solid black;
 			text-align: center;
-			font-size: 30px;
-			height: 30px;
-			width: 200px;
+			font-size: 25px;
+			height: 20px;
+			width: 300px;
 			padding: 2px;
 		}
 		
@@ -145,15 +139,21 @@
 			font-size: 30px;
 			color: black;
 		}
-		#formBtn{
+		.formBtn{
 			width: 50px;
 			border-radius: 20px;
 			margin: 0px;
 		}
   		.aTags{
-			padding-left: 200px;
-			padding-right: 200px;
+			
 		}
+		.tableDiv{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+		
 	</style>
 </head>
 <body>
@@ -162,7 +162,7 @@
 	</div>
 	<main class="d-flex justify-content-center  align-items-center flex-column">
 		<h1>배송정보</h1>
-		<div>
+		<div class="tableDiv">
 			<table>
 				<tr>
 					<th>주문번호</th>
@@ -174,6 +174,7 @@
 					<th>진행상태</th>
 					<th>진행상태 수정</th>
 					<th>제품개수</th>
+					<th>주문취소</th>
 				</tr>
 			<%
 				for(HashMap m : selectAllOrder){
@@ -188,28 +189,37 @@
 						<td><%=(String)m.get("address")%></td>
 						<td><%=(String)m.get("state")%></td>
 						<td>
-							<form action="/shop/emp/modifyPaymentOrderStateAction.jsp">
-								<input type="hidden" value="<%=(Integer)m.get("orderNo")%>" name="orderNo">
-								<input type="hidden" value="<%=(Integer)m.get("no")%>" name="no">
-								<input type="hidden" value="<%=(String)m.get("email")%>" name="customerId">
-								<input type="hidden" value="<%=(Integer)m.get("totalAmount")%>" name="totalAmount">
-								<input type="hidden" value="<%=currentPage%>" name="currentPage">		
+							<form action="/shop/emp/modifyPaymentOrderStateAction.jsp" method="post">
+								<input type="hidden" name="orderNo" value="<%=(Integer)m.get("orderNo")%>">
+								<input type="hidden" name="no" value="<%=(Integer)m.get("no")%>">
+								<input type="hidden" name="customerId" value="<%=(String)m.get("email")%>">
+								<input type="hidden" name="totalAmount" value="<%=(Integer)m.get("totalAmount")%>">
+								<input type="hidden" name="currentPage" value="<%=currentPage%>">		
 								<select name="orderState">
 									<option value="결제완료">결제완료</option>
 									<option value="배송중">배송중</option>
 									<option value="배송완료">배송완료</option>
 								</select>
-								<button id="formBtn">수정</button>
+								<button type="submit" class="formBtn">수정</button>
 							</form>
 						</td>
 						<td>1</td>
+						<td>
+							<form action="/shop/emp/deleteOrderAction.jsp" method="post">
+								<input type="hidden" name="orderNo" value="<%=(Integer)m.get("orderNo")%>">
+								<input type="hidden" name="goodsNo" value="<%=(Integer)m.get("no")%>">
+								<div>								
+									<button type="submit" class="formBtn">취소</button>
+								</div>
+							</form>
+						</td>
 					</tr>
 			<%
 				}
 			%>
 			</table>
-			<div class="d-flex justify-content-center btn-group" role="group" aria-label="Basic example">
-				<button type="button" class="btn btn-light border border-secondary"  >
+			<div>
+				<button type="button" >
 					<%
 						if(currentPage > 1){
 					%>
@@ -222,8 +232,8 @@
 						}
 					%>
 				</button>
-				<button class="btn btn-light border border-secondary" id="currentNum"><%=currentPage%></button>
-				<button type="button" class="btn btn-light border border-secondary">
+				<button id="currentNum"><%=currentPage%></button>
+				<button type="button" >
 					<%	if(currentPage < lastPage ){
 					%>
 							<a href="/shop/emp/paymentOrderForm.jsp?currentPage=<%=currentPage +1%>" class="aTags">다음</a>		

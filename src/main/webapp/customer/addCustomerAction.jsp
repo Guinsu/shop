@@ -41,15 +41,13 @@
 	
 	if(checkId == true){
 		response.sendRedirect("/shop/customer/addCustomerForm.jsp?checkId="+checkId);
-	}
-		
-	int row = CustomerDao.addCustomer(customerId, customerPw, customerName, customerBirth, customerGender);
-	
-	if(row > 0) {
-		response.sendRedirect("/shop/customer/loginForm.jsp");
 	}else{
-		response.sendRedirect("/shop/customer/addCustomerForm.jsp");
-	}
+		int row = CustomerDao.addCustomer(customerId, customerPw, customerName, customerBirth, customerGender);
 		
-	
+		if(row > 0) {
+			response.sendRedirect("/shop/customer/loginForm.jsp");
+		}else{
+			response.sendRedirect("/shop/customer/addCustomerForm.jsp");
+		}
+	}
 %>

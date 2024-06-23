@@ -67,11 +67,11 @@ public class OrderDao {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 			
 	
-		String sql = "SELECT order_no orderNo, email, orders.goods_no no, orders.goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,orders.update_date updateDate, emp_id "
+		String sql = "SELECT order_no orderNo, email, orders.goods_no no, orders.goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,orders.update_date updateDate, emp_name "
 				+ "FROM orders "
 				+ "INNER JOIN goods "
 				+ "ON orders.goods_no = goods.goods_no "
-				+ "WHERE emp_id = ? AND state != '결제대기' AND email LIKE ? "
+				+ "WHERE emp_name = ? AND state != '결제대기' AND email LIKE ? "
 				+ "ORDER BY order_no DESC limit ?,?;";
 		stmt = conn.prepareStatement(sql);
 		stmt.setString(1, empName);
@@ -207,7 +207,7 @@ public class OrderDao {
 		return row;
 	}
 	
-	// 배송진행상태 "결제완료" 를 배송중,배송완료로 상태변경 
+	//배송진행상태 "결제완료" 를 배송중,배송완료로 상태변경 
 	public static int modifyOrderState(int orderNo, String customerId, int no, int totalAmount, String orderState) throws Exception{
 		PreparedStatement stmt = null;
 		int row = 0;
@@ -221,6 +221,24 @@ public class OrderDao {
 		stmt.setString(3, customerId);
 		stmt.setInt(4, orderNo); 
 		stmt.setInt(5, no); 
+		row  = stmt.executeUpdate();			
+		
+		return row;
+	}
+	
+	
+	//장바구니 제품 삭제
+	public static int deleteOrders(int orderNo, int goodsNo) throws Exception{
+		
+		PreparedStatement stmt = null;
+		int row = 0;
+		Connection conn = DBHelper.getConnection();
+		
+		
+		String sql = "DELETE FROM orders WHERE order_no = ? AND goods_no = ? ";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderNo); 
+		stmt.setInt(2, goodsNo); 
 		row  = stmt.executeUpdate();			
 		
 		return row;

@@ -15,97 +15,92 @@
 
 <!-- model layer -->
 <%
+	
+	//카테고리 리스트 가져오기
+	ArrayList<HashMap<String, Object>> categoryList = CategorysDao.selectCategoryList();
+	
+	//모든 굿즈 개수 가져오기
+	int goodsTotalCnt = GoodsDao.selectGoodsContent();
+
+	//장바구니에 추가한 개수 가져오기
+	int selectOrderCount = OrderDao.selectOrderCount(customerId);
+	
 	ArrayList<HashMap<String, Object>> customerList =  CustomerDao.selectCustomer(customerId);
 %>
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-	
-<meta charset="EUC-KR">
-<title>customerOne page</title>
-	<style>
-	
-		body{
-			width:100%;
-			height:100%;
-		 	font-family: "Dongle", sans-serif;
-  			font-size: 30px;
-  			font-style: normal;
-		}
-		main{
-			margin-top: 50px;
-		}
-		form{
-			border: 1px solid black;
-			border-radius : 20px;
-			padding: 60px;
-			width: 600px;
-		}
-		button{
-			width: 200px;
-			height: 50px;
-			background: white;
-			border-radius: 20px;
-		}
-		a{
-			text-decoration: none;
-			color: black;
-			width: 200px;
-			height: 50px;
-			background: white;
-			border: 2px solid black;
-			border-radius: 20px;
-			text-align: center;
-		}
-		input{
-			height: 40px;
-			border-radius: 10px;
-			width: 250px;
-		}
-		select{
-			width: 250px;
-		}
-		
-		#formDiv{
-			margin-top: 25px;
-		}
-		#loginBtnDiv{
-			margin-top: 70px;
-		}
-		.loginDivTags{
-			width: 100%;
-		}
-	</style>
+	<meta charset="UTF-8">
+	<title>굿즈 쇼핑몰</title>
+	<link rel="stylesheet" href="/shop/css/customerOne.css" />
 </head>
 <body >
+	<header>
+		<div class="slider">
+	        <div class="slides">
+	        	<div class="siteName">
+	        		Tiniping World
+	        	</div>
+	            <a href="https://www.emotioncastle.com/products/118208055">
+	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
+	            </a>
+	            <a href="https://www.emotioncastle.com/products/118207999">
+	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
+	            </a>
+	            <div>
+	        		<img alt="" src="/shop/img/hachuping.png">
+	        	</div>
+	        </div>
+	        <div class="dots">
+	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
+	            <span class="dot" id="secondDot" onclick="clickEvent(2)"></span>
+	        </div>
+         </div>
+	</header>
+	
+	<nav>  
+		<a href="/shop/customer/goodsList.jsp">홈</a>
+	     <div class="dropdown">
+            <a href="/shop/customer/goodsList.jsp?totalRow=<%=goodsTotalCnt%>">상품 목록</a>
+            <div class="dropdownContent">
+            
+            	<!-- 카테고리 종류 가져오기 -->
+                <% for(HashMap m : categoryList) { %>
+                    <a href="/shop/customer/goodsList.jsp?category=<%=(String)(m.get("category"))%>&totalRow=<%=(Integer)(m.get("cnt"))%>">
+                        <%=(String)(m.get("category"))%> (<%=(Integer)(m.get("cnt"))%>)
+                    </a>
+                <% } %>
+            </div>
+        </div>
+	    <a href="/shop/customer/cart.jsp" id="customerOneAtag" class="ms-3">장바구니 보기(<%=selectOrderCount%>)</a>
+		<a href="/shop/customer/orderDetails.jsp" id="customerOneAtag" class="ms-3">주문내역 보기</a>
+	    <a href="/shop/customer/customerOne.jsp?customerId=<%=customerId%>">개인정보보기</a>
+   		<a href="/shop/customer/logoutAction.jsp">로그아웃</a>
+	</nav>
+	
 	<main>
-		<div class="d-flex justify-content-center">
+		<div>
 			<h1>개인정보</h1>
 		</div>
-		<div  class="d-flex justify-content-center" id="formDiv">
+		<div class="container">
 			<form action="/shop/customer/modifyCustomerAction.jsp" method="post">
 				<div>
 					<%
 						for(HashMap list : customerList){
 					%>
-					<div class="d-flex justify-content-between loginDivTags">
+					<div class="formField">
 						<label>아이디</label>
 						<input type="text" name="customerId" value="<%=(String)(list.get("email"))%>">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
+					<div class="formField">
 						<label>이름</label>
-						<input type="text" name="customerName" value="<%=(String)(list.get("name"))%>">
+						<input type="text" name="customerName" value="<%=(String)(list.get("name"))%>" readonly="readonly">
 					</div>
-					<div class="mt-4 d-flex justify-content-between  loginDivTags">
+					<div class="formField">
 						<label>생년월일</label>
-						<input type="date" name="customerBirth" value="<%=(String)(list.get("birth"))%>">
+						<input type="date" name="customerBirth" value="<%=(String)(list.get("birth"))%>" readonly="readonly">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
+					<div class="formField">
 						<label>성별</label>
 						<select name="customerGender">
 							<option value="" >성별을 선택해 주세요.</option>
@@ -124,7 +119,7 @@
 						%>
 						</select>
 					</div >
-					<div class="mt-4 d-flex justify-content-between loginDivTags">
+					<div class="formField">
 						<label>비밀번호 확인</label>
 						<input type="password" name="customerOriginalPw"  placeholder="비밀번호를 입력해주세요.">
 					</div>
@@ -132,14 +127,22 @@
 						}
 					%>
 				</div>
-				<div class="d-flex justify-content-center" id="loginBtnDiv">
-					<a href="/shop/customer/goodsList.jsp">뒤로가기</a>				
+				<div id="buttonGroup">
+					<button>
+						<a href="/shop/customer/goodsList.jsp">뒤로가기</a>				
+					</button>
 					<button type="submit">수정하기</button>
-					<a href="/shop/customer/modifyCustomerPwForm.jsp?customerId=<%=customerId%>">비밀번호 변경</a>
-					<a href="/shop/customer/deleteCustomerForm.jsp">회원탈퇴</a>
+					<button>
+						<a href="/shop/customer/modifyCustomerPwForm.jsp?customerId=<%=customerId%>">비밀번호 변경</a>					
+					</button>
+					<button>
+						<a href="/shop/customer/deleteCustomerForm.jsp">회원탈퇴</a>
+					</button>
 				</div>
 			</form>
 		</div>
 	</main>
+	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
+	<script src="/shop/js/goodsSlider.js"></script>
 </body>
 </html>

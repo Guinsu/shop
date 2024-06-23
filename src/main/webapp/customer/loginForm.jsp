@@ -12,126 +12,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Dongle&family=Marmelad&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-	
-<meta charset="EUC-KR">
-<title>loginForm page</title>
-	<style>
-	
-		body{
-			width:100%;
-			height:100%;
-		 	font-family: "Dongle", sans-serif;
-  			font-size: 40px;
-  			font-style: normal;
-  			background-color: #FCE4EC;
-		}
-		main{
-			margin-top: 30px;
-			
-		}
-		form{
-			border: 1px solid black;
-			border-radius : 20px;
-			padding: 30px;
-		}
-		button{
-			width: 200px;
-			height: 50px;
-			background: none;
-			border-radius: 20px;
-			font-size: 30px;
-			color: black;
-			border: 2px solid black;
-		}
-		input{
-			height: 40px;
-			width: 300px;
-			border-radius: 8px;
-		}
-		a{
-			text-decoration: none;
-			color: black;
-			border: 2px solid black;
-			border-radius: 20px;
-			width: 200px;
-			height: 50px;
-			text-align: center;
-			font-size: 30px;
-		}
-		h1{
-			font-size: 100px;
-			margin-left: 50px;
-		}
-		h3{
-			text-align: center;
-			font-size: 50px;
-			color: black;
-		}
-		header{
-			border-bottom: 3px solid white;
-		}
-		label{
-			color: black;
-		}
-		.loginDiv{
-			width: 100%;
-		}
-		.mainImg{
-			width: 150px;
-			height: 150px;
-		}
-		#formDiv{
-			margin-top: 20px;
-		}
-		#loginBtnDiv{
-			margin-top: 40px;
-			width: 100%;
-		}
-	</style>
+	<meta charset="UTF-8">
+	<title>굿즈 쇼핑몰</title>
+	<link rel="stylesheet" href="/shop/css/loginForm.css"/>
 </head>
 <body >
-	<header class="m-2 d-flex justify-content-between">
-		<div>
-			<img alt="하츄핑" src="/shop/img/hachuping.png" class="mainImg">
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<h1>캐치! 티니핑</h1>
-		</div>
-		<div>
-			<img alt="하츄핑" src="/shop/img/hachuping.png" class="mainImg">
-		</div>
+	<header>
+		<div class="slider">
+	        <div class="slides">
+	        	<div class="siteName">
+	        		Tiniping World
+	        	</div>
+	            <a href="https://www.emotioncastle.com/products/118208055">
+	                <img src="/shop/img/firstPic.png" alt="slide1" id="slide1" />
+	            </a>
+	            <a href="https://www.emotioncastle.com/products/118207999">
+	                <img src="/shop/img/secondPic.png" alt="slide2" id="slide2"/>
+	            </a>
+	            <div>
+	        		<img alt="" src="/shop/img/hachuping.png">
+	        	</div>
+	        </div>
+	        <div class="dots">
+	            <span class="dot" id="firstDot" onclick="clickEvent(1)"></span>
+	            <span class="dot" id="secondDot" onclick="clickEvent(2)"></span>
+	        </div>
+         </div>
 	</header>
 	
 	<main>
-		<div class="d-flex justify-content-center">
-			<h3>고객님 로그인 부탁드립니다.</h3>
+		<div >
+			<h1>고객님 로그인 부탁드립니다.</h1>
 		</div>
-		<div  class="d-flex justify-content-center" id="formDiv">
+		<div id="container">
 			<form action="/shop/customer/loginAction.jsp" method="post">
 				<div>
-					<div class="d-flex justify-content-between loginDiv">
+					<div class="formField">
 						<label>아이디</label>
 						<input type="text" name="customerId">
 					</div>
-					<div class="mt-4 d-flex justify-content-between loginDiv">
+					<div class="formField">
 						<label>비밀번호</label>
 						<input type="password" name="customerPw">
 					</div>
 				</div>
-				<div class="d-flex justify-content-center" id="loginBtnDiv">				
-					<a href="/shop/customer/addCustomerForm.jsp" class="me-3">회원가입</a>
+				<div id="buttonGroup">
+					<button>
+						<a href="/shop/index.jsp">뒤로가기</a>
+					</button>
+					<button>
+						<a href="/shop/customer/addCustomerForm.jsp">회원가입</a>
+					</button>				
 					<button type="submit">로그인</button>
-				</div>
-				<div class="mt-4 d-flex justify-content-center">
-					<a href="/shop/index.jsp">뒤로가기</a>
 				</div>
 			</form>
 		</div>
 	</main>
+	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
+	<script src="/shop/js/goodsSlider.js"></script>
 </body>
 </html>
