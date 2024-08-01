@@ -44,7 +44,6 @@
 - 데이터베이스 : MySql
 - 기타도구 : Git, Apache Tomcat
 
-## 4. 주요 페이지별 기능
 
 
 
