@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<meta charset="UTF-8">
 	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/loginForm.css"/>
@@ -49,11 +50,11 @@
 				<div>
 					<div class="formField">
 						<label>아이디</label>
-						<input type="text" name="customerId">
+						<input type="text" name="customerId" value="user">
 					</div>
 					<div class="formField">
 						<label>비밀번호</label>
-						<input type="password" name="customerPw">
+						<input type="password" name="customerPw" value="1234">
 					</div>
 				</div>
 				<div id="buttonGroup">

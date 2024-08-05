@@ -29,6 +29,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<meta charset="UTF-8">
 	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/modifyCustomerPwForm.css" />
@@ -82,7 +83,7 @@
 			<h1>비밀번호 변경</h1>
 		</div>
 		<div id="container">
-			<form action="/shop/customer/modifyCustomerPwAction.jsp?customerId=<%=customerId%>" method="post">
+			<form name="passwordForm" action="/shop/customer/modifyCustomerPwAction.jsp?customerId=<%=customerId%>" method="post" onsubmit="return validateForm()">
 				<div>
 					<div class="formField">
 						<label>기존 비밀번호</label>
@@ -104,5 +105,22 @@
 	</main>
 	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
 	<script src="/shop/js/goodsSlider.js"></script>
+	<script>
+		function validateForm() {
+			let originalPw = document.forms["passwordForm"]["customerOriginalPw"].value;
+			let changePw = document.forms["passwordForm"]["customerChangePw"].value;
+
+			if (originalPw == "") {
+				alert("기존 비밀번호를 입력해 주세요.");
+				return false;
+			}
+			if (changePw == "") {
+				alert("변경할 비밀번호를 입력해 주세요.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>

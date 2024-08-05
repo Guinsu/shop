@@ -37,7 +37,8 @@
 
 <!DOCTYPE html>
 <html>
-<head>	
+<head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<meta charset="UTF-8">
 	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/customerCart.css">
@@ -125,7 +126,7 @@
 				</table>
 				<div class="addressForm">
 					<h3>배송지 주소를 입력해주세요.</h3>
-					<form action="/shop/customer/paymentGoodsAction.jsp" method="post">
+					<form name="paymentForm" action="/shop/customer/paymentGoodsAction.jsp" method="post" onsubmit="return validateForm()">
 						<label>입력 : </label>
 						<input type="text" name="address">
 						<input type="hidden" name="payment" value="결제완료">
@@ -156,5 +157,17 @@
 	</main>
 	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
 	<script src="/shop/js/goodsSlider.js"></script>
+	<script>
+		function validateForm() {
+			let address = document.forms["paymentForm"]["address"].value;
+			
+			if (address == "") {
+				alert("주소를 입력하세요.");
+				return false;
+			}
+			
+			return true;
+		}
+	</script>
 </body>
 </html>

@@ -25,6 +25,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,19 +97,19 @@
 				%>
 					<div class="d-flex justify-content-between loginDiv">
 						<label>아이디</label>
-						<input type="text" name="empId" value="<%=(String)(list.get("empId"))%>">
+						<input type="text" name="empId" value="<%=(String)(list.get("empId"))%>" readonly>
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDiv">
 						<label>이름</label>
-						<input type="text" name="empName" value="<%=(String)(list.get("empName"))%>">
+						<input type="text" name="empName" value="<%=(String)(list.get("empName"))%>" readonly>
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDiv">
 						<label>부서</label>
-						<input type="text" name="empJob" value="<%=(String)(list.get("empJob"))%>">
+						<input type="text" name="empJob" value="<%=(String)(list.get("empJob"))%>" readonly>
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDiv">
 						<label>입사일</label>
-						<input type="date" name="empDate" value="<%=(String)(list.get("hireDate"))%>">
+						<input type="date" name="empDate" value="<%=(String)(list.get("hireDate"))%>" readonly>
 					</div>
 					<div class="mt-4 d-flex justify-content-between loginDiv">
 						<label>권한</label>
@@ -119,8 +120,7 @@
 					}
 				%>
 				<div class="d-flex justify-content-center" id="loginBtnDiv">				
-					<button type="submit">수정하기</button>
-					<a>탈퇴하기</a>
+					<button type="button" onclick="location.href='/shop/emp/goodsList.jsp'">뒤로가기</button>
 				</div>
 			</form>
 		</div>

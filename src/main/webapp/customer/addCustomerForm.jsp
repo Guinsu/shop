@@ -21,6 +21,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<meta charset="UTF-8">
 	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/addCustomerForm.css"/>
@@ -54,7 +55,7 @@
 			<h1>회원가입 페이지</h1>
 		</div>
 		<div class="container">
-			<form action="/shop/customer/addCustomerAction.jsp" method="post">
+			<form name="customerForm" action="/shop/customer/addCustomerAction.jsp" method="post" onsubmit="return validateForm()">
 				<div>
 					<div class="formField">
 						<label>아이디</label>
@@ -101,5 +102,37 @@
 	</main>
 	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
 	<script src="/shop/js/goodsSlider.js"></script>
+	<script>
+		function validateForm() {
+			let customerId = document.forms["customerForm"]["customerId"].value;
+			let customerPw = document.forms["customerForm"]["customerPw"].value;
+			let customerName = document.forms["customerForm"]["customerName"].value;
+			let customerBirth = document.forms["customerForm"]["customerBirth"].value;
+			let customerGender = document.forms["customerForm"]["customerGender"].value;
+			
+			if (customerId == "") {
+				alert("아이디를 입력하세요.");
+				return false;
+			}
+			if (customerPw == "") {
+				alert("비밀번호를 입력하세요.");
+				return false;
+			}
+			if (customerName == "") {
+				alert("이름을 입력하세요.");
+				return false;
+			}
+			if (customerBirth == "") {
+				alert("생년월일을 입력하세요.");
+				return false;
+			}
+			if (customerGender == "") {
+				alert("성별을 선택하세요.");
+				return false;
+			}
+			
+			return true;
+		}
+	</script>
 </body>
 </html>

@@ -30,6 +30,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<meta charset="UTF-8">
 	<title>굿즈 쇼핑몰</title>
 	<link rel="stylesheet" href="/shop/css/customerOne.css" />
@@ -83,7 +84,7 @@
 			<h1>개인정보</h1>
 		</div>
 		<div class="container">
-			<form action="/shop/customer/modifyCustomerAction.jsp" method="post">
+			<form name="customerForm" action="/shop/customer/modifyCustomerAction.jsp" method="post" onsubmit="return validateForm()">
 				<div>
 					<%
 						for(HashMap list : customerList){
@@ -144,5 +145,27 @@
 	</main>
 	<footer>&copy; 티니핑 쇼핑몰 made by 김인수</footer>
 	<script src="/shop/js/goodsSlider.js"></script>
+	<script>
+		function validateForm() {
+			let customerId = document.forms["customerForm"]["customerId"].value;
+			let customerGender = document.forms["customerForm"]["customerGender"].value;
+			let customerOriginalPw = document.forms["customerForm"]["customerOriginalPw"].value;
+
+			if (customerId == "") {
+				alert("아이디를 입력해 주세요.");
+				return false;
+			}
+			if (customerGender == "") {
+				alert("성별을 선택해 주세요.");
+				return false;
+			}
+			if (customerOriginalPw == "") {
+				alert("비밀번호를 입력해 주세요.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>

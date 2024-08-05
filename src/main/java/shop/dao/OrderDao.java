@@ -67,17 +67,16 @@ public class OrderDao {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 			
 	
-		String sql = "SELECT order_no orderNo, email, orders.goods_no no, orders.goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,orders.update_date updateDate, emp_name "
+		String sql = "SELECT order_no orderNo, email, orders.goods_no no, orders.goods_title goodsTitle, price, total_amount totalAmount, address, state, comment_state commentState ,orders.update_date updateDate "
 				+ "FROM orders "
 				+ "INNER JOIN goods "
 				+ "ON orders.goods_no = goods.goods_no "
-				+ "WHERE emp_name = ? AND state != '결제대기' AND email LIKE ? "
+				+ "WHERE state != '결제대기' AND email LIKE ? "
 				+ "ORDER BY order_no DESC limit ?,?;";
 		stmt = conn.prepareStatement(sql);
-		stmt.setString(1, empName);
-		stmt.setString(2, "%"+searchWord+"%");
-		stmt.setInt(3, startRow);
-		stmt.setInt(4, rowPerPage);
+		stmt.setString(1, "%"+searchWord+"%");
+		stmt.setInt(2, startRow);
+		stmt.setInt(3, rowPerPage);
 		rs = stmt.executeQuery();
 		
 		while(rs.next()) {

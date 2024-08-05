@@ -13,7 +13,7 @@ public class GoodsDao {
 		PreparedStatement stmt = null;
 		Connection conn = DBHelper.getConnection();
 		
-		String sql1 = "INSERT INTO goods (category, emp_name, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
+		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setString(1,category);
 		stmt.setString(2,empName);
@@ -74,7 +74,7 @@ public class GoodsDao {
 		ResultSet rs2 = null; 
 		Connection conn = DBHelper.getConnection();
 		
-		String sql2 = "SELECT goods_no no, category,emp_name empName ,goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate  FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
+		String sql2 = "SELECT goods_no no, category,goods_title title, filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate  FROM goods WHERE category = ? ORDER BY goods_no DESC limit ?,?;";
 		stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, category);
 		stmt2.setInt(2,startRow);
@@ -87,7 +87,6 @@ public class GoodsDao {
 			HashMap<String, Object> m2 = new HashMap<String, Object>();
 			m2.put("no", rs2.getInt("no"));
 			m2.put("category", rs2.getString("category"));
-			m2.put("empName", rs2.getString("empName"));
 			m2.put("title", rs2.getString("title"));
 			m2.put("filename", rs2.getString("filename"));
 			m2.put("content", rs2.getString("content"));
@@ -109,7 +108,7 @@ public class GoodsDao {
 		ResultSet rs3 = null; 
 		Connection conn = DBHelper.getConnection();
 		
-		String sql3 = "SELECT goods_no no, category, emp_name empName, goods_title title,filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
+		String sql3 = "SELECT goods_no no, category,goods_title title,filename, left(goods_content,500) content, goods_price price, goods_amount amount, create_date createDate, (SELECT COUNT(*) FROM goods) AS cnt FROM goods ORDER BY goods_no DESC limit ?,?;";
 		stmt3 = conn.prepareStatement(sql3);
 		stmt3.setInt(1, startRow);
 		stmt3.setInt(2, rowPerPage);
@@ -121,7 +120,6 @@ public class GoodsDao {
 			HashMap<String, Object> m3 = new HashMap<String, Object>();
 			m3.put("no", rs3.getInt("no"));
 			m3.put("category", rs3.getString("category"));
-			m3.put("empName", rs3.getString("empName"));
 			m3.put("title", rs3.getString("title"));
 			m3.put("filename", rs3.getString("filename"));
 			m3.put("content", rs3.getString("content"));

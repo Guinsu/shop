@@ -20,6 +20,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +50,7 @@
 	<main class="d-flex justify-content-center  align-items-center flex-column">
 		<h1>카테고리 이름 수정</h1>
 		<div>
-			<form action="/shop/emp/modifyCategoryAction.jsp?category=<%=category %>" method="post" >
+			<form name="categoryForm" action="/shop/emp/modifyCategoryAction.jsp?category=<%=category %>" method="post" onsubmit="return validateForm()">
 				<div class="mb-4">기존 카테고리 이름 : <%=category %> </div>
 				<label>변경할 카테고리 이름:</label>
 				<input type="text" name="modifyCategory" value="<%=category != null ? category : null%>">
@@ -57,5 +58,17 @@
 			</form>
 		</div>
 	</main>
+	<script>
+		function validateForm() {
+			let modifyCategory = document.forms["categoryForm"]["modifyCategory"].value;
+			
+			if (modifyCategory == "") {
+				alert("카테고리 이름을 입력하세요.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>

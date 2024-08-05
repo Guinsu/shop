@@ -22,6 +22,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,7 +73,7 @@
 	</div>
 	<main class="d-flex justify-content-center  align-items-center flex-column">
 		<h1>상품등록</h1>
-		<form action="/shop/emp/addGoodsAction.jsp" method="post" class="mt-5" id="goodsForm" enctype="multipart/form-data">
+		<form name="goodsForm" action="/shop/emp/addGoodsAction.jsp" method="post" class="mt-5" id="goodsForm" enctype="multipart/form-data" onsubmit="return validateForm()">
 			<div class="d-flex justify-content-between">
 				category :
 				<select name="category">
@@ -115,6 +116,48 @@
 			</div>
 		</form>
 	</main>
+	<script>
+		function validateForm() {
+			let category = document.forms["goodsForm"]["category"].value;
+			let goodsTitle = document.forms["goodsForm"]["goodsTitle"].value;
+			let goodsImg = document.forms["goodsForm"]["goodsImg"].value;
+			let goodsPrice = document.forms["goodsForm"]["goodsPrice"].value;
+			let goodsAmount = document.forms["goodsForm"]["goodsAmount"].value;
+			let goodsContent = document.forms["goodsForm"]["goodsContent"].value;
+
+			if (category == "") {
+				alert("카테고리를 선택하세요.");
+				return false;
+			}
+			if (goodsTitle == "") {
+				alert("상품명을 입력하세요.");
+				return false;
+			}
+			if (goodsImg == "") {
+				alert("상품 이미지를 선택하세요.");
+				return false;
+			}
+			let fileExtension = goodsImg.split('.').pop().toLowerCase();
+			if (fileExtension !== 'png' && fileExtension !== 'jpg' && fileExtension !== 'jpeg') {
+				alert("PNG 또는 JPG 형식의 이미지를 선택하세요.");
+				return false;
+			}
+			if (goodsPrice == "") {
+				alert("상품 가격을 입력하세요.");
+				return false;
+			}
+			if (goodsAmount == "") {
+				alert("상품 수량을 입력하세요.");
+				return false;
+			}
+			if (goodsContent == "") {
+				alert("상품 설명을 입력하세요.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>
 

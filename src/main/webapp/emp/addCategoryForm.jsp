@@ -14,6 +14,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/png" href="/shop/upload/hachuping.png">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,12 +44,24 @@
 	<main class="d-flex justify-content-center  align-items-center flex-column">
 		<h1>카테고리 추가</h1>
 		<div>
-			<form action="/shop/emp/addCategoryAction.jsp" method="post" >
+			<form name="categoryForm" action="/shop/emp/addCategoryAction.jsp" method="post" onsubmit="return validateForm()">
 				<label>추가할 카테고리 이름:</label>
 				<input type="text" name="newCategory">
 				<button type="submit">추가</button>
 			</form>
 		</div>
 	</main>
+	<script>
+		function validateForm() {
+			let newCategory = document.forms["categoryForm"]["newCategory"].value;
+			
+			if (newCategory == "") {
+				alert("카테고리 이름을 입력하세요.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 </body>
 </html>
