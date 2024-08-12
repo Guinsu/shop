@@ -39,10 +39,10 @@
     - 배송정보 조회
 
 ## 3. 기술 스택
-- 프론트엔드 : HTML, CSS, JavaScript
-- 백엔드 : Java(JSP)
-- 데이터베이스 : MySql
-- 기타도구 : Git, Apache Tomcat
+- 프론트엔드 : HTML, CSS (JSP 사용) 
+- 백엔드 : Java
+- 데이터베이스 : MariaDB
+- 기타도구 : Git, Apache Tomcat, JDBC
 
 
 
