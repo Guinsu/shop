@@ -13,7 +13,7 @@ public class GoodsDao {
 		PreparedStatement stmt = null;
 		Connection conn = DBHelper.getConnection();
 		
-		String sql1 = "INSERT INTO goods (category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
+		String sql1 = "INSERT INTO goods (category, emp_name, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) VALUES (?,?,?,?,?,?,?,NOW(),NOW());";
 		stmt = conn.prepareStatement(sql1);	
 		stmt.setString(1,category);
 		stmt.setString(2,empName);
